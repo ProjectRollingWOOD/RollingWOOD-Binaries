@@ -1,0 +1,326 @@
+# VSBCMI and games sound in DOS HOWTO 
+
+## The fine print
+
+_The guide is licensed by it's author under the terms of [CC BY-NC license](https://creativecommons.org/licenses/by-nc/4.0/). The author is not affiliated with Microsoft, IBM, C-Media Electronics or any other bodies that hold right over any of the commercial works (software, intellectual or otherwise) referenced in the guide. No claims are being made over the rights (full or partial) for any commercial works (software, intellectual or otherwise) referenced in this guide and they remain with the owning bodies in accorance with the appropriate law (or laws). The guide is presented in hopes of being useful, but with no warranty, nor even implied warranty of merchantability of fitness for a particular purpose. The author will not be held accountable for any damage caused to the persons, their data, hardware or any other property, following any actions taken by those persons in connection (direct or indirect) with activities described in the guide._
+
+## Part 1 - Computer configuration
+
+Game compatibility will differ depending on which hardare and software conponents are used in the computer. In oder to avoid any misunderstanding, concrete hardware configuration that was used for running the games is first given:
+
+|  Component     |                                                                                          |
+|----------------|------------------------------------------------------------------------------------------|
+| Motherboard    | Gigabyte GA-G41M-Combo G41                                                               |
+| CPU            | Core 2 Quad Q9550                                                                        |
+| Memory         | 2x4Gb DDR3 downclocked to 1066 MHz                                                       |
+| Chipset        | Intel ICH7                                                                               |
+| Video          | Intel integrated video (see above) with VGA/D-SUB output                                 |
+| HDD            | WDC 80Gb IDE (3 primary and 3 logical partitions, 9 to 29 Gb each)                       |
+| DVD-ROM        | A-Open 16x IDE                                                                           |
+|                | VIDE-CDD.SYS version 2.14, SHSUCD version 3-6, SHSU-CDH version 2.1                      |
+| Floppy         | 3.5" FDD (with integrated USB hub and card reader)                                       |
+| OS             | FreeDOS 1.4 RELEASE 2025-04-02                                                           |
+|                | JemmEx v5.85                                                                             |
+| Input          | Logitech M35 3-button COM mouse + PS/2 wired keyboard                                    |
+|                | Mouse driver V6.00 ("Petero Chen")                                                       |
+| Joysticks      | Saitek ST-30 Plug & Play USB Joystick                                                    |
+|                | _patched_ Bret Johnson's USBDOS - January 30, 2010 version                               |
+| Soundcard      | Trust SC-5250 5.1 (PCI, CMI-8738) with TOSLINK bracket                                   |
+|                | PCIAUDIO.COM v1.98, C3DMIX.COM v0.4                                                      |
+| MIDI module    | Roland CM-300 connected to game port / X3MB (Buran edition) via cable splitter           |
+
+
+## Part 2 - Incompatible games
+
+These games currently are known to crash, hang, play no sound or misbehave is some other way:
+* Strike Commander
+
+_The below is copied from `vsbhda.txt`_
+* Privateer
+* Rayman
+* SuperFrog
+* Zone 66
+
+## Part 3 - Games that need VSBCMI16
+
+Games running in 16-bit protected mode require the 16-bit variant of the driver, `VSBCMI16`.  
+This in turn should be run with `HDPMI16I.EXE` extender loaded.   
+
+Good indicator that a game needs `HDPMI16I.EXE` is the presense of files `RTM.EXE` and `DPMI16BI.OVL`.
+In this case the game may also suffer from the "Run time error 200" bug. VSBCMI16 offers `/CF8` switch to address this,
+however a more reliable way of dealing with the problem is patching game executable files using `CTBPPAT`.   
+**Please remember to back up the files before attempting any patching.**
+
+* Tyrian 2000 (__see individual game hints section for additional notes__)
+* Total Control
+
+## Part 4 - VSBHDA notes
+
+_The below is copied from `vsbhda.txt`_
+
+Here are some programs/games listed that require special actions:
+
+- Aladdin: requires EMS, max. XMS memory is 31MB (XMSRes 31).
+- Betrayal at Krondor: assumes SB IRQ 7; needs EMS memory.
+- Blood: setting SB IRQ to 2 or 5 may be required. Generally, on some
+  machines the DOS/4GW DOS extender has problems with IRQ 7.
+- Creative's SB16 diagnose.exe: needs cmdline option /CF1.
+- Daggerfall: uses the CauseWay DOS extender - requires either Jemm's
+  NOVCPI option or environment variable CAUSEWAY=DPMI.
+- DynaBlaster: requires VSBHDA option /CF1.
+- FastTracker 2: requires Jemm's NOVCPI option AND option /CF4.
+- Jazz Jackrabbit: unpatched version requires /CF8.
+- Jungle Book: needs SETPVI.EXE to be run before launched.
+- Lemmings 2, a pretty sensitive game:
+  + uses direct disk access ( Int 25h ); the game has to be located on a
+    FAT12/FAT16 disk.
+  + for SFX to work, vsbhda option /CF1 has to be set.
+  + SB IRQ 5/7 may cause problems, IRQ 2 seems the best to work.
+- MDK: requires option /CF4.
+- Screamer: set max. XMS memory to 31MB (XMSRes 31).
+- Stargunner: requires Jemm's NOVCPI option; the game doesn't restore the
+  SB interrupt vector - it may be necessary to reload vsbhda after the
+  program has been run.
+- Sword and Fairy 1 (Chinese Paladin): allocates a sound buffer in
+  extended memory - see notes in 4.3.2).
+- System Shock: set max. XMS memory to 31MB (XMSRes 31) before running
+  HDPMI32i.
+- Terminal Velocity: set max. XMS memory to 31MB (XMSRes 31).
+- The Flight of the Amazon Queen: requires SETPVI.
+- X128 (Sinclair Spectrum Emulator): requires Jemm's NOVCPI option.
+
+## Part 5 - Game compatibility tips
+
+**Please remember to back up the files before attempting any patching suggested in the sections below.**
+
+
+### Legend of Kyrandia CD-ROM
+
+Producing an ISO of the game CD with patched sound drivers is necessary. 
+1. Using [WestPak2](https://sourceforge.net/projects/westpak2/files/) extract ALFX.DRV from SOUND.PAK in Dune II.
+2. Using the same tool extract SB*.ADL fromm DRIVERS.PAK in Lands of Lore. 
+3. Overwrite all files with these names found on Kyrandia CD-ROM with the exctracted ones (there are multiple game data directories on the disc).
+4. Create (and optionally) burn the ISO with [ImgBurn](https://www.imgburn.com).
+
+### The Hand of Fate CD-ROM
+
+Producing an ISO of the game CD with patched sound drivers is necessary. 
+1. Using [WestPak2](https://sourceforge.net/projects/westpak2/files/) extract SB*.ADV from DRIVERS.PAK on the CD-ROM.
+2. Using the same tool patch INTRODRV.PAK replacing all SB*.ADV files with the extracted ones.
+3. Overwrite INTRODRV.PAK with the patched version.
+4. Create (and optionally) burn the ISO with [ImgBurn](https://www.imgburn.com).
+5. Consider configuring your sound card to use IRQ 5 - using IRQ 7 may not always work with this game.
+
+Additionally, as per `vsbhda.txt`, allocates a sound buffer in extended memory, so will benefit from running `XMSRES /L 15` command (see notes in section 4.3.2 in `vsbhda.txt` on "Extended Memory Address").
+
+### Lands of Lore 2
+
+Lands of Lore II works great with VSBCMI and actually sounds much better when configured for 16-bit sound. For MIDI music via the PCI card to work overwrite the following driver files with those found in [Descent Shareware v1.0](https://www.classicdosgames.com/game/Descent.html): 
+- HMIDET.386
+- HMIDRV.386 
+- HMIMDRV.386
+
+### Slipstream 5000
+
+In fact a similar driver update as described above for Lands of Lore 2 also fixes MIDI playback with Slipsteram 5000 shareware version. It does not seem to be reqired for the full version of the game.
+
+### Archimedean Dynasty / Schleichfahrt
+
+Archimedean Dynasty / Schleichfahrt have two sets of `.EXE` files each:
+
+- Default `.EXE` files bound to CauseWay DOS extender
+  - `SF.EXE`
+  - `AD.EXE`
+- Files ending with `4G`, bound to DOS/4GW
+  - `SG4G.EXE`
+  - `AD4G.EXE`
+
+While both sets work with `VSBCMI`, the ones ending with `4G` are recommended.   
+To run the CauseWay-bound versions, issue `JEMMEX.EXE NOVCMI` command first.
+
+### Dark Forces
+
+If one wants music via external MIDI device in Dark Forces there's the [Dark Forces DeHacker](https://ctpax-cheater.losthost.org/htmldocs/trouble.htm#df) power tool that one can patch IMUSE.EXE with. 
+
+### Tie Fighter 
+
+But what about Tie Fighter? [An iMuse patcher](https://ctpax-cheater.losthost.org/htmldocs/trouble.htm#imusefix) is available from the same group that created Dark Forcer DeHacker.
+
+### X-Wing
+
+For Collector's Edition CD-ROM no special steps are required.   
+Floppy version, however, needs VSBCMI started with `/CF1` option.
+
+### Monkey Island 2
+
+As with X-Wing above, with floppy version `/CF1` option is requried with VSBCMI. This applies also if game has \@NewRisingSun sound drivers patch applied.   
+CD-ROM version from 1996 and the "Ultimate Talkie Edition" do not require the special option.
+
+### Day of the Tentacle 
+
+VSBCMI needs to be started with options `/OPL0 /DF10` (i.e. with FM port forwarding) _or_ `/OPL1` (i.e. with software FM emulation) _and_ `/CF4`.
+Note that with `/CF1` flag the game will not be able to detect digital audio and will hang sporadically if `/JXX` command line argument is given.
+
+### Sam & Max Hit the Road 
+
+It is recommended to use VSBCMI with `/CF4` option when running the game, as it may sporadically hang otherwise.
+While CD-ROM version is considered speed sensitive and may have issues (crashes) with digital sound playback on newer machines, it is possible to downgrade SCUMM interpreter and sound system to a real-mode version that is compatible with VSBCMI. In this case VSBCMI needs to be started with option `/CF4` __and without option__ `/J`.   
+In order to downgrade the following steps are required:   
+1. Download demo version with `Interpreter Version 6.5.0 (Nov 17 1993 14:32:10)`   
+   The version is available from [LucasArts Demos archive page](https://mixnmojo.com/dreamm-demos/) where it's designated as **Sam and Max Hit the Road PC (German)**.   
+2. Unpack the demo files   
+3. Copy the following file from the CD-ROM version into the same directory:   
+```
+          MONSTER.SOU
+          SAMNMAX.S00
+          SAMNMAX.S001
+```
+4. Rename the following files:
+```
+          SDEMO.EXE   ->  SAMNMAX.EXE
+          SAMNMAX.S00 ->  SAMNMAX.SM0
+          SAMNMAX.S01 ->  SAMNMAX.SM1
+```
+5. Run SETMUSE.EXE to select sound and music card and save the settings, but _avoid testing_ sound settings from the program   
+ 
+Using this older interpreter with CD-ROM version assets introduces incompatibilities for which workarounds exist:
+1. Sound effects are played at wrong sampling frequency.   
+   Sound Blaster series card drivers can be patched to configure sound playback with the correct timing constant:
+```   
+   SBCLONE.WDR:    000006AA: EB 74
+   SBPRO.WDR:      000006C4: EB 74
+   SB16.WDR:       00000512: EB 74
+```
+2. Message saying `Heap State: Unplayable` is show every time the game is started.   
+   Only an annoyance, the message only requires that the players dismiss it once at the start. A [patcher tool](https://github.com/drivelling-spinel/scumm-patcher) is available, that can be built in DOS with DJGPP, which removes the message altogether.
+
+
+### Rebel Assault 2
+
+If speech ends abruptly or gets interrupted during video sequences, setting Interrupt Timer Rate to lowest possible value in Advanced settings of the game's own launcher can help.
+
+
+### Kasparov's Gambit
+
+Official 1.1 patch is requried to fix issues with sound during video playback that the game has. Get it from, e.g., from The Patches Scrolls.
+
+### Black Zone
+
+Black Zone requires a recently released `HDPMI32I.EXE` to work, like the one found with versions v1.8 and above of VSBHDA, or v2.23 or later when [downloaded directly](https://github.com/Baron-von-Riedesel/HX/releases/tag/v2.23). VSBCMI also needs to be started with options `/OPL0 /CF1 /DF10` (i.e. with FM port forwarding) _or_ `/OPL1 /CF1` (i.e. with software FM emulation).   
+While this allows playing the game with sound and music, __a lot__ can be done to improve how the game sounds. See [this fan site](https://black-zone-shrine.vercel.app) for details. 
+
+### Blackthorne (aka Blackhawk)
+
+VSBCMI needs to be started with options `/OPL0 /DF90` (i.e. with FM port forwarding) _or_ `/OPL1 /DF80` (i.e. with software FM emulation).   
+When no FM (non-Roland) music is heard during the introduction or in a level, toggling music playback by pressitng `[Alt]+[M]` two times should bring it back.   
+The game includes several drivers for FM-based music playback via OPL, so if it sounds strange, select another driver in the setup program.
+Sound Blaster (i.e. not Pro) should work fine most of the time.
+
+### Electro Man
+
+The game can be played with C-Media proprietary driver or with VSBCMI.
+If crashes or loss of keyboard control are observed after some time playing, switching to a more recent version of FreeDOS or to MS-DOS may help.
+The same could apply for other X-Land games, such as "The Adventures of Robbo" and "Heartlight".
+
+### Whizz
+
+VSBCMI needs to be started with options `/OPL0 /DF10` (i.e. with FM port forwarding) _or_ `/OPL1` (i.e. with software FM emulation). Option `/CF1` __should not be set__ as game will fail to detect sound card with it.   
+Game is not compatible with FreeDOS out of the box and requires MS-DOS to run.   
+Alertnatively game executables can be unpacked using [UNP](https://bencastricum.nl/unp/), in which case all `*.EXE`, `*.PRG` and `SCORE.CEP` need to be unpacked.
+When VSBCMI is loaded with `/J` argument, the game locks up, unless patched. See __joystick-howto__ for more details. 
+
+### Inherit the Earth: Quest for the Orb (CD-ROM)
+
+HDPMI32I.EXE needs to be loaded with `a` suffix to the `-x` command line argument, i.e.
+```
+HDPMI32I.EXE -xa
+```
+which requires that a fairly recent build of HDPMI32I.EXE is used. One such testing version can be found in
+[github issue discussion](https://github.com/Baron-von-Riedesel/VSBHDA/issues/55#issuecomment-3538766992).
+VSBCMI needs to be started with options `/OPL0 /DF10` (i.e. with FM port forwarding) _or_ `/OPL1` (i.e. with software FM emulation).   
+The game is sensitive to the sound settings chosen, in particular sound effects and music card combination.
+Here are the settings that have worked with VSBCMI so far (note that ports, IRQ and DMA need to correspond to VSBCMI own configuration):
+```
+REM Sound Blaster Pro with FM music
+install.exe /mce /mp0x220 /scb /sa0x220 /si7 /sd1 
+REM Sound Blaster Pro with Roland MT-32 via MPU-401
+install.exe /mci /mp0x330 /scb /sa0x220 /si7 /sd1 
+```
+
+
+### Quake
+
+Out of the box original Quake does not sound very nice with VSBCMI resampling. Starting the game with `-sspeed 48000` option improves this, 
+as it moves resampling from the TSR into the game iteself (note that the value 48000 should match what has been supplied to VSBCMI with `-F` argument when loading it).    
+
+For a slightly cleaner sounding version of the game (and Hexen II as well), please check out [these builds](https://github.com/drivelling-spinel/Quake), 
+which add sample interpolation and make other small adjustments to the sound playback. These require `-sspeed 48000` as well to sound nicer.
+
+
+### Tyrian / Tyrian 2000
+
+The game is playable with `VSBCMI16` but occasionally locks up, e.g. when switching music on or off while in the mission, or during boss fights.   
+While no _perfect_ solution is available at the moment of writing, a workaround exists, which requires patching the `FILE0001.EXE` to prevent suppression of interrupts.  
+For Tyrian 2000 available from GOG, the two locations to patch are:   
+```
+35F56: E5 60 06 9C FA    -> E5 60 06 9C 90 
+37BB2: 9C FA E8 1B FC 9D -> 9C 90 E8 1B FC 9D
+```
+A patcher tool is available on VOGONS message boards for this version of the game, which makes this change automatically.   
+If game locks up while assigning keyboard mappings in options menu, it is advised to restart the computer without `HDPMI16I` nor `VSBCMI16` and run the game 
+with no sound just for the purpose of configuring keyboard.
+
+Additionally, older versions of Tyrian require either option `/CF8` to be provided to `VSBCMI16`, or patching *.EXE files with [CTBPPAT.EXE](https://ftp.gwdg.de/pub/magazine/ct/ctsi/).
+
+### Theme Park
+
+Game is speed sensitive and is best played with a slowdown tool. CPUSPD is one such recommended program.
+For the CD-ROM version the following workaround can be applied in case when digital sound is garbled or does not work:
+1. Use installer to set up the the game as usual, also configuring sound as appropriate 
+2. Copy contents of `GAME` directory from the CD-ROM to a separate directory on the hard drive, e.g. `C:\THEME`.   
+   `GAME` directory normally contains files like `INTRO.EXE`, `MAIN.EXE` and directories `DATA` and `SAVE`.
+3. Remove files `DATA\SNDS0-2.DAT` and `DATA\SNDS0-2.TAB` from the hard drvie copy of the game
+4. Copy `THEME.BAT` and `SNDSETUP.INF` from the original installation to the hard drive copy
+5. Update `THEME.BAT` to use the path of the hard drive copy instead of the CD-ROM, e.g.:
+```
+C:
+CD C:\THEME
+:START
+intro -C:/THEME
+main -cC:/THEME/ -dC:/THEME/ -l1
+IF ERRORLEVEL 10 GOTO START
+```
+
+### Super Street Fighter II Turbo
+
+_This section is specifically for the __Turbo__ version of the game published by Gametek_   
+In order to run the game with VSBCMI the following steps are required:
+1. `SF2TURBO.EXE` needs to be patched to make it compatible wtih HDPMI:   
+```
+50 1E FC    -> 60 1E FC
+CD 31 58 CF -> CD 31 61 CF
+```
+   _alternatively_ patch file `1-HDPMI.BAT` found in source code repository extra directory can be used 
+   (it requires `FPATCH.COM` tool).   
+2. Before `HDPMI32I.EXE` is loaded, the following command must be run to set `HDPMI` environment variable :   
+```
+HDPMI=2048
+```
+3. VSBCMI needs to be started with the following compatibility flag set: `/CF4`.
+4. On faster machines a slowdown tool, such as CPUSPD, is recommended as well as setting FRAME LOCK option to ON in game Options menu.
+
+### Comanche: Maximum Overkill
+
+The game requires official patch found in `CMOM3H.EXE` to make it compatible with EMM managers. The version found on "DOS Days" website works. 
+When using JEMM368, VCPI needs to be switched off before starting the game (see vsbhda.txt section 4.4 for more details), e.g.:
+```
+JEMMEX NOVCPI
+```
+### Wing Commander III: Heart of the Tiger
+
+If game crashes after player's ship is shot down, running `SETPVI.EXE` prior to running the game may help (see vsbhda.txt section 4.2 for more details).
+
+2026,  
+[CC BY-NC]( "https://creativecommons.org/licenses/by-nc/4.0/),  
+Ludicrous_peridot
+
