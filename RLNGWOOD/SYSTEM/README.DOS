@@ -1,0 +1,19 @@
+This is a port of lha to DOS via the DJGPP development system. LHA is a
+free file archiver/comressor popular in Japan. The default extention for
+files produced by LHA is ".lzh". Most of the documentation of lha is in
+Japanese. Brief instructions can be found in the file "lha.hlp".
+
+This port is made from the cvs source code for "LHA for Unix" dated
+20061009. The original source code can be obtained from the LHA home
+site at "http://www sourceforge.jp/projects/lha". If you have trouble
+getting it there, please contact me to have a copy emailed to you. The
+changes to allow compiling under DJGPP have already been incorporated
+into the main source, so no patch is needed.
+
+This binary should work under plain DOS and also under Windows. It is a
+command line utility, without any graphic interface. This port should
+work with all of the different lha compression algorithms, including the
+latest "lh7".
+
+Doug Kaufman
+dkaufman@rahul.net
