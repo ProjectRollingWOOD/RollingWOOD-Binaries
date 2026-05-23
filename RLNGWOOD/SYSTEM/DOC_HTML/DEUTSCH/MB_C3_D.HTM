@@ -1,0 +1,62 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+
+<a name="C3"> <h3> 3. Express-Bedienungs-Anleitung </h3></a>
+
+<pre> 
+
+Wer sofort mit mbedit arbeiten will, mu&szlig; nicht die ganze Bedienungsanleitung
+studieren. Zum basisartigen Arbeiten gen&uuml;gen einige wenige Kommandos. 
+
+Nur zum Gebrauch eines besonderen Features (z.B. Macros) sollten die
+Hinweise in dem jeweiligen Kapitel beachtet werden.
+
+Hier die wichtigsten Kommandos in Kurzform auf einer Seite:
+
+Aufruf:     mbedit &#60;filename&#62;
+
+Editieren:  mbedit unterscheidet 3 Modi: Command, Insert und Exchange.
+
+            Zum Eingeben eines Textes wechselt man vom Command- in den
+            Insert- oder Exchange-Mode (Eingabe von 'I' bzw. 'X').
+
+            Insert: Die eingegebenen Zeichen werden an der Cursor-Position in
+            den Text eingef&uuml;gt.
+
+            Exchange: bei Eingabe neuer Zeichen wird der alte Text an der
+            Cursor-Position &uuml;berschrieben.
+
+            Mit &#60;esc&#62; kommt man zur&uuml;ck in den Command-Mode.
+
+Cursor-Tasten: Zum Positionieren des Cursors innerhalb des Textes
+            (in allen 3 Modi).
+
+Beenden:    Im Command-Mode 'Q' und 'E' eingeben (f&uuml;r Quit Exit).
+            Der editierte File wird zur&uuml;ckgeschrieben und mbedit verlassen.
+
+Abbrechen:  Im Command-Mode 'Q' und 'A' eingeben (f&uuml;r Quit Abort). Wenn der
+            aufgerufene File modifiziert wurde, gibt mbedit eine Warnung
+            aus: "modified: abort anyway ? [Y/N/W]", die quittiert werden mu&szlig;.
+
+            'Y' = Yes   : Abbruch ohne Update, die &Auml;nderungen gehen verloren.
+            'N' = No    : kein Abbruch, Verbleiben in mbedit.
+            'W' = Write : File schreiben und mbedit beenden (wie Quit Exit).
+
+</pre>
+
+<h4>Status-Diagramm</h4>
+<img src="../modes_3.gif" alt="States">
+
+</body>
+</html>
+

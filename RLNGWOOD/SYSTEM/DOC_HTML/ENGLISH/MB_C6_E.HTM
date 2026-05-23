@@ -1,0 +1,753 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C6"> <h3> 6. Commands </h3></a>
+
+<pre>
+
+<a name="C6.1"> <h3> 6.1. General </h3></a>
+
+In the command mode of the editor, a lot of commands can be executed, which
+will be explained in this chapter.
+
+The commands are selected by input of a character (letter or special key),
+normally the 1st character of the command.
+
+With an optional repetition factor, the execution of a command will be
+done multiple. Example: "10R" executes the "Replace" command 10 times.
+
+Special case: The character "/" means infite, i.e. repetition as much as 
+possible (e.g. to the end of file), or until abort with &#60;esc&#62; or ^C 
+(Control C).
+
+All commands may be aborted at any time with &#60;esc&#62; or ^C.
+
+Here is an alphabetical enumeration of all commands, first of all an 
+overview in form of a tree structure, then explained in particular:
+
+<a name="C6.2"> <h3> 6.2. Overview </h3></a>
+
+Command Mode
+|
+|-- ALT F9                              Alternating number of rows: 25, 28, 50
+|
+|-- Again                               Repeat the last command
+|
+|-- Block                               Delete and copy of text blocks
+|   |
+|   |-- Buffer
+|   |-- Delete
+|   |-- Find
+|   |-- -find
+|   |-- Jump
+|   &#43;-- Put
+|
+|-- Calc                                Online Calculator
+|   |
+|   &#43;-- Calc: &#60;arithmetic expression&#62;
+|
+|-- Delete                              Delete and copy of text blocks
+|   |
+|   |-- Buffer
+|   |-- Delete
+|   |-- Find
+|   |-- -find
+|   |-- Jump
+|   &#43;-- Put
+|
+|-- Execute                             Execute a macro
+|   |
+|   &#43;-- Macro name:
+|
+|-- Find                                Search a text string forward
+|   |
+|   &#43;-- Find {} ""
+|
+|-- -find                               Search a text string backward
+|   |
+|   &#43;--  -Find {} ""
+|
+|-- Get                                 Read in a file at the actual 
+|   |                                   cursor position
+|   &#43;-- Input file:
+|
+|-- Hex                                 Hex management of data.
+|   |
+|   |-- Input                           Enter 1 hex value at cursor position.
+|   |-- Output                          Show  1 hex value at cursor position.
+|   |-- Stdout                          Hex string to standard output.
+|   |-- Find                            Search for hex value(s).
+|   |-- View                            Full screen hex display.
+|   &#43;-- Edit                            Full screen hex editor.
+|
+|-- Insert                              Change from command- to insert-mode,
+|   |                                   entered characters will be inserted
+|   &#43;-- [insert]                        at the actual cursor position.
+|
+|-- Jump                                Sets the cursor to previously defined
+|   |                                   locations or to particular lines/
+|   |-- A_tag                           columns.
+|   |-- B_tag
+|   |-- C_tag
+|   |-- D_tag
+|   |-- Start
+|   |-- End
+|   |-- Line
+|   &#43;-- Position
+|
+|-- Kill_wnd                            Stop split screen mode
+|
+|-- Macro                               Macro handling
+|   |
+|   |-- Create
+|   |-- Delete
+|   |-- Get
+|   |-- Insert
+|   |-- List
+|   &#43;-- Save
+|
+|-- Other                               Switch over to the next file
+|
+|-- ALT Other                           Switch over to the previous file
+|
+|-- Paragraph                           Reformats actual paragraph
+|   |
+|   |-- Fill                            without and
+|   &#43;-- Justify                         with right-justification
+|
+|-- Quit                                Abort or exit the editor,
+|   |                                   read, update or write file.
+|   |-- Abort
+|   |-- Exit
+|   |-- Init
+|   |-- Update
+|   &#43;-- Write
+|
+|-- Replace                             Replace text strings
+|   |
+|   &#43;-- Replace {} "" with ""
+|
+|-- ?replace                            Replace text strings conditional
+|   |
+|   &#43;-- ?Replace {} "" with ""
+|
+|-- Set                                 Setting of some parameters
+|   |                 Default values:
+|   |-- Autonl        No                                  G = Global
+|   |-- Bak_file      Yes                                 G
+|   |-- Case          No                                  G
+|   |-- Display       Yes                                 G
+|   |-- E_delimit     !\"#%&\'()*&#43;,-./:;&#60;=&#62;?@[\\]^`{|}~   G
+|   |-- File_num      2                                   G
+|   |-- Highbit       No                                  F
+|   |-- Indent        Yes                                 G
+|   |-- K_token       No                                  G
+|   |-- Leftcol       0                                   F = File specific
+|   |-- Margin        4 0 76                              G
+|   |-- Notab         Yes                                 G
+|   |-- viewOnly      No                                  F
+|   |-- Radix         Decimal                             G
+|   |-- Showfind      No                                  G
+|   |-- Tabs          8                                   G
+|   |-- Viewrow       5                                   G
+|   |-- Warning       2                                   G
+|   |-- sYntax        0 0                                 F
+|   |-- *Wildcards    No                                  G
+|   &#43;-- ~Tilde_home   No                                  G
+|
+|-- Tag                                 Sets a marker for the "Jump" Command
+|   |                                   
+|   |-- A_tag
+|   |-- B_tag
+|   |-- C_tag
+|   &#43;-- D_tag
+|
+|-- View                                Refresh the screen display
+|
+|-- Window                              Split screen mode
+|
+|-- Xchange                             Change from command- to exchange-mode, 
+|   |                                   entered characters will overwrite 
+|   &#43;-- [exchange]                      the old text.
+|
+|-- YFileCompare                        File compare: this / other file 
+|                                       or upper / lower window
+|
+|-- Zulu                                This is the end ...
+|   |
+|   |-- Beep                            beep once
+|   &#43;-- Pause                           1 sec. delay
+|
+|-- !system                             Execution of operating system
+|   |                                   commands, e.g. "DIR"
+|   &#43;-- System command:
+|
+&#43;-- &system                             Like '!', but witout "hit any key ...",
+    |                                   useful for background processes
+    &#43;-- System command:
+
+
+<a name="C6.3"> <h3> 6.3. Explanations </h3></a>
+
+- ALT F9 
+
+   Alternating number of rows, cyclic: 25 --> 28 --> 50 
+
+
+- 'A'gain
+
+   Repetition of the last command.
+   Example: F hallo &#60;esc&#62;              Searches the text string "hallo".
+            A                          Searches the same string again.
+
+
+- 'B'lock
+
+   Marks a text block for delete or store. After entering the 1st "B", the 
+   start of the text will be marked with a "@". The cursor may be moved now 
+   with the cursor keys, or with the "Find", "-find" or "Jump" command. At the
+   same time, a 2nd "@" will be moved with the cursor, which marks the end of 
+   block. The text between both "@"s may be handled with following options:
+      - "B"uffer stores the text in a help buffer.
+      - "D"elete deletes the text in memory, and stores it in the help buffer.
+      - "P"ut writes the marked text to a given file.
+   
+   To read back the help buffer, use the "Get" command - see there !
+
+
+- 'C'alc
+
+   Online calculator for computation of mathematical/logical expressions.
+   Handling of reserved text strings.
+
+   see chapter "Online Calculator" !
+
+
+- 'D'elete
+
+   Initiates the delete or storage of a text buffer, as the "Block" command 
+   does. The deciding factor for the differenciation between delete and 
+   storage is the 2nd command. Therefore:
+      B ... B   corresponds to   D ... B  -->  Store
+      B ... D   corresponds to   D ... D  -->  Delete
+
+
+- 'E'xecute
+
+   Execution of a previously defined macro (manually created or read
+   from macro file).
+   Syntax: "E"xecute &#60;macro name&#62; &#60;cr&#62; 
+
+   Note: Macros with a single-character-name, may be executed by entering
+      this character. It may be a special key, a function key or a normal
+      letter, which is not reserved for another command.
+      Combined Keys (e.g. Control or Alt combinations) are allowed as well.
+   
+   see also chapter "Macros" !
+
+
+- 'F'ind
+
+   Searches (forward) for the entered text string.
+   The "Find" string is terminated with &#60;esc&#62;.
+   Abort of "Find" command with ^C.
+
+
+- '-'find
+
+   Searches (backward) for the entered text string.
+
+
+- 'G'et
+
+   The given file will be read in and inserted at the current cursor position.
+   If a single &#60;cr&#62; is entered instead of a filename, the text buffer 
+   (previously created with the B'lock or 'D'elete command) will be inserted.
+   With this feature, text blocks can be moved or copied easyly.
+
+
+- 'H'ex
+
+   - 'I'nput
+      Inserts the entered hex value at the cursor position in the text.
+      Example: H I 0c &#60;cr&#62; generates a &#60;ff&#62; (Form Feed).
+   
+   - 'O'utput
+      Displays the character below the cursor position as hex value in
+      status line 2.
+
+   - 'S'tdout
+      The entered hex values are sent as character string to stdout.
+      Example: H S 1b 5b 35 6d   or
+               H S 1b5b356d      creates the output of: &#60;esc&#62;[5m.
+
+      This command may be used to manipulate the terminal emulation
+      (e.g. the text resolution).
+
+   - 'F'ind
+      Searches for the entered hex value or hex value range (from ... to).
+<a name="C6.3.H"></a>
+   - 'V'iew
+      Shows the memory content as a mixed hex/ASCII display. Only some keys
+      are available in this mode:
+         Cursor Up/Down/Left/Right, Page Up/Down, Home/End
+         &#60;esc&#62; / ^C
+         'E'dit : Switch over to mode "Hex Edit"
+         'O'ther: Toggle Files
+         'Y'    : File Compare
+
+   - 'E'dit
+      Like 'V'iew, but with additional commands:
+         - &#60;tab&#62; toggles between hex and ASCII area.
+         - entered hex or ASCII values are exchanged in memory.
+
+   <img src="../hex_edit.gif" alt="Hex Edit">
+
+   For the "hardcore programmers": Any binary file may be viewed or edited
+   very comfortable in both ASCII or hex mode.
+
+
+- 'I'nsert
+   
+   Changes from command- to insert mode. Entered characters will be
+   inserted at the actual cursor position.
+   
+   Return to command mode with &#60;esc&#62; !
+
+
+- 'J'ump
+   
+   Sets the cursor ...
+   
+   - A_Tag, B_Tag, C_Tag, D_Tag
+      ... to a text location, which was previously marked with the 
+      "Tag" command.
+   
+   - Start / End
+      ... to the begin or end of file respectively.
+   
+   - Line
+      ... to the given line.
+   
+   - Position
+      ... to the given column.
+
+
+- 'K'ill_wnd
+
+   Stop Window Mode (Split Screen), see 'W'indow !
+
+
+- 'M'acro
+
+   Create, delete, get, insert, list, and save macros.
+   
+   see chapter "Macros" and "Macro File" !
+
+
+- 'O'ther
+
+   If several files are edited in parallel, it is possible to switch over
+   between the files with this option. This is helpful especially for
+   copying data between 2 files.
+   
+   The actual file is identified by the display in status line 1.
+
+
+- ALT 'O'ther
+
+   Same as Other, but the files are switched in reverse order. A difference 
+   between "O" and "Alt O" is only present, if more than 2 files are handled
+   simultaneously.
+
+
+- 'P'aragraph
+
+   Reformats the actual paragraph using the settings of 'S'et 'M'argin
+   (Indent, left + right margin).
+
+   - 'F'ill
+       reformats without right-justification.
+
+   - 'J'ustify
+       reformats with right-justification. 
+
+
+- 'Q'uit
+
+   - Abort
+      Abort the editor without storing the actual file. If one of the 
+      worked files has been modified, mbedit displays a warning
+      "modified: abort anyway ? [Y/N/W]", which must be answered.
+         'Y' = Yes   : Abort without update, all modifications are lost.
+         'N' = No    : Don't Abort, stay in mbedit.
+         'W' = Write : Write file and leave mbedit (as Quit Exit).
+
+   - Exit
+      The edited file will be written back and mbedit is left, if none of
+      the other files has been altered.
+
+   - Init
+      With this a new (or the same) file will be read in. If the previously
+      worked file has been modified, mbedit will display a warning. Handling
+      as in "Q"uit "A"bort. Special Case: The filename " " or "" will clear
+      the edit buffer without reading a new file.
+
+   - Update
+      The edited file is written back, the editor is not left.
+
+   - Write
+      The actual file is written to any other filename. If the given file
+      already exists, mbedit displays a warning "file exists, overwrite [Y/N]",
+      which must be answered.
+         'Y' = Yes   : Overwrite existing file.
+         'N' = No    : Don't overwrite existing file.
+   
+   After execution of one of the "Quit" commands, mbedit stays in "Quit" mode,
+   e.g. to perform an "Init" directly after an "Update". The "Quit"-Mode may
+   be left without any actions by entering &#60;esc&#62; or ^C.
+
+
+- 'R'eplace
+
+   Replace one text string with another.
+   Syntax: R &#60;string1&#62; &#60;esc&#62; with &#60;string2&#62; &#60;esc&#62;.
+   Abort of "Replace" command with ^C.
+
+   The last "Replace" command can be repeated with "A"gain as often as you
+   like. By entering a repetition factor, the command can be repeated with
+   a determined number.
+
+
+- '?'replace
+   
+   Like "Replace", but with user query: "Replace ? [Y/N/A]"
+      'Y' = Yes   : Replace this string.
+      'N' = No    : Don't replace this string.
+      'A' = All   : Replace without any further query, until the repetition
+                    factor is executed completely.
+
+
+- 'S'et
+
+   Setup of some operating modes / options.
+   see chapter "Set Options" !
+
+
+- 'T'ag
+
+   Sets a marker (A to D) at the actual cursor position, which can be used
+   later on with the "Jump" command.
+
+
+- 'V'iew
+
+   Resfresh of the display. The cursor is set to the so-called "View Row"
+   (see chapter "Set Options").
+
+
+- 'W'indow
+
+   The screen is split at the actual cursor position into 2 horizontal
+   parts. A minimum of 5 lines (3 text + 2 status lines) is required to
+   enter the Window mode, otherwise an error message "window too small"
+   is generated.
+
+   By entering 'W' again, the actual cursor position jumps from one window
+   to the other.
+
+   It is possible, to edit either 2 different files (with the 'O'ther command) 
+   or the same file in both parts of the screen.
+
+   'K'ill stops the Window mode.
+
+
+- 'X'change
+
+   Changes from command mode to exchange mode. Entered characters will
+   overwrite the old text at the cursor position.
+
+   In exchange mode, overwritten characters are saved in a temporary buffer.
+   With &#60;rubout&#62; or &#60;backspace&#62; they can be restored, as long as the exchange
+   mode wasn't left, and no cursor keys were activated in between.
+
+   Return to command mode with &#60;esc&#62; !
+
+<a name="C6.3.Y"></a>
+
+- 'Y' File Compare
+
+   Compares either the "this" and "other" file, or (if in split screen mode)
+   the "upper" and "lower" window file.
+
+   Displays: 
+      "file compare: running ..."      : the process is active.
+      "file compare: end of file"      : at least one of both files.
+      "file compare: no difference"    : from here to end of file.
+      "file compare: difference found" : cursor at 1. difference in both files.
+
+
+- 'Z'ulu  (useful for macro execution)
+
+   - 'B'eep      beep once
+   - 'P'ause     1 sec. delay
+
+
+- '!'system
+
+   With '!' you can execute an operating system command, without leaving
+   the editor.
+   Example: ! dir *.c > direc.txt &#60;cr&#62;
+
+
+- '&'system
+
+   Like '!', but without "hit any key to continue",
+   useful for commands started as background process.
+
+
+<a name="C6.4"> <h3> 6.4. Function Keys </h3></a>
+
+The following function keys are predefined:
+
+- The Cursor Keys
+   - Cursor Up
+   - Cursor Down
+   - Cursor Left
+   - Cursor Right
+   move the cursor in rows and columns inside the file.
+
+- Home / Pos1
+   depending on the prehistory:
+      - Cursor Up      --> Page up
+      - Cursor Down    --> Page down
+      - Cursor Left    --> Begin of line
+      - Cursor Right   --> End of line
+
+- Page Up   / Bild ^   --> Page up
+- Page Down / Bild v   --> Page down
+
+- Control Character
+   - ^A   Deletes from cursor position to the end of line.
+
+   - ^C   Aborts a started command, back to command mode
+
+   - ^D   Change the character left of the cursor to a german special
+          character (and vice versa): AOUaous &#60;==&#62; AeUeOeaeueoess. With this option
+          you can generate german special characters also on a US-Keyboard.
+
+   - ^E   A macro with one-character-name will be executed, the actual mode
+          (Command, Insert, Exchange) is preserved.
+
+   - ^F   &#60;Del&#62; / &#60;Entf&#62;        Delete the character right of the cursor
+   - ^H   &#60;rubout&#62; &#60;backspace&#62;  Delete the character left of the cursor
+
+   - ^K   Posit the cursor to the corresponding bracket () [] {} &#60;&#62;,
+          or to the compiler switches "#if, #elif, #else, #endif", respectively
+
+   - ^N   &#60;FETN&#62;  see chapter "Online Calculator"   
+   - ^R   &#60;HEX&#62;   Input of a character as hex value (Insert / Exchange Mode
+                  or input in status line 2)
+
+   - ^S   &#60;FETS&#62;  see chapter "Online Calculator"
+   - ^V   &#60;FETS&#62;  same as ^S
+
+   - ^U   Undo: Reverses the commands ^A, ^X and ^Z.
+          If the cursor position has been changed in between, the affected
+          part of the text will be moved or copied.
+
+   - ^X   Deletes from cursor position to the begin of line.
+
+   - ^Z   Deletes the entire line.
+
+   - ^[   &#60;esc&#62;  Abort a started command, terminate a string input.
+
+   - Insert / Einfg   --&#62; Toggles between insert and exchange mode.
+
+
+- The &#60;Fx&#62; Keys
+
+   - &#60;F1&#62; Online Help:
+          Shows a help display with several details:
+          operating system, video server, numbers of rows and columns,
+          size of the actual text buffer,
+          enumeration of all commands,
+          display of the actual settings,
+          list of the most important control characters,
+          list of "built-in macros"
+
+   - &#60;ALT F1&#62;  Online Help from operating system:
+          Macro, which extracts the term at the actual cursor position, and
+          calls the help function of the operating system concerned, e.g.:
+             - MS-DOS: qh   &#60;item&#62;
+             - os/9  : help &#60;item&#62;
+             - unix  : man  &#60;item&#62;
+
+          Note: The name of the desired help function can be modified in
+          "MBEDIT.MAC" as follows:
+             a) mbedit mbedit.mac
+             b) F&#60;cr&#62;m&#60;ALT F1&#62;&#60;esc&#62;
+             c) f!&#60;esc&#62;  The cursor is now at the actual command.
+             d) Modify command (note the trailing &#60;space&#62; !).
+             e) "Quit Exit"
+
+   - &#60;F3&#62; Changes the character below the cursor to lower case
+
+   - &#60;F4&#62; Changes the character below the cursor to upper case
+   
+   - &#60;F5&#62; Changes the word below the cursor to lower case
+
+   - &#60;F6&#62; Changes the word below the cursor to upper case
+   
+
+- Keyboard Adaption
+
+   On a vt 100 terminal or a workstation respectively, some keys have a
+   different function, compared to a PC.
+
+   &#60;F1&#62; - &#60;F5&#62; are processed internally inside the terminal, the user program
+   doesn't know anything about these keys. 
+   But there are some additional keys as:
+   &#60;F13&#62; - &#60;F14&#62;, &#60;HELP&#62;, &#60;DO&#62;, &#60;F17&#62; - &#60;F20&#62;, &#60;PF1&#62; - &#60;PF4&#62;
+
+   To be able to execute the most important commands of mbedit, the keys
+   have been redirected like this:
+
+      - &#60;F13&#62; / &#60;F14&#62;  ==>  Ctrl Cursor Left / Rigth          (Macros)
+
+      - &#60;HELP&#62;         ==>  &#60;F1&#62;
+
+      - &#60;DO&#62;           ==>  &#60;ALT F1&#62;                          (Macro)  
+
+      - &#60;F17&#62; - &#60;F20&#62;  ==>  --- (not yet defined !)
+
+      - &#60;PF1&#62; - &#60;PF4&#62;  ==>  &#60;F3&#62; - &#60;F6&#62;
+
+
+<a name="C6.5"> <h3> 6.5. Set Options </h3></a>
+
+The values in square brackets show the default setting:
+
+- Autonl     [No]
+   Insertion of &#60;nl&#62; automatically, if right margin exceeded.
+
+- Bak_file   [Yes]
+   Commands "Quit Exit" and "Quit Update" create a backup file.
+   (Extension *.BAK).
+
+- Case       [No]
+   "Find" and "Replace" are not case sensitive.
+
+- Display    [Yes]
+   The execution of macros will be displayed, the history buffer is updated
+   with the executed macros.
+
+- E_delimit  [!"#%&'()*&#43;,-./:;&#60;=&#62;?@[\]^`{|}~]
+   Delimiter Set for Find token strings (see also set option "K_token").
+
+- File_num   [2]
+   Number of simultaneously edited files (1 bis 10).
+
+- Highbit    [No]
+   'N'o  : Characters with the 8th bit set are displayed as '?'
+   'Y'es : Display according to the PC-8 character set.
+   'A'uto: Display is dependent upon the "file_type" (well-known = Yes)
+
+- Indent     [Yes]
+   After entering &#60;cr&#62; in the actual text, the cursor jumps to the next 
+   line - not to column 0, but under the 1st character of the previous line,
+   which is not &#60;space&#62; or &#60;tab&#62;.
+
+- K_token    [No]
+   "Find" and "Replace" don't search only for so-called token-Strings, e.g.: 
+   strings, which are surrounded by a delimiter.
+
+   Delimiters are all characters exept letters (even german specials),
+   digits and underscore '_'.
+   With this feature, the variable "i" can be distinguished from all the
+   other "i"s, which occur inside a word.
+
+- Leftcol    [0]
+   The column on the left-hand side of the screen. This option allows to shift
+   the displayed region to left and right, to be able to show very large lines.
+
+- Margin     [4, 0, 76]
+   The margins (indent, left + right) for the Paragraph command.
+
+- Notab      [Yes]
+   Entered &#60;tab&#62;s are expanded to n blanks.
+
+
+- Only view  [No]
+   Switch On and Off edit mode "viewOnly".
+
+- Radix      [Decimal]
+   With this radix, numerical Calc variables (n0 - n9) will be inserted
+   in the text (Insert / Exchange Mode).
+      - 'A': Ascii
+      - 'B': Binary
+      - 'O': Octal
+      - 'D': Decimal
+      - 'H': Hex
+
+- Showfind   [No]
+   Don't list target string lines ("Find"- or "Replace" command with 
+   repetition factor) on one screen.
+   Yes: Results of multiple search appear together on the screen.
+
+- Tabs       [8]
+   The number of &#60;space&#62;s for expansion of an entered &#60;tab&#62;
+   (if "Set Notab Yes").
+
+- Viewrow    [5]
+   With the "View" command, the screen content will be refreshed, and the 
+   cursor is in this line afterwards.
+
+- Warning    [2]
+   Warning Beep Level, control of the acoustic alarm:
+      - 0: beep never
+      - 1: beep after mistakes in operating only
+      - 2: beep after mistakes in operating and in error messages
+
+- sYntax higlighting [7,index]
+   Display with special colors for comments and/or keywords (c language):
+
+   - parameter 1: bit combinations of
+      - 1: comments
+      - 2: keywords
+      - 4: strings
+
+   The default value for this status is dependant from the extension of the
+   filename: All known extensions are handled with sYntax flag = 7. Another
+   precondition for the activation of this feature is the existence of the
+   concerning color entries in the macro file (AFCV, AFKV, AFSV, SYn).
+
+   - parameter 2:
+      - index of the file type (c, cpp, asm, ada, htm, ...)
+
+   The actual valid indices can be seen with 'M'acro 'L'ist.
+
+- *Wildcards [No]
+   No wildcards in the search string,
+   '?' and '*' are treated as any other character.
+   Yes: A question mark '?' in the search string matches any character,
+        an asterisk     '*' in the search string matches any string
+                            (even an empty one).
+
+- ~HomeDir [No]
+   Replace '~' with user home directory (input in status line 2)
+
+</pre>
+
+</body>
+</html>
+

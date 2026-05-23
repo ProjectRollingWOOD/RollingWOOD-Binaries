@@ -1,0 +1,760 @@
+
+Filename: MODIFY.TXT
+
+Date    : 06.04.06
+
+
+/  --------------------------------------------------------------
+/  Copyright (C) 2006: Michael Braun
+/                      Kaetinger Muehlenweg 103 A
+/                      D-28816 Stuhr
+/  --------------------------------------------------------------
+
+
+MBEDIT Documentation   (Appendix)
+====================
+
+
+ C. History of Modifications
+=============================
+
++----------+---------+---------------------------------------------------------
+| Date     | Version | Remarks
++----------+---------+---------------------------------------------------------
+| 06.04.06 |  8.64   | mbed_sub.c: line_length(): bugfix: wrong result in 1st
+|          |         |             line of file, if EOLN_LEN_2 <crlf>
++----------+---------+---------------------------------------------------------
+| 05.04.06 |  8.63   | disp_hnd.c: bugfix: syntax highlighting of multiple
+|          |         |             strings/keywords in long shifted line
++----------+---------+---------------------------------------------------------
+| 20.03.05 |  8.62   | website moved from http://home.t-online.de/home/braun-m
+|          |         |               to   http://www.braun-home.net/michael
++----------+---------+---------------------------------------------------------
+| 24.03.04 |  8.61   | mbedit.c:   Bugfix handling of fc->e_delimit
+|          |         | switches.c:  "
+|          |         | disp_hnd.c: is_inside_string_or_comment():
+|          |         |             new_line in backward direction --> first
++----------+---------+---------------------------------------------------------
+| 23.03.04 |  8.60   | disp_hnd.c: is_keyword: token isolated from delimiters
++----------+---------+---------------------------------------------------------
+| 19.03.04 |  8.59   | disp_hnd.c: Bugfix of previous bugfix
++----------+---------+---------------------------------------------------------
+| 18.03.04 |  8.58   | disp_hnd.c: Bugfix: Nested comments inside strings
++----------+---------+---------------------------------------------------------
+| 13.03.04 |  8.57   | mbedit.syn: File type CSS (Cascading Style Sheets),
+|          |         |             required a lot of modifications, due to
+|          |         |             delimiter characters ('-') inside keywords.
++----------+---------+---------------------------------------------------------
+| 17.02.04 |  8.56   |             Port to QNX 6
+|          |         | mbedit.c:   WITH_WINCH == 9 (lines+columns)
+|          |         | kb_input.c: ioctl --> tcgetattr, tcsetattr
+|          |         | standard.h: div. header files
+|          |         | config2.hh: new entry for QNX6
++----------+---------+---------------------------------------------------------
+| 14.02.04 |  8.55   | disp_hnd.c, Syntax Highlighting: Comment characters are
+|          |         | mbedit.syn: allowed as part of a keyword now.
+|          |         |             Example: "$#" in shell scripts is a command
+|          |         |             line substitution. The "#" does NOT mark the
+|          |         |             begin of a comment here.
++----------+---------+---------------------------------------------------------
+| 14.02.04 |  8.55   | mon_outp.c: Rectangle of history window will always be
+|          |         |             displayed correctly, even with
+|          |         |             'S'et 'H'ighbit 'N'o
++----------+---------+---------------------------------------------------------
+| 11.02.04 |  8.54   | mbedit.mac: SHA: 'S'et 'H'ighbit 'A'uto
+|          |         |             SHN: Highbit = No
+|          |         |             SHY: Highbit = Yes
+|          |         |             SHA: Highbit = Yes, if well-known file_type
+|          |         |                     else = No
++----------+---------+---------------------------------------------------------
+| 08.02.04 |  8.53   | windows.c:  after window resize: scroll down text,
+|          |         |             if last line above bottom
++----------+---------+---------------------------------------------------------
+| 07.02.04 |  8.52   | mbed_sub.c: Ancient bug fixed (some OS only, e.g. Linux).
+|          |         |             Key <End> at begin of file with an empty line
+|          |         |             leaded to program crash before.
++----------+---------+---------------------------------------------------------
+| 05.02.04 |  8.51   | kb_input.c: german "umlaute" (mutated vowels "äöüÄÖÜß")
+|          |         |             under Linux. keys >= 0x80 are unsigned now
++----------+---------+---------------------------------------------------------
+| 05.02.04 |  8.51   | .Xmbedit:   X11 resource file to modify the color
+|          |         |             setting of light green (comments)
++----------+---------+---------------------------------------------------------
+| 08.12.03 |  8.50   | disp_hnd.c: filenames without extension, but leading
+|          |         |             pathname (e.g.: "./makefile")
++----------+---------+---------------------------------------------------------
+| 07.12.03 |  8.49   | disp_hnd.c, mbedit.syn: filenames without extension
+|          |         |             (e.g.: "makefile")
++----------+---------+---------------------------------------------------------
+| 06.12.03 |  8.48   | mon_outp.c, kb_input.c: avoid_hanging_display()
++----------+---------+---------------------------------------------------------
+| 02.11.03 |  8.47   | mbedit.syn: new supported languages:
+|          |         |             perl, PEARL
++----------+---------+---------------------------------------------------------
+| 02.11.03 |  8.47   | disp_hnd.c, commands.c: has_single_quote_string(),
+|          |         | Visual Basic uses single quote for comments, not strings
++----------+---------+---------------------------------------------------------
+| 29.10.03 |  8.46   | disp_hnd.c: show_status_line_2(): 
+|          |         |             bugfix extreme short/long lines
++----------+---------+---------------------------------------------------------
+| 28.10.03 |  8.45   | ansi_out.?: comment characters "//" replaced by "/*"
++----------+---------+---------------------------------------------------------
+| 04.10.03 |  8.44   | switches.c: 'S'et 'V'iewrow: limited to MAX_ROW
++----------+---------+---------------------------------------------------------
+| 15.09.03 |  8.43   | commands.c: bugfix Ada, nested "if, end if"
++----------+---------+---------------------------------------------------------
+| 11.09.03 |  8.42   |             syntax highlighting:
+|          |         | commands.c: Ada "if, else, end if": 
+|          |         |             with delimiter before and behind "<token>"
+|          |         | disp_hnd.c: no comments inside strings
++----------+---------+---------------------------------------------------------
+| 12.05.03 |  8.41   | commands.c: syntax highlighting:
+|          |         |             Ada identifier "<token>" and "end  <token>"
+|          |         |             with delimiter before and behind "<token>"
++----------+---------+---------------------------------------------------------
+| 11.05.03 |  8.40   | commands.c: syntax highlighting:
+|          |         |             Ada identifier "<token>" and "end  <token>"
+|          |         |             with any white space(s) behind "end"
++----------+---------+---------------------------------------------------------
+| 10.05.03 |  8.39   | disp_hnd.c: syntax highlighting:
+|          |         |             new comment character type 3
+|          |         |             (first column, e.g.: "C" in Fortran)
++----------+---------+---------------------------------------------------------
+| 08.05.03 |  8.38   | commands.c: syntax highlighting:
+|          |         |             disable Ada ticks, e.g.: field'last
+|          |         |             enable short strings, e.g.: 'C'alc
++----------+---------+---------------------------------------------------------
+| 07.05.03 |  8.37   | config2.hh: Port to new Operating System: CYGWIN
+|          |         |             (Unix for Windows)
++----------+---------+---------------------------------------------------------
+| 07.05.03 |  8.37   | commands.c: syntax highlighting:
+|          |         |             correct handling of nested comments,
+|          |         |             e.g.: "this is a 'string' example"
++----------+---------+---------------------------------------------------------
+| 01.05.03 |  8.36   | disp_hnd.c: syntax highlighting for "strings"/'strings'
+|          |         | mbedit.mac: Colors like "MS Visual Studio"
++----------+---------+---------------------------------------------------------
+| 01.05.03 |  8.36   | disp_hnd.c: STRICTLY_AEDIT_COMPATIBLE  0
+|          |         |             (Keys <HOME> + <END> in input string)
++----------+---------+---------------------------------------------------------
+| 01.05.03 |  8.36   | wildname.c: wildcard filename + "vo" in WIN_32
++----------+---------+---------------------------------------------------------
+| 25.04.03 |  8.35   | config.h:   SUN_OS: #define WITH_USEC_CLOCK 1
++----------+---------+---------------------------------------------------------
+| 25.04.03 |  8.35   | commands.c: ^K: ignore (parantheses) and <identifiers>,
+|          |         |                 if inside "string" or /* comment */
++----------+---------+---------------------------------------------------------
+| 24.04.03 |  8.34   | commands.c: ^K handles now pairs/sequences of nested: 
+|          |         |             1.) General:
+|          |         |                all types of parantheses and brackets
+|          |         |                () [] {} <>
+|          |         |             2.) ANSI-C, C++:
+|          |         |                a) #if, #elif, ..., #else, #endif
+|          |         |             3.) Ada:
+|          |         |                a) if, else, ..., elsif, end if
+|          |         |                b) xxxx, end xxxx
+|          |         |                   with xxxx = <reserved keyword>
+|          |         |                   (e.g.: loop, case, ...),
+|          |         |                   or <identifier> e.g. function name
++----------+---------+---------------------------------------------------------
+| 24.04.03 |  8.34   | disp_hnd.c: disp_1_line():
+|          |         |             bugfix: overlapping start/end of comment
+|          |         |             /*/ this is now a comment */
++----------+---------+---------------------------------------------------------
+| 23.04.03 |  8.33   | macro.c:    read_macro_file():
+|          |         |             Stop read line, when 0x0a or 0x0d reached.
++----------+---------+---------------------------------------------------------
+| 20.04.03 |  8.32   | ansi_out.c: Port to WIN_32 (Win9x, NT, 2000)
++----------+---------+---------------------------------------------------------
+| 16.04.03 |  8.31   | commands.c: for Ada programmers:
+|          |         |             ^K handles now sequences of nested: 
+|          |         |             a) if, else, ..., elsif, end if
+|          |         |             b) loop, end loop
++----------+---------+---------------------------------------------------------
+| 04.04.03 |  8.30   | disp_hnd.c: bugfix, malloc(0) in case of empty
+|          |         |             keyword list produces error on OSF1
++----------+---------+---------------------------------------------------------
+| 02.04.03 |  8.29   | disp_hnd.c: bugfix, in case of missing config file
+|          |         |             "mbedit.syn" we use a default table.
++----------+---------+---------------------------------------------------------
+| 01.04.03 |  8.28   | disp_hnd.c: Dynamic buffers for "Syntax Highlighting":
+|          |         |             No limitations for number of file_types,
+|          |         |             file_exts + keywords.
++----------+---------+---------------------------------------------------------
+| 31.03.03 |  8.27   | mbedit.syn: Configuration file for "Syntax Highlighting":
+|          |         |             Contains information about file types,
+|          |         |             comment characters and keywords for
+|          |         |             several programming languages, e.g.:
+|          |         |             ANSI-C, C++, Assembler, Ada, HTML, PLM,
+|          |         |             shell script, batch file, mbedit macro file,
+|          |         |             mbedit syntax file (this one).
+|          |         |             May easily be adapted to new requirements.
++----------+---------+---------------------------------------------------------
+| 29.03.03 |  8.26   | disp_hnd.c: WITH_SYNTAX_HIGHLIGHTING produces
+|          |         |             highlighting dependent upon the
+|          |         |             extension of the filename.
+|          |         |             So far, the following file types are known:
+|          |         |             ANSI-C, C++, Ada, HTML
++----------+---------+---------------------------------------------------------
+| 26.03.03 |  8.25   | config.h: SUN_OS: WITH_SYNTAX_HIGHLIGHTING 1
++----------+---------+---------------------------------------------------------
+| 14.11.02 |  8.25   | commands.c: ^K handles now sequences of nested:
+|          |         |             #if, #elif, ..., #else, #endif
++----------+---------+---------------------------------------------------------
+| 17.10.02 |  8.24   | disp_hnd.c: DISPLAY_PAUSE for LINUX avoids hanging
+|          |         |             of display, also in hex_view mode
++----------+---------+---------------------------------------------------------
+| 06.08.02 |  8.23   | disp_hnd.c: OUTPUT_OPTIMIZED 1 --> 0
++----------+---------+---------------------------------------------------------
+| 08.06.02 |  8.22   | 05.08.2002: mbedit.mac:
+|          |         | Date macro handles dd.mm.yy and dd.mm.yyyy correct now.
++----------+---------+---------------------------------------------------------
+| 08.06.02 |  8.22   | macro.c: bugfix in read_macro_file(): 'S'et 'T'abs
++----------+---------+---------------------------------------------------------
+| 25.05.02 |  8.21   | help_opt.c: show_intro(): sleep_msec(1000)
++----------+---------+---------------------------------------------------------
+| 23.05.02 |  8.20   | help_opt.c, global.h: url_string of mbedit Homepage
++----------+---------+---------------------------------------------------------
+| 07.11.00 |  8.19   | 03.03.2001: compiled on linux 2.4.0 (SuSE Linux 7.1)
++----------+---------+---------------------------------------------------------
+| 07.11.00 |  8.19   | config.h: OSF_1: CLEAR_WITH_BLANKS 1
++----------+---------+---------------------------------------------------------
+| 25.08.00 |  8.18   | disp_hnd.c: disp_1_line(): comment_type static, 
+|          |         |      for correct handling of multiple line comments,  
+|          |         |      bugfix by Raimund Spaeth
++----------+---------+---------------------------------------------------------
+| 25.09.99 |  8.17   | disp_hnd.c: 'H'ex 'V'iew: bugfix line_2_flag
++----------+---------+---------------------------------------------------------
+| 16.09.99 |  8.16   | disp_hnd.c: 'H'ex 'V'iew with 'O'ther and 'Y'FileComp
++----------+---------+---------------------------------------------------------
+| 22.06.99 |  8.15   | commands.c: bugfix 'H'ex 'F'ind over 0x80 (e.g. 7e ff)
++----------+---------+---------------------------------------------------------
+| 20.03.99 |  8.14   | kb_input.c: OS-9000 with ^C, ^E disabled
++----------+---------+---------------------------------------------------------
+| 16.03.99 |  8.13   | kb_input.c: Port to OS-9000 (Power PC)
++----------+---------+---------------------------------------------------------
+| 07.03.99 |  8.12   | doc_html: Documentation in HTML Code
++----------+---------+---------------------------------------------------------
+| 04.03.99 |  8.11   | wildname.c: directory sign 'd' replaced with '/'
+|          |         | file_hnd.c: long backup filenames (e.g. "test.c.bak")
+|          |         | commands.c: corresponding brackets '<' and '>'
+|          |         |             (e.g. for HTML code)
++----------+---------+---------------------------------------------------------
+| 19.02.99 |  8.10   | mbedit.c  : don't check write access rights in os-9,
+|          |         |   "access(..., W_OK)" modified the file date+time
++----------+---------+---------------------------------------------------------
+| 05.02.99 |  8.09   | mbedit.c  : check read and write access rights
++----------+---------+---------------------------------------------------------
+| 04.02.99 |  8.08   | file_hnd.c: keep user and group id's
++----------+---------+---------------------------------------------------------
+| 02.02.99 |  8.07   | mon_outp.c, config.h: CLEAR_WITH_BLANKS 1 for HP_UX
++----------+---------+---------------------------------------------------------
+| 31.01.99 |  8.06   | calc_var.c, mbedit.mac: date, Y2K problem fixed
++----------+---------+---------------------------------------------------------
+| 09.09.98 |  8.05   | mbedit.c, disp_hnd.c, kb_input.c: modifications for QNX
++----------+---------+---------------------------------------------------------
+| 07.09.98 |  8.04   | macro.c: bugfix macro execution with VAR_EOLN
++----------+---------+---------------------------------------------------------
+| 05.09.98 |  8.03   | variable EOLN (0x0a, 0x0d or 0x0d0a)
++----------+---------+---------------------------------------------------------
+| 19.08.97 |  8.01   | H.D.Sander: long filenames for Windows95 (WIN_32)
++----------+---------+---------------------------------------------------------
+| 26.02.97 |  7.71   | file_hnd.c: os9: rename() with full path
++----------+---------+---------------------------------------------------------
+| 24.02.97 |  7.70   | config.h: HP_UX: WITH_SYNTAX_HIGHLIGHTING 1
++----------+---------+---------------------------------------------------------
+| 20.02.97 |  7.69   | global.h: MAX_FC_NUM (no of editable files ) is now
+|          |         |           10 (MS-DOS) or 26 (unix, os/9)
++----------+---------+---------------------------------------------------------
+| 15.11.96 |  7.68   | wildname.c: mask directory bit for
+|          |         |             wildcard window (e.g.: Quit Ini *.c)
++----------+---------+---------------------------------------------------------
+| 25.10.96 |  7.67   | disp_hnd.c: display of "\EM" in line 2 suppressed
+|          |         | calcevar.c: SLx: String Length x (0...9, or 2nd letter)
++----------+---------+---------------------------------------------------------
+| 11.09.96 |  7.66   | switches.c: bugfix: 'Q'uit 'I'nit 'Y'es ^C:
+|          |         |             change_flag is not affected
+|          |         | disp_hnd.c: bugfix: ASCII display in
+|          |         |             Hex View / Hex Edit: 0x7f --> '_'
+|          |         | disp_hnd.c: bugfix: ^N with Radix 'A'lpha:
+|          |         |             set change_flag = 1
++----------+---------+---------------------------------------------------------
+| 23.05.96 |  7.65   | calc_var.c, calcevar.c: new variables for 'C'alc:
+|          |         |    linact = actual line no
+|          |         |    lintot = total lines in file
++----------+---------+---------------------------------------------------------
+| 01.02.96 |  7.64   | switches.c, perform.c, commands.c: 'H'ex 'F'ind
++----------+---------+---------------------------------------------------------
+| 23.01.96 |  7.63   | file_hnd.c: write_datafile():
+|          |         |    check return value fclose()
++----------+---------+---------------------------------------------------------
+| 23.01.96 |  7.62   | mbedit.c, help_opt.c, switches.c macro.c:
+|          |         |    printf ("\015\012") instead of printf ("\r\n"),
+|          |         |    modification for new version "OS-9 3.0".
++----------+---------+---------------------------------------------------------
+| 10.12.95 |  7.61   | file_hnd.c, err_mess.c, err_mess.h: FILE_SIZE_CHANGED:
+|          |         |    Error message, if filesize was increased during
+|          |         |    read operation, then continue with the old size.
++----------+---------+---------------------------------------------------------
+| 28.11.95 |  7.60   | kb_input.c: TIMER_TICK (OS_9) is replaced with
+|          |         |    f(CLOCKS_PER_SEC), more accuracy
+|          |         |    and no risc of "divide by zero"
++----------+---------+---------------------------------------------------------
+| 27.11.95 |  7.59   | config.h: TIMER_TICK (OS_9) is now dynamic
+|          |         |           (timer clock changed from 100 Hz to 1 kHz)
+|          |         | macro.c : include macrofile nesting level:
+|          |         |           - display in 'M'acro 'L'ist
+|          |         |           - limitation of include nesting level
++----------+---------+---------------------------------------------------------
+| 25.11.95 |  7.58   | macro.c: 'M'acro 'L'ist:
+|          |         |    list's all loaded macro files (max. last n files)
++----------+---------+---------------------------------------------------------
+| 24.11.95 |  7.57   | wildname.c: Quit Init "*.c vo"
++----------+---------+---------------------------------------------------------
+| 16.11.95 |  7.56   | disp_hnd.c: bugfix WITH_SYNTAX_HIGHLIGHTING:
+|          |         |             comments in lines with overlength
+|          |         | macro.c, mbedit.c: set.syntax_global
+|          |         |             mbedit.mac: SY3
++----------+---------+---------------------------------------------------------
+| 03.11.95 |  7.55   | file_hnd.c: setting of file attributes in os_9
++----------+---------+---------------------------------------------------------
+| 23.10.95 |  7.54   | wildname.c: bugfix
++----------+---------+---------------------------------------------------------
+| 22.10.95 |  7.53   | wildname.c: WILD_MIN_LEN=20, WILD_MAX_LEN=60
++----------+---------+---------------------------------------------------------
+| 20.10.95 |  7.52   | wildname.c: window-size dynamic = f (filename-length)
++----------+---------+---------------------------------------------------------
+| 19.10.95 |  7.51   | mbedit.c: set_window_size(): WITH_WINCH 6
+|          |         |           get no of lines for OS_9
+|          |         |           set with "tmode pag=xx"
++----------+---------+---------------------------------------------------------
+| 16.06.95 |  7.50   | perform.c: bugfix: check_for_autonl():
+|          |         |    (fc->column > (set.margin[2]) + 1)
+|          |         |    'P'aragraph 'F'ill, and
+|          |         |    'S'et 'A'utoinsert 'Y'es o.k. (same column number)
++----------+---------+---------------------------------------------------------
+| 08.06.95 |  7.49   | mbed_sub.c: bugfix: act_index():
+|          |         |    if (perform_test_eol() || perform_test_eol1())
+|          |         |    for correct handling of <lf> only in MS-DOS
++----------+---------+---------------------------------------------------------
+| 02.06.95 |  7.48   | switches.c: bugfix: 'O'ther, ALT 'O'ther:
+|          |         |    check_dirty_cursor() for correct handling of <tab>s
++----------+---------+---------------------------------------------------------
+| 26.04.95 |  7.47   | disp_hnd.c: hex_one_screen(): clear_to_eol()
+|          |         |                               after headline
+|          |         | perform.c: perform_move(): speed up
+|          |         | mbed_sub.c: get_total_lines(): case "index_1 != 0"
++----------+---------+---------------------------------------------------------
+| 29.03.95 |  7.46   | disp_hnd.c: bugfix: display of (colored) keywords with
+|          |         |                     Set Leftcolumn xx
++----------+---------+---------------------------------------------------------
+| 15.03.95 |  7.45   | disp_hnd.c: bugfix: sequence of comment end and
+|          |         |                     comment start without any gap
++----------+---------+---------------------------------------------------------
+| 09.03.95 |  7.44   | mbedit.c: handling in startup phase (macro "INIT")
++----------+---------+---------------------------------------------------------
+| 08.03.95 |  7.43   | mbedit.c: macro "EXIT" is executed before quit,
+|          |         |           if this macro exists.
+|          |         | switches.c: set_window_size() after '!' or '&'
++----------+---------+---------------------------------------------------------
+| 03.03.95 |  7.42   | disp_hnd.c: hex_one_line(): clear_to_eol
++----------+---------+---------------------------------------------------------
+| 27.02.95 |  7.41   | config.h: linux: WITH_USEC_CLOCK 1
+|          |         | kb_input.c: sleep_msec (): CLOCKS_PER_SEC
++----------+---------+---------------------------------------------------------
+| 26.02.95 |  7.40   | kb_input.c, mon_outp.c: set_wrap_on(),_off()
+|          |         | mon_outp.c: HIGH_SPEED for VGA mode
++----------+---------+---------------------------------------------------------
+| 24.02.95 |  7.40   | config.h, kb_input.c-.h, macro.c-.h, wildname.c-.h:
+|          |         |   elimination of some compiler warnings
++----------+---------+---------------------------------------------------------
+| 24.02.95 |  7.39   | perform.c: perform_file_compare: bug fix EOF
++----------+---------+---------------------------------------------------------
+| 23.02.95 |  7.38   | kb_input.h: KEY_F11 --> <esc>
++----------+---------+---------------------------------------------------------
+| 22.02.95 |  7.37   | perform.c: perform_file_compare: bug fix
+|          |         | disp_hnd.c, mon_outp.c: status line 2 'til end of line
++----------+---------+---------------------------------------------------------
+| 20.02.95 |  7.36   | disp_hnd.c: is_keyword() : highlight of directives
+|          |         |             disp_1_line(): c++ style comments
++----------+---------+---------------------------------------------------------
+| 16.02.95 |  7.35   | switches.c, perform.c: file compare (this / other file
+|          |         |          or files in upper / lower window)
++----------+---------+---------------------------------------------------------
+| 14.02.95 |  7.34   | vbios.h: SaveVideoContext() RestoreVideoContext()
+|          |         |          removed (not supported by Spea/V7 Video Bios)
++----------+---------+---------------------------------------------------------
+| 22.01.95 |  7.33   | vbios.c, mbedit.c, switches.c, mon_outp.c:
+|          |         |    ALT_F9 changes number of rows (25, 28, 50)
++----------+---------+---------------------------------------------------------
+| 21.11.94 |  7.32   | kb_input.c: kb_echo_on(),_off(): WRAP_ON/_OFF (SCO-Unix)
+|          |         | kb_input.h: #define WRAP_ON/_OFF <esc> sequences
++----------+---------+---------------------------------------------------------
+| 14.10.94 |  7.32   | disp_hnd.c: bugfix and tuning of output
+|          |         | mon_outp.h: collection of all <esc> sequences 
+|          |         |             as #define constants
++----------+---------+---------------------------------------------------------
+| 10.10.94 |  7.31   | disp_hnd.c: WITH_SYNTAX_HIGHLIGHTING and both
+|          |         |             OUTPUT_OPTIMIZED
++----------+---------+---------------------------------------------------------
+| 06.10.94 |  7.30   | history.c, mon_outp.c: semigrafik for ANSI
++----------+---------+---------------------------------------------------------
+| 05.10.94 |  7.29   | disp_hnd.c: detect keyword at EOF
+|          |         | and some minor modifications
++----------+---------+---------------------------------------------------------
+| 04.10.94 |  7.28   | mon_outp.c, macro.c: VT100/ANSI color <esc> sequences
+|          |         | mbedit.mac: AFNV="[1;37;44m"       \* NORMAL VIDEO   *\
+|          |         |             AFRV="[0;30;47m"       \* REVERS VIDEO   *\
+|          |         |             etc ...
++----------+---------+---------------------------------------------------------
+| 02.10.94 |  7.27   | disp_hnd.c: WITH_SYNTAX_HIGHLIGHTING (keywords)
+|          |         | mbedit.mac: AFKV=1B4D1E;            \* KEYWORD        *\
++----------+---------+---------------------------------------------------------
+| 30.09.94 |  7.26   | disp_hnd.c: WITH_SYNTAX_HIGHLIGHTING (comments)
+|          |         | mbedit.mac: AFCV=1B4D1A;            \* COMMENT        *\
++----------+---------+---------------------------------------------------------
+| 29.09.94 |  7.26   | bugfix: commands.c: comm_find () with wild_cards:
+|          |         |         stop searching at end of text buffer
++----------+---------+---------------------------------------------------------
+| 29.09.94 |  7.25   | wildname.c: check ((de = malloc(...)) == NULL)
++----------+---------+---------------------------------------------------------
+| 28.09.94 |  7.25   | bugfix: commands.c: comm_find ()
+|          |         |         text: "r*.c"
+|          |         |         find: "r*.c" failed with 'Set Wildcards Yes'
++----------+---------+---------------------------------------------------------
+| 28.09.94 |  7.25   | bugfix: HIGH_SPEED_MOVE
++----------+---------+---------------------------------------------------------
+| 27.09.94 |  7.25   | div. type casts (compiler warnings microsoft c 6.0)
++----------+---------+---------------------------------------------------------
+| 27.09.94 |  7.24   | switches.c: command '&' (like '!' without wait)
++----------+---------+---------------------------------------------------------
+| 26.09.94 |  7.23   | HEX_VIEW/EDIT and MOUSE Support
++----------+---------+---------------------------------------------------------
+| 26.09.94 |  7.22   | HEX_VIEW/EDIT and SIGWINCH
++----------+---------+---------------------------------------------------------
+| 26.09.94 |  7.21   | kb_input.c: <esc> [ 7 ~, <esc> [ 8 ~ (for SCO-Unix)
++----------+---------+---------------------------------------------------------
+| 25.09.94 |  7.20   | perform.c: perform_move (): HIGH_SPEED_MOVE
++----------+---------+---------------------------------------------------------
+| 23.09.94 |  7.20   | kb_input.c: IXON/IXOFF disabled, ^S/^Q available
+|          |         |                                  for application
++----------+---------+---------------------------------------------------------
+| 23.09.94 |  7.20   | disp_hnd.c: 'H'ex 'E'dit 
++----------+---------+---------------------------------------------------------
+| 21.09.94 |  7.19   | disp_hnd.c: 'H'ex 'V'iew
++----------+---------+---------------------------------------------------------
+| 18.09.94 |  7.18   | commands.c: long comm_ctrl_k():
+|          |         |   ^K works also on: #if <--> #else <--> #endif
++----------+---------+---------------------------------------------------------
+| 31.08.94 |  7.17   | mbedit.c: set_window_size ():
+|          |         |   take over new_lines + new_cols only, if != 0
++----------+---------+---------------------------------------------------------
+| 21.07.94 |  7.16   | switches.c, errmess.c: 'S' 'O'
+|          |         |   Set file to "viewOnly", or back to "read/write"
++----------+---------+---------------------------------------------------------
+| 21.07.94 |  7.15   | config.h, mbedit.c: WITH_WINCH = 3,
+|          |         |   set_window_size() with ioctl, avoids loss of
+|          |         |   characters for short time interval after startup.
++----------+---------+---------------------------------------------------------
+| 20.07.94 |  7.14   | calc.c: Error in handling "N0=" fixed.         
++----------+---------+---------------------------------------------------------
+| 14.07.94 |  7.13   | config.h: WITH_USEC_CLOCK = f (ACT_OP_SYSTEM).
+|          |         | Somebody spread the rumor, that fclock() doesn't work
+|          |         | properly in linux.
++----------+---------+---------------------------------------------------------
+| 14.07.94 |  7.13   | extended documentation (./doc/readme.doc)
+|          |         |                        (./doc/ibm2asci.*)
++----------+---------+---------------------------------------------------------
+| 09.07.94 |  7.12   | perform.c, err_mess.c: view_unconditionally():
+|          |         | in case of user interaction (answer [Y/N/...]),
+|          |         | display screen in any case (even if display is disabled,
+|          |         | e.g. by macro execution with: 'S'et 'D'isplay 'N'o
++----------+---------+---------------------------------------------------------
+| 08.07.94 |  7.12   | kb_input.c: Input of ^C aborts active macro execution 
++----------+---------+---------------------------------------------------------
+| 08.07.94 |  7.11   | ---
++----------+---------+---------------------------------------------------------
+| 06.07.94 |  7.10   | perform.c, switches.c, macro.c, help_opt.c:
+|          |         | 'S'et 'A'utonl (insert <nl> automatically)
++----------+---------+---------------------------------------------------------
+| 06.07.94 |  7.10   | mb_ctype.c: new function: mb_isspace()
++----------+---------+---------------------------------------------------------
+| 04.07.94 |  7.09   | switches.c, macro.c, help_opt.c:
+|          |         | 'S'et 'E'_delimiter (for 'F'ind 'K'_token Strings)
++----------+---------+---------------------------------------------------------
+| 04.07.94 |  7.09   | bugfix: <tab>, delete with ^X (to begin of line)
++----------+---------+---------------------------------------------------------
+| 29.06.94 |  7.08   | bugfix: '~' --> user home directory
++----------+---------+---------------------------------------------------------
+| 29.06.94 |  7.07   | global.h, disp_hnd.c, switches.c, macro.c, help_opt.c:
+|          |         | Replace '~' with user home directory (Set Option ~)
++----------+---------+---------------------------------------------------------
+| 23.06.94 |  7.06   | history.c, config.h: only one file "mbedit.sta" in the
+|          |         | user home directory instead of each current directory
++----------+---------+---------------------------------------------------------
+| 21.06.94 |  7.05   | macro.c: new entry in key_tab []: 0x7f
++----------+---------+---------------------------------------------------------
+| 20.06.94 |  7.04   | modified Copyright message
++----------+---------+---------------------------------------------------------
+| 15.06.94 |  7.03   | kb_input.c: kb_echo_on (): TCSETAF --> TCSETA
+|          |         |             (don't flush stdin wenn leaving mbedit)
++----------+---------+---------------------------------------------------------
+| 14.06.94 |  7.02   | perform.c: bugfix: handling of lines with overlength
+|          |         |            (functions ^A, ^X, ^Z)
+|          |         | err_mess.c: *** line too long - truncated ***
++----------+---------+---------------------------------------------------------
+| 09.06.94 |  7.01   | mbedit.c: handling of SIGWINCH for ultrix (avoid hangup)
++----------+---------+---------------------------------------------------------
+| 08.06.94 |  7.00   | mbedit.c, switches.c: macro.c:                
+|          |         | perform_view only once after read_macro_file
+|          |         | (avoid flickering of screen after startup of mbedit)
++----------+---------+---------------------------------------------------------
+| 07.06.94 |  6.98   | mbedit.c: SIGWINCH with getenv instead of tput
+|          |         | disp_hnd.c: show status line 1 for each page of showfind
+|          |         | switches.c: new command 'Z'ulu; 'B'eep, 'P'ause
++----------+---------+---------------------------------------------------------
+| 06.06.94 |  6.97   | mbedit.c: start_of_mainloop: view_or_update ()
++----------+---------+---------------------------------------------------------
+| 06.06.94 |  6.96   | mbedit.c: end of program: SIGALRM + SIGWINCH --> SIG_DFL
++----------+---------+---------------------------------------------------------
+| 05.06.94 |  6.95   | macro.c:  redisplay window, only if size changed
++----------+---------+---------------------------------------------------------
+| 04.06.94 |  6.95   | mbedit.c: redisplay window, only if size changed
++----------+---------+---------------------------------------------------------
+| 03.06.94 |  6.94   | mbedit.c: automatic window resize (unix/X11)
++----------+---------+---------------------------------------------------------
+| 02.06.94 |  6.93   | macro.c: "INCLUDE macrofile" (exactly one <space> !)
++----------+---------+---------------------------------------------------------
+| 26.05.94 |  6.92   | macro.c: 'M'acro 'L'ist is independent from window size
++----------+---------+---------------------------------------------------------
+| 25.05.94 |  6.91   | function 'W'indow: upper window may be (1+2) lines small
+|          |         |                   (enable split screen with short files)
++----------+---------+---------------------------------------------------------
+| 25.05.94 |  6.90   | bugfix: perform_view after macro with splitted screen
++----------+---------+---------------------------------------------------------
+| 24.05.94 |  6.89   | last_again with "mbedit -"
++----------+---------+---------------------------------------------------------
+| 21.05.94 |  6.88   | history.c: write_status_file, ()read_status_file ()
+|          |         | mbedit.c : option "#" or "last_again"
+|          |         |            invocation with "mbedit #"
+|          |         |            restores the old file configuration
++----------+---------+---------------------------------------------------------
+| 20.05.94 |  6.87   | kb_input.c, disp_hnd.c: display action_flag ('?' or '!')
+|          |         |                         in status line 1
++----------+---------+---------------------------------------------------------
+| 20.05.94 |  6.87   | config.h, macro.c: EOL --> EOLA
+|          |         | kb_input.c: sleep_msec (UNIX): if msec >= 1000: old mode
++----------+---------+---------------------------------------------------------
+| 18.05.94 |  6.86   | config.h: extended version strings
+|          |         | switches.c: keep status line 2 after end of macro
+|          |         |             (e.g. result of 'C'alc)
++----------+---------+---------------------------------------------------------
+| 18.05.94 |  6.85   | kb_input.c: sleep_msec(): bugfix modulo transition clock
++----------+---------+---------------------------------------------------------
+| 17.05.94 |  6.84   | kb_input.c: sleep_msec(): prevent endless loop 
++----------+---------+---------------------------------------------------------
+| 17.05.94 |  6.83   | history.c, disp_hnd.c:                        
+|          |         | VERSION_SCO, different handling of KEY_RUBOUT, HDS
+|          |         | macro.c: removed BIG_BUFFER for MS-DOS, HDS
++----------+---------+---------------------------------------------------------
+| 17.05.94 |  6.82   | config2.hh, config.h, switches.c, disp_hnd.c:
+|          |         | differentiation between unix variants
++----------+---------+---------------------------------------------------------
+| 16.05.94 |  6.81   | config2.hh, kb_input.h, switches.c, disp_hnd.c:
+|          |         | VERSION_SCO, different handling of KEY_RUBOUT
++----------+---------+---------------------------------------------------------
+| 12.05.94 |  6.80   | macro.c: tuning of read_macro_file (higher speed),
+|          |         | successive approximation in string_2_key + key_2_string
+|          |         | with presorted tables
++----------+---------+---------------------------------------------------------
+| 11.05.94 |  6.79   | kb_input.c: increase of esc_waittime 
+|          |         |             in case of <esc> sequence error
+|          |         | macro.c   : bugfix reverse search for macro file
++----------+---------+---------------------------------------------------------
+| 10.05.94 |  6.78   | microsft.h: #define ltoa MS_ltoa (special for hp-ux)
+|          |         | disp_hnd.c: #include "microsft.h"
+|          |         | kb_input.c: HP7_XTERM (special for hp-ux)
+|          |         | macro.c   : reverse search for macro file
++----------+---------+---------------------------------------------------------
+| 09.05.94 |  6.77   | mbedit.mac: AE=200; variable <esc> wait time, LSB=msec,
+|          |         |             only for unix + os/9
++----------+---------+---------------------------------------------------------
+| 09.05.94 |  6.76   | switches.c: 'P'aragraph: LOCK_WHEN_VIEW_ONLY
+|          |         | kb_input.c: more intellingent <esc> handling for unix
+|          |         |             (waittime < 1 sec), WITH_USEC_CLOCK
++----------+---------+---------------------------------------------------------
+| 06.05.94 |  6.75   | microsft.c: ltoa: special case value = 0, with radix 2
++----------+---------+---------------------------------------------------------
+| 18.04.94 |  6.74   | macro.c: BIG_BUFFER for MS-DOS
++----------+---------+---------------------------------------------------------
+| 14.03.94 |  6.74   | switches.c: 'H'ex 'S'tdout
++----------+---------+---------------------------------------------------------
+| 11.03.94 |  6.73   | commands.c: improvement of 'F'ind with wildcards
++----------+---------+---------------------------------------------------------
+| 22.02.94 |  6.72   | ^C behaviour in 'Q'uit command (silent abort)
++----------+---------+---------------------------------------------------------
+| 19.02.94 |  6.71   | status line 2 has now full length (1st + last char),
+|          |         | version text with 2 digits after decimal point
++----------+---------+---------------------------------------------------------
+| 17.02.94 |  6.7    | macro.c: store macro filename only, if not temp.
++----------+---------+---------------------------------------------------------
+| 16.02.94 |  6.6    | switches.c: bugfix: EOLN + 'V'iew: check_dirty_cursor ()
++----------+---------+---------------------------------------------------------
+| 09.02.94 |  6.5    | switches.c: bugfix: ^Z: check_dirty_cursor ()
+|          |         | history.c : get_home_dir (): limit_at_1st_blank ()
+|          |         |             ignore trailing blanks in string (:HOME:)
++----------+---------+---------------------------------------------------------
+| 07.01.94 |  6.4    | mbedit.mac: AS = 1: automatic shift of screen with cursor
++----------+---------+---------------------------------------------------------
+| 07.01.94 |  6.4    | Function key 'Insert' toggles insert/exchange mode
+|          |         | (insert is now an internal function, instead of a macro)
++----------+---------+---------------------------------------------------------
+| 02.01.94 |  6.4    | bugfix: calc variable UPCH (didn't work before),
++----------+---------+---------------------------------------------------------
+| 21.12.93 |  6.3    | kb_input.c: support of ansi terminals
++----------+---------+---------------------------------------------------------
+| 20.12.93 |  6.2    | kb_input.c: extended escape sequence handling
+|          |         | (to avoid errors on slow network connections)
++----------+---------+---------------------------------------------------------
+| 19.12.93 |  6.2    | bugfix: 'P'aragraph didn't work properly, if cursor
+|          |         |          not at begin of line
++----------+---------+---------------------------------------------------------
+| 15.12.93 |  6.1    | 'S','M': with komma (for Aedit compatibility)
++----------+---------+---------------------------------------------------------
+| 15.12.93 |  6.1    | Mouse Support for MS-DOS
++----------+---------+---------------------------------------------------------
+| 08.12.93 |  6.0    | config.h, kb_input.c: ESC_WAITTIME for os/9 enlarged
++----------+---------+---------------------------------------------------------
+| 07.12.93 |  6.0    | bugfix: ctrlchandler (int sig)
+|          |         | bugfix: define const /* nix */: config.h --> standard.h
++----------+---------+---------------------------------------------------------
+| 06.12.93 |  6.0    | bugfix: error write file --> error message
++----------+---------+---------------------------------------------------------
+| 01.12.93 |  5.9    | vt-100: switch grafik-mode OFF at programm start
++----------+---------+---------------------------------------------------------
+| 29.11.93 |  5.8    | New Port to Sun os 4.1
+|          |         | semi-grafik is now switchable ON/OFF (by Macro File)
+|          |         | new file: config2.hh
++----------+---------+---------------------------------------------------------
+| 26.11.93 |  5.7    | bugfix: segmentation violation, 
+|          |         | mbedit.c: memcpy ==> strncpy (fc-filename, argv[ii],...)
++----------+---------+---------------------------------------------------------
+| 25.11.93 |  5.6    | disp_hnd.c: display of '!' at end of line
+|          |         |             shifted by 1 column          
++----------+---------+---------------------------------------------------------
+| 11.11.93 |  5.5    | wildname.c: high speed version for MS-DOS
++----------+---------+---------------------------------------------------------
+| 10.11.93 |  5.4    | wildname.c, directry.c: filenames with wildcards
+|          |         |                         e.g.: 'Q'uit 'I'nit "*.c"
++----------+---------+---------------------------------------------------------
+| 05.11.93 |  5.3    | perform.c: bugfix: single <lf> in one line
++----------+---------+---------------------------------------------------------
+| 20.10.93 |  5.2    | bugfix: Cursor Position after 'P'aragraph 'J'ustify
++----------+---------+---------------------------------------------------------
+| 19.10.93 |  5.1    | bugfix: handling of single <lf>s
++----------+---------+---------------------------------------------------------
+| 11.10.93 |  5.0    | bugfix: handling of cursor position inside <cr><lf>
++----------+---------+---------------------------------------------------------
+| 10.10.93 |  4.9    | new history id's (ID_FILE, ID_MARG)
+|          |         | ATTENTION ! This modification causes an error message
+|          |         | "invalid history entry" (for the first invocation only).
++----------+---------+---------------------------------------------------------
+| 08.10.93 |  4.9    | Paragraph Justify
++----------+---------+---------------------------------------------------------
+| 07.10.93 |  4.9    | Paragraph Fill
++----------+---------+---------------------------------------------------------
+| 05.10.93 |  4.8    | Window / Kill_wnd
++----------+---------+---------------------------------------------------------
+| 16.09.93 |   "     | config.h: perform_test_eol as macro (for speed)
++----------+---------+---------------------------------------------------------
+| 15.07.93 |   "     | mbedit.c: command line help "mbedit -? -h -help"
++----------+---------+---------------------------------------------------------
+| 14.09.93 |  4.7    | disp_hnd.c: get_line_2_repeat: plausibility check
+|          |         | disp_hnd.c: disp_status_line_1: fc->line_anz+1
+|          |         | mbedit.c: continue macro execution after failure,
+|          |         |           if repeat_max == INFINITE
+|          |         | mbedit.c: read given macro file or default (or none),
+|          |         |           but not both ! 
+|          |         | kb_input.c: get_1_key(), special case <cr><lf> (bugfix)
++----------+---------+---------------------------------------------------------
+| 11.09.93 |   "     | demo version, time limited
++----------+---------+---------------------------------------------------------
+| 10.09.93 |  4.6    | config.h, history.c: the macro file and the temp file
+|          |         | as well are both located now on the user home directory
++----------+---------+---------------------------------------------------------
+| 07.09.93 |   "     | commands.c: Search with Wildcards '*'
++----------+---------+---------------------------------------------------------
+| 06.09.93 |  4.5    | commands.c: Search with Wildcards '?'
++----------+---------+---------------------------------------------------------
+| 03.09.93 |  4.4    | perform.c: bugfix: indent with old blank old line 
+|          |         | and <tab>s
++----------+---------+---------------------------------------------------------
+| 02.09.93 |   "     | file_hnd.c, switches.c, blocks.c: delete temp. file
+|          |         | after use.
++----------+---------+---------------------------------------------------------
+| 01.09.93 |  4.3    | mbed_sub.c, perform.c: bugfix (^z at end of file)
++----------+---------+---------------------------------------------------------
+| 30.08.93 |  4.2    | file_hnd.c: handle file attributes
++----------+---------+---------------------------------------------------------
+| 27.08.93 |  4.1    | disp_hnd.c: bugfix (display of EOF char '|')
+|          |         | file_hnd.c: bugfix (suppress bak filename ".bak")
++----------+---------+---------------------------------------------------------
+| 25.08.93 |  4.0    | disp_hnd.c: status line 2 without "..." in text
+|          |         | history.c : bugfix (entries with overlength)
++----------+---------+---------------------------------------------------------
+| 24.08.93 |   "     | macro.c: bugfix (macro save: entering <cr>)
++----------+---------+---------------------------------------------------------
+| 19.08.93 |   "     | macro.c: bugfix (macros with overlength)
++----------+---------+---------------------------------------------------------
+|    "     |   "     | switches.c: 'Q'uit 'A'bort is now Aedit compatible
++----------+---------+---------------------------------------------------------
+| 15.08.93 |   "     | kb_input.c: Request, if a key is pressed, via bios-call,
+|          |         | else trouble with "Strike any Key" (xtree) and response
+|          |         | with function key (e.g. "Cursor Up")
++----------+---------+---------------------------------------------------------
+| 12.08.93 |  4.A/B  | switches.c: 'M'acro 'D'elete
++----------+---------+---------------------------------------------------------
+| 08.08.93 |  4.A/B  | config.h, perform.c, mbed_sub.c, ... : EOLN
+|          |         | (edit binary)
++----------+---------+---------------------------------------------------------
+| 28.07.93 |  3.6    | <ALT F1> as macro again
++----------+---------+---------------------------------------------------------
+|    "     |   "     | macro.c, err_mess.c: macro errors with display line no
++----------+---------+---------------------------------------------------------
+|    "     |   "     | switches, macro.c, err_mess.c, mon_outp.c, global.h,
+|          |         | mbedit.mac: set.warning = 0-2 (before 'Y'/'N')
++----------+---------+---------------------------------------------------------
+|    "     |   "     | mbedit.c, switches.c: ALT_O (Other backward)
++----------+---------+---------------------------------------------------------
+| 27.07.93 |  3.5    | disp_hnd.c: status_line_1: file A=filename (before ':')
++----------+---------+---------------------------------------------------------
+| 23.06.93 |  3.4    | calc.c: fixed divide by 0 in modulo
++----------+---------+---------------------------------------------------------
+|    "     |   "     | mbedit.mac: macro "INIT" is executed after startup
++----------+---------+---------------------------------------------------------
+|    "     |   "     | mon_outp.c, macro.c: AF1V: attribute status line 1
++----------+---------+---------------------------------------------------------
+|    "     |   "     | global.h, switches.c, macro.c, err_mess.c, help_opt.c:
+|          |         | 'S'et 'W'arning (Beep ON/OFF)
++----------+---------+---------------------------------------------------------
+| 18.06.93 |  3.4    | switches.c: 'Q'uit 'A'bort: ^C oder <esc>: Abort
++----------+---------+---------------------------------------------------------
+|    "     |   "     | switches.c: 'M'acro 'G'et: read entire text buffer
++----------+---------+---------------------------------------------------------
+| 17.06.93 |  3.3    | mon_outp.c, macro.c: read fore- and background-color
+|          |         |                      from macro-file
++----------+---------+---------------------------------------------------------
+| 10.06.93 |  3.2    | history.h: GRAF_ON, _OFF also for non vt 100
++----------+---------+---------------------------------------------------------
+|    "     |   "     | config.h: getenv --> (const char *) getenv
+|          |         |           (modifications for SGI "Crimson")
++----------+---------+---------------------------------------------------------
+| 04.06.93 |  3.1    | switches.c: ^F: not more than 32 (>= 32 --> > 32)
++----------+---------+---------------------------------------------------------
+| 06.05.93 |  3.0    | switches.c: Buffer: Other locked
++----------+---------+---------------------------------------------------------
+| 26.04.93 |  2.9    | blocks.c: Generation of temp. filename
++----------+---------+---------------------------------------------------------
+|     1992 |  1.0    | Start of Project
++----------+---------+---------------------------------------------------------
+

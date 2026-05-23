@@ -1,0 +1,305 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C9"> <h3> 9. Macros </h3></a>
+
+<pre>
+
+<a name="C9.1"> <h3> 9.1. General </h3></a>
+
+Macros are sequences of Keyboard commands, which are stored under a name.
+They can be activated by calling this name. With this feature, it is easy
+to execute frequently used operating sequences.
+
+Macros may be nested in mbedit, the max. nesting level is limited to 10.
+
+Very often needed macros can be stored in a special macro file "MBEDIT.MAC"
+(see also chapter "Macro File").
+
+The memory space for each single macro is limited to 4096 bytes.
+
+
+<a name="C9.2"> <h3> 9.2. Macro Handling </h3></a>
+
+- 'M'acro Commands
+
+   - 'C'reate     Creation of a macro:
+      Syntax: 'M'acro 'C'reate &#60;macro name&#62; &#60;cr&#62;
+              ... all following keystrokes are stored in the macro ...
+              'M' in command mode finishes "Macro Create".
+
+   - 'D'elete     Delete a macro:
+      Syntax: 'M'acro 'D'elete &#60;macro name&#62; &#60;cr&#62;
+
+   - 'G'et        Read macro file:
+      Syntax: 'M'acro 'G'et &#60;filename&#62; &#60;cr&#62;
+              The given file will be read and interpreted
+              (see also chapter "Macro File").
+
+              A single &#60;cr&#62; instead of a macro filename, will interprete the
+              actual text buffer as macro file. (For that, a help file named
+              "MBEDIT.TMP" is created on the temp. directory.) With this 
+              option it is easy to edit and debug macros.
+
+   - 'I'nsert     Insert macro commands into the text:
+      Syntax: 'M'acro 'I'nsert
+              ... all following keystrokes will be inserted in the macro 
+              notation into the current text ...
+              ^C finishes "Macro Insert".
+
+   - 'L'ist       Show a list of all macros:
+      Syntax: 'M'acro 'L'ist
+              Display 
+                 - the actual macro filename
+                 - an enumeration of all macros with their names and (in
+                   square brackets) the length in bytes
+                 - the total number and length of all macros
+
+   - 'S'ave       Store a macro in the text buffer:
+      Syntax: 'M'acro 'S'ave &#60;macro name&#62; &#60;cr&#62;
+               The given macro will be inserted in the macro notation into
+               the current text. From here it can be stored in a file with
+               'B'lock 'P'ut or with the
+               'Q'uit 'W'rite Command respectively.
+
+- 'E'xecute Macro Command
+   Execution of a previously defined macro (generated with 'C'reate, or
+   read from a macro file).
+   Syntax: 'E'xecute &#60;macro name&#62; &#60;cr&#62; 
+
+
+- Macro with single character name
+      Macros with a single character name may be executed by entering this
+      one keystroke. This can be a special character, a function key or a
+      letter, which is not reserved for any other command. Combined key codes
+      (e.g.: Control- or Alt-combinations) are allowed as well.
+
+   Example: 
+      Input  :
+         MC*&#60;cr&#62;                         Create macro named "*"
+         R&#60;cr&#62;&#60;esc&#62;&#60;cr&#62;   &#60;esc&#62;          Replace "&#60;cr&#62;" with "&#60;cr&#62;   "
+                                         i.e.: indent line by 3 &#60;space&#62;s
+         M                               finish "Macro Create"
+         *                               call macro "*" once
+         A A A                           'A'gain 3 times
+         7*                              execute macro "*" 7 times
+         /*                              execute macro "*" as often as possible
+         MS*                             save macro "*" into the text
+      Display:
+         M*\BRr\NL\BR\NL   \BR\MM;
+         |||  |               |
+         |||  |               +-- end of macro
+         |||  +-- macro Instructions
+         ||+-- end of macro name
+         |+-- macro name (max. 40 characters)
+         +-- beginn of macro definition
+
+
+<a name="C9.3"> <h3> 9.3. Macro Control Codes </h3></a>
+
+All entered keystrokes (also special keys like cursor keys, Control- and
+Alt-combinations) will be stored internally in a special macro notation as
+ASCII character. Translation with the following table:
+
+                         /* function keys */
+   &#60;F1&#62;             \090    
+            to
+   &#60;F10&#62;            \099 
+
+                         /* SHIFT function keys */
+   Shift &#60;F1&#62;       \0A0
+            to 
+   Shift &#60;F10&#62;      \0A9 
+
+                         /* CTRL function keys */
+   Ctrl &#60;F1&#62;        \0B0
+            to 
+   Ctrl &#60;F10&#62;       \0B9 
+
+                         /* ALT  function keys */
+   &#60;ALT F1&#62;         \0C0
+            to 
+   &#60;Alt F10&#62;        \0C9 
+
+                         /* cursor keys */
+   &#60;UP&#62;             \CU  
+   &#60;DOWN&#62;           \CD  
+   &#60;RIGHT&#62;          \CR  
+   &#60;LEFT&#62;           \CL  
+                         /* special keys */
+   &#60;HOME&#62;           \CH  
+   &#60;INS&#62;            \083 
+   &#60;DEL&#62;            \XF  
+   &#60;END&#62;            \081 
+   &#60;PGUP&#62;           \080 
+   &#60;PGDN&#62;           \082 
+                         /* control special keys */
+   Ctrl &#60;PGUP&#62;      \089 
+   Ctrl &#60;HOME&#62;      \088 
+   Ctrl &#60;PGDN&#62;      \087 
+   Ctrl &#60;END&#62;       \086 
+   Ctrl &#60;RIGHT&#62;     \085 
+   Ctrl &#60;LEFT&#62;      \084 
+                         /* control keys */
+   --               --     kein ^@
+   Ctrl A           \XA  
+   Ctrl B           \002 
+   --               --     kein ^C
+   Ctrl D           \004 
+   Ctrl E           \XE  
+   Ctrl F           \XF  
+   Ctrl G           \007   &#60;bell&#62;
+   Ctrl H           \RB    &#60;backspace&#62;
+   Ctrl I           \TB    &#60;tab&#62;
+   Ctrl J           \0A    &#60;lf&#62;
+   Ctrl K           \00B 
+   Ctrl L           \00C 
+   Ctrl M           \NL    &#60;cr&#62;
+   Ctrl N           \XN  
+   Ctrl O           \00F 
+   Ctrl P           \010 
+   Ctrl Q           \011 
+   Ctrl R           \XH  
+   Ctrl S           \XS  
+   Ctrl T           \CR  
+   Ctrl U           \XU  
+   Ctrl V           \016 
+   Ctrl W           \017 
+   Ctrl X           \XX  
+   Ctrl Y           \019 
+   Ctrl Z           \XZ  
+   Ctrl [           \BR    &#60;esc&#62;
+   Ctrl \           \CD  
+   Ctrl ]           \CH  
+   Ctrl ^           \CU  
+   Ctrl _           \CL  
+
+   \                \\     &#60;backslash&#62;
+
+                         /* CTRL  diverse keys */
+   Ctrl 2           \0D@  
+
+                         /* ALT diverse keys */
+   Alt 0            \0D0
+            to 
+   Alt 9            \0D9  
+   Alt -            \0DM  
+   Alt =            \0DE  
+
+                         /* ALT alpha keys */
+   Alt A            \0EA 
+            to 
+   Alt Z            \0EZ  
+
+
+<a name="C9.4"> <h3> 9.4. Macro File </h3></a>
+
+The macro file "MBEDIT.MAC" contains all settings and macros, which are
+required frequently for editing.
+
+   - the user macros,
+   - the default settings (to be manipulated with the 'S'et Command) and
+   - some settings like screen dimensions and colors.
+
+
+Invoking the editor, this file will be loaded by default. Thus, all contained
+macros and settings are available automatically.
+
+   The following entries are allowed:
+
+     - Comments ( \* ... *\ , not /* ... */ )
+
+     - Include Files (syntax: "INCLUDE macrofilename", exactly one &#60;space&#62; !)
+
+     - Macros (indicated by 'M' in the 1st column)
+
+     - the implemented set options ('S' in the 1st column)
+       Example:
+       SBN  \* Set Bak_files NO *\
+
+     - the color attributes for VGA or VT100/ANSI (see Appendix also !)
+       AFNV=1B4DF0; or AFNV=="?[0;30;48m"       \* Normal  Video *\
+       AFRV=1B4D0F; or AFRV=="?[7;30;48m"       \* Reverse Video *\
+       AF1V=1B4D30; or AF1V=="?[0;30;46m"       \* Status Line 1 *\
+       AF2V=1B4D4F; or AF2V=="?[0;38;41m"       \* Status Line 2 *\
+       AFCV=1B4DF2; or AFCV=="?[0;32;48m"       \* Comments      *\
+       AFKV=1B4DF1; or AFKV=="?[0;34;48m"       \* Keywords      *\
+       AFSV=1B4DF4; or AFKV=="?[0;31;48m"       \* Strings       *\
+          In case of VGA, only the last byte is regarded, e.g.: Normal Video 1f:
+          background color = 1 (blue) and foreground color = f (white).
+          For VT100/ANSI, the complete &#60;esc&#62; sequence is given.
+          '?' means &#60;esc&#62; or 0x1b.
+
+     - the screen dimensions (attention ! no &#60;space&#62; before '='),
+          and other parameters
+       AV= 25     \* number of rows    *\
+       AC= 80     \* number of columns *\
+       AG=  1     \* semi grafik: 0=AUS, 1=VGA/VT100, 2=ANSI *\
+       AM=  1     \* mouse driver ON *\
+       AS=  1     \* Automatic Shift of Screen with Cursor *\
+       AE=200     \* wait time for &#60;esc&#62; sequences in msec *\
+
+       The number of rows should be &#60;= screen height, larger numbers
+       are senseless.
+ 
+       The number of columns in vt100 mode may be &#60;= actual screen width,
+       in vga mode it must correspond to the correct value, otherwise we
+       get garbage on the display.
+
+       The instructions AV and AC are used to tell the editor the real
+       screen dimensions, and not to pretend something wrong.
+
+With mbedit a macro file with some useful macros and settings is delivered.
+Each user is free to modify this file for his own requirements.
+
+
+<a name="C9.5"> <h3> 9.5. Macro Types </h3></a>
+
+mbedit distinguishes between two different types of macros:
+
+   - modeless macros
+      indicated by the end sequence "\MM;"
+      This macro can be executed from every mode (Command, Insert or
+      Exchange Mode). After finish of the macros, the editor is again in 
+      the same mode as before.
+
+   - non-modeless macros
+      indicated by the end sequence "\EM;"
+      If the mode is altered during the macro execution, the new mode is
+      preserved after finishing.
+
+
+   Macros generated with 'M'acro 'C'reate are always of type modeless, first 
+   of all. As required, the type may be modified by editing the macro file.
+
+
+<a name="C9.6"> <h3> 9.6. The Macro "INIT" </h3></a>
+
+If there exists a macro named "INIT" in the file, it will be executed
+automatically after entering mbedit. From here it can start other macros
+recursively. With this special macro, it is possible to activate particular
+commands after starting the editor, without the need to strike any key.
+
+
+<a name="C9.7"> <h3> 9.7. The Macro "EXIT" </h3></a>
+
+Analogous, if there exists a macro named "EXIT" in the file, it will be
+executed prior to the quit of mbedit automatically. From here it can start
+other macros recursively. With this special macro, it is possible to activate
+particular commands before leaving the editor, without the need to strike any
+key.
+
+</pre>
+
+</body>
+</html>
+

@@ -1,0 +1,70 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C4"> <h3> 4. Invocation Command </h3></a>
+
+<pre>
+
+- mbedit is invoced with the following syntax:
+       
+   mbedit [filenames] [options]
+
+    - The sequence of [filenames] and [options] is obligatory.
+
+    - [filenames]: [&#60;filename 1&#62;] [&#60;filename 2&#62;] ... [&#60;filename n&#62;]
+
+      mbedit is able to edit a number of several files simultaneously.
+      The upper limit is established to 26 at the moment.
+
+      The number of editable files is normally 2, but can be modified with
+      a set option (1 to 26). If the invocation command contains n filenames,
+      the number of files will be set to n automatically.
+
+      The editor can also be invoced without giving a filename at all,
+      e.g. for use of the online calculator.
+
+    - [options]  : [- | last_again] [vo | viewonly] [batch]
+                   [nomacro] [macro(&#60;macrofile&#62;)]
+
+       - - | last_again: The same file constellation as from the last edit
+                         session will be invoked. Even the cursor will be at
+                         the same position.
+
+       - vo | viewonly:  The file can only be read, but not modified. With 
+                         this option you can protect the file against
+                         modifications by mistake.
+
+       - batch:          The commands for mbedit can be read from a datafile
+                         by application of an input redirection. In this case
+                         it might be helpful, to suppress the display with the
+                         option "batch". The commands are executed a little
+                         bit faster then.
+
+       - nomacro:        mbedit normally searches for the default macro file 
+                         "MBEDIT.MAC". With this option, the reading of the 
+                         macro file may be suppressed (see also chapters 
+                         "Macros" and "Macro File").
+
+       - macro(&#60;macrofile&#62;):  With this command, you can advise mbedit to read
+                         another macro file instead of "MBEDIT.MAC".
+                         In this option, &#60;space&#62;s before and in between the 
+                         brackets are forbidden.
+
+
+- Invocation of mbedit with one of the options "-?", "-h" or "-help" will
+  cause a brief help display about the invocation syntax.
+
+</pre>
+
+</body>
+</html>
+

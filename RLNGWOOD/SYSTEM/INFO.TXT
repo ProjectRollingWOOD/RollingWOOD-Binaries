@@ -1,0 +1,372 @@
+Bloček - the world only DOS editor with Unicode support!
+====================================================================================
+
+1) THE FOREWORD
+Bloček is a text editor for DOS with several unique features. Unlike most DOS editors, it works in graphic mode which brings many advantages. First of all, it is not limited to 256 characters of ASCII set like editors in text mode.
+Bloček can work with Unicode files and use 65,536 characters of the Basic Multilingual Plane which is sufficient to nearly all present languages.
+Besides that it still keeps the ability to work in the non-Unicode mode using the legacy DOS fonts from data files or using the hardware font the VGA graphic card efectively emulating the traditional text mode editors.
+Bloček is also a image viewer which displays BMP, PCX, PNG, JPG and WMF vector files. In JPG files can show the EXIF tags and allows to copy the stored information to text window.
+Bloček can open, display and edit many files simultaneously and can process very big files with very long lines. It uses mainly proportional fonts, but monospaced fonts are also available.
+Other interesting features are advanced word wrapping in the text files, the ability to change interface language (at the moment, Czech, English, French, German, Russian and Turkish versions are available) and more.
+The home site for Bloček is:
+   http://www.laaca.borec.cz/blocek
+For questions, bug reports and ideas use my e-mail address:
+   Laaca@seznam.cz
+You can also contact me at the DOS ain’t dead forum at
+   http://www.bttr-software.de/forum/board.php
+
+
+2) FONTS AND KEYBOARD
+Hence Blocek is the DOS editor, it tries to cooperate with DOS system settings and environment as much as possible.
+By default (which can be changed), it loads the current DOS character set and uses the DOS keyboard driver and some tricks on using the DOS keyboard driver after changing to Unicode mode. However, except the default DOS keyboard driver, Blocek can use its
+ own keyboard drivers. You can switch them anytime by clicking the language selector in the upper right corner of the screen (or pressing Alt+LShift).
+For example, you have DOS set to Central European code page with the DOS keyboard driver set to Polish, but you need to write Russian text. In Blocek, you simply set the keyboard language to Russian and either switch the font to non-Unicode Cyrillic font
+or you convert the document to Unicode and you have all the Unicode characters available in the Basic Multilingual Plane.
+The default fonts for Unicode and non-Unicode modes can be changed by editing the configuration file BLOCEK.CFG
+For Unicode mode you can use the bundled fonts with extension UFN (located in the FONTY subdirectory). The default one is the file UNISMALL.UFN which is quite complete, but you can use other UFN fonts which currently contain much less characters.
+For non-Unicode use the fonts with extensions CH or FN defining the codepage dependent charsets with 256 glyphs. Or you can use the current loaded VGA fonts used by DOS.
+
+
+3) LIMITATIONS OF THE UNICODE SUPPORT
+Bloček only supports the so-called Basic Multilingual Plane (BMP) from the Unicode standard which covers virtually all present languages, except some less frequent East Asian glyphs. The emoji pictures are currently not supported.
+The combining diacritics are also not supported but it's not a big problem as the Unicode files usually use embedded diacritics. The only exception where it's missing are the emphasised Cyrillic chars (but they are used very rarely anyway)
+All relevant standards for Unicode coding are supported: UTF-8, UTF-16 LE and UTF-16 BE.
+The HTML Unicode representation is also supported, e.g. &#269; for „c with caron“
+
+
+4) BLOCK OPERATIONS AND CLIPBOARDS
+The block operations were reworked in the version 1.7. First of all, the text blocks can be selected not only in the edited text, but also in the single line input boxes or from most of the texts somewhere in GUI like in information windows.
+The block can be selected in three ways
+1)   By keyboard functions. For the keyboard shortcut, look below
+2)   By dragging the mouse with pressed left button
+3)   Go the some place of the text and press Shift+Left mouse button (LMB). The go to other place and again press the Shift+LMB. The space between these two locations will be selected as a block. (This mechanism only works in the edited text)
+
+What you can do with selected blocks:
+-    Delete them (CTRL-Del)
+-    Use them as a scope for many search or conversion operations
+-    Copy to clipboard and eventually paste somewhere
+Most editors only use one clipboard. Bloček has seven independent clipboards. To copy to clipboard, press Ctrl+number 1-7 (it was inspired by Command & Conquer game) and the block will be copied to clipboard 1-7.
+The upper line shows which clipboards are used in the menu. With Alt+number 1-9 you can paste defined clipboard in cursor position.
+Or you can also click on clipboard indicators in the menu. However, this variant will only work on editing text – not from the information windows.
+
+
+5) IMAGE VIEWER
+Bloček is not only the text editor but also a picture viewer. It is possible to open several text editor and picture windows simultaneously and fluently switch among them. However, there's a limitation that Bloček runs in 16-bit colors, but most images
+in these days use 24-bit colors. So the color quality is reduced a little bit in the viewer. Also note that Bloček can only display the images but not modify them.
+Which image formats Bloček can load:
+BMP, PCX, GIF, PNG
+JPG - even with EXIF tags. Bloček is able to show EXIF tags and copy the information to clipboard and edited text (I'm not aware of any other DOS program which knows the EXIF information)
+WMF - still used but a little bit outdated vector format
+
+
+6) CONFIGURATION
+Bloček loads its configuration from two files: DEFAULT.CFG and BLOCEK.CFG
+DEFAULT.CFG is a "factory setting" and shouldn't be changed. BLOCEK.CFG is user setting which has higher priority than the default one. In other words, if a variable is found in both files, the variant from BLOCEK.CFG will be used.
+Only DEFAULT.CFG is included in the distribution archive, so getting a new version won't change your favourite setting. If Bloček is installed for the first time and BLOCEK.CFG is not present, it will be created from DEFAULT.CFG
+If in future I add some new variables to DEFAULT.CFG, Bloček will detect it and copy this setting into BLOCEK.CFG.
+
+
+7) LOCALIZATION AND EXTENSIBILITY
+All texts in Bloček will be loaded from files in the TRANSLAT subdirectory and are named BLOCEK1.xx and BLOCEK2.xx (where „xx“ is the language identifier). It allows you to use Bloček in various languages. Czech, English, French, German, Russian and
+ Turkish languages are supported. Bloček is open source so feel free to create your own translations. The translation instructions can be found in the file \TRANSLAT\TRANSLAT.TXT
+Other localization features are custom keyboard layouts and Unicode and non-Unicode conversion filters.
+All files are in the JAZNAS and TBL subdirectories. Feel free to create your own keyboard layouts. You have to create a new .KBT file and store it in the JAZNAS subdirectory.
+You can also create your own ASCII-Unicode conversion filters in .TBL format. They are already prepared for many languages but you can still need a filter between Unicode and some alternate non-Microsoft standard for extended ASCII. The description of the
+ .TBL format and a small conversion utility for it is available in the TBL subdirectory.
+And finally, you can define files with the A8T extension which is used to group alternate ASCII codings to one language. For example, Czech uses codepages 852 (MS-DOS), 1250 (Windows), ISO-8859-2 (Unix) and 895 („Kamenicti“ standard for DOS). The A8T
+can group these codings together to make the conversions easier between them.
+
+
+8) TECHNICAL INFORMATION
+The reasonable minimal hardware for running Bloček:
+Pentium 100MHz, 16MB RAM, Graphic card with 1MB VRAM compatible with VESA VBE 1.2 and capable to run at least 800x600 16-bit, Mouse, DOS 5.0 or equivalent.
+Bloček needs the 386 instruction set but supports MMX extensions when available. The 686 instructions are not used in the official builds.
+Bloček needs a DPMI server to handle extended memory. There’s a CWSDPMI r7 server bundled in Rayer’s modification (which disables VCPI), but you can use any other DPMI server (official CWSDPMI, HDPMI32,..). However, you should prefer some with disk s
+wapping.
+Bloček  can use the long file name services when available (e.g. under Windows 95 or with proper DOS driver)
+This program was written and compiled in Free Pascal (http://www.freepascal.org)
+(actualy used version 3.0.4, for GO32V2 /DOS/)
+
+
+
+9) KEYBOARD CONTROL
+F10   - enter main menu
+F1    - make a new file
+F2    - save file
+F3    - load file
+Alt+F3 - close file
+Alt+F1 - load this file (INFO.TXT)
+Ctrl+F - search
+Ctrl+S - search again
+Ctrl+H - replace
+Ctrl+A - select all document to block
+Ctrl+Q - offers a variant for last written character (like a-á-ą-...])
+Ctrl+K - char conversion functions
+Ctrl+L - quick call for line adjustment functions
+LShift+Alt - change keyboard layout
+Ctrl+Alt+Up - select actual line to block
+Ctrl+Alt+Down - word on the cursor to block
+Ctrl+Alt+Left - all characters from cursor to left to block
+Ctrl+Alt+Right - all characters from cursor to right to block
+Backspace - delete one character left to cursor
+Delete - delete one character right to cursor
+Shift+Delete - delete selected block
+*arrows - moves cursor
+*Ctrl+PageUp - jumps to first line of the file
+*Ctrl+Home - dtto
+*Ctrl+PageDown - jumps to last line of the file
+*Ctrl+End  - dtto
+*Ctrl+RightArrow - moves one word to right
+*Ctrl+LeftArrow - moves one word to left
+   These function keys (marked with the "*" char) can be combined with the <Shift> key.
+   In such case, together with cursor movement also creates or updates the
+   selected text block.
+Ctrl+[1-7] - copy selected text block to clipboard No 1-7
+Alt+[1-7] - paste text from clipboard No 1-7 to cursor position
+Ctrl+Plus and Ctrl+Minus (on the numeric pad) - fast switching of opened files forward or backward
+ESC   - quit
+Alt+F2 - make a screenshot
+
+
+MOUSE CONTROL:
+a) In the document window
+Left mouse button (LMB) click  - moves cursor on selected place in text
+LMB click+shift - select beginning and end of text block
+LMB press and drag - interactive selection of text block
+Right mouse (RMB) click - shows information and optionally a conversion menu for clicked character
+
+
+b) In panel with cards of opened files
+LMB click - switches the main window to a specified file
+RMB click - several actions with specified file
+(close, close all but this, show full file path)
+
+c) In the clipboards indicators
+LMB click -  clipboard operations menu
+
+d) All other buttons and GUI elements only use the left mouse button at the moment. The right button is not currently used.
+
+e) As described above, since version 1.7, it is possible to move the windows by dragging the title bar with their mouse.
+
+
+10) GREETINGS
+I would like to thank to:
+Mircosoft (not Microsoft :-)) -- http://mircosoft.mzf.cz
+  - started the project of GUI Wokna32 (in realmode Turbo pascal)
+Venom -- http://venomsoftware.de
+  - began work on graphics library VenomGFX
+Mateusz Viste -- http://mateusz.viste.fr
+  - provided the Unicode fonts
+Seo Tae Woong
+  - corrections of the english texts
+Christof Lange
+  - made a tool for creating .TBL Unicode filters
+KormaX
+  - for hungarian translation
+Thraex
+  - for french and turkish translations
+Fritz Müller
+  - for german translation
+UFO
+  - corrections of the russian texts
+Štěpán Hrbek (Dee)
+  - for his utilities for FN fonts
+Michael Knapp
+  - for GraphX where I grabbed PNG loader
+BearWindows
+  - for code for reading WMF images
+development team of FastDIB graphics library.
+  - I used their smooth image scaling routines
+
+...and to others for reporting bugs
+
+
+11) VERSION HISTORY:
+
+1.76
+    + Bar code generator
+    - fixed bug in processing keyboard shortcuts in the main menu
+    - filenames without extension could be misinterpreted in the file selector
+    * possibility to replace the hardware VGA font to disk files (see TECHNOTE.TXT)
+    - fixed bug in character translation from Unicode to code page 850
+
+1.75
+    * tries to be more compatible with virtual environments
+    - copying texts from GUI dialogs to edit windows works better now
+    + when copying text to clipboard without selecting any text, the word on cursor position will be used
+    - loader added invalid character to loaded text after every 65,536 bytes
+    * slightly improved color selection dialog
+    + line expanding functions
+    + optional spaces emphasing
+    + Added phrase occurrence count to find dialog
+    + right mouse click offers new word related functions
+    + right mouse click (or Ctrl-L) offers new line related functions
+    + correctly replaces Unicode characters above 0xFFFF to character 0xFFFD "�"
+    + keyboard shortcuts in the main menu
+    * main menu does not allow to select functions which aren't currently applicable
+    * buttons in some situations accept keyboard shortcuts without pressed ALT
+    * unicode definition tables are now separated to own TBL subdirectory
+
+
+1.74
+    + bookmarks (accessible by right mouse button click or from main menu)
+    - deleting a text block sometimes crashed the program
+    - key "delete" sometimes incorrectly changed the scope of the text block
+    - the non-resident part of the keyboard handler is more compatible with WinXP
+    - also the resident part of the keyboard handler is improved (see TECHNOTE.TXT)
+    - mouse wheel works again (with DOS driver CTMouse or with DOSBOX-X)
+    + optimalizations in the program messages management
+    * changed the delete text block shortcut from CTRL-Space to Shift-Del
+      (to be consistent with single line input dialogs)
+    - fixed several bugs in command line processing
+    - other small bugfixes
+
+1.73
+    + cooperates with Windows clipboard
+    * mouse driver improvements
+    + functions for choosing related chars (via CTRL-Q or mouse right click submenu)
+    + distribution package with integrated DosBox-X
+    + speed optimizations in editor: if possible, only the updated part of window will be rendered
+    + the system info window shows whether the OS allows using SSE instructions
+    + optional editor window left side panel showing line ending type
+    + text selection range is properly updated during text operations
+    - various small bugfixes
+
+1.72
+    + french and turkish translations
+    - fixed scrolling of line with opened file cards
+    - fixed possible crash after closing a file
+    * minor improvements in the system information window
+    + the GUI system can now process multiline buttons
+      (currently used in the Russian interface in fileselector)
+    - fixed some conflicts between BIOS/DOS keyboard drivers and the internal driver
+      (details described in the TECHNOTE.TXT file)
+
+1.71
+    + german translation
+    + fast switching among opened files with Ctrl+Plus and Ctrl+Minus
+    - fixed some bugs (including crashes)
+    * changed the picture for welcome screen
+
+1.7
+    + many improvements in the graphical user interface (GUI)
+    + most of the windows can be moved by dragging their title bar by mouse
+    + slovak keyboard layout
+    + blocks of text can be selected by dragging the mouse with pressed left button
+    + blocks of text can be selected not only in the edited text but also in most places of the GUI like information or help windows.
+    + the scope of the Search or Search and Replace functions can be limited to text block only
+    + many powerful conversion routines handling the code pages and Unicode
+    * if the document is not in Unicode it is always in some defined DOS code page
+    - The RAM size detection was wrong on some systems
+    + Now works even with graphic cards with non-continuous video memory (like GeForce RTX 2060)
+    + can load and save with all three line-ending standards (CRLF, CR, LF)
+    + can load and save Unicode files encoded in UTF-16LE and UTF-16BE
+    + recognizes the Unicode BOMs (byte order marks)
+    + customizable word wrapping
+    + now can fixate the word-wrapping not only for the whole document but also for selected block only.
+    + function for intelligent merging the legacy DOS style lines (78 or 80 chars) to word-wrapping blocks.
+    - better keyboard handler
+    - fixed bug in the conversion routine for 3-bytes long Unicode glyphs
+    + conversion from HTML entities into Unicode chars
+    + QR codes creation
+    - Avoid shutting down the program with Ctrl-Break (customizable in BLOCEK.CFG)
+    - fixed tabulators
+    - corrected minor bugs in the color selection dialog
+    - functions for moving to next word or to previous word now scroll the window if needed
+    + the single-line text boxes can use the clipboards too (like f.e. in „Search and replace“ dialog)
+    + more informations in the system information window
+    * the number of clipboards reduced to 7 (still more than enough) leaving more space on the upper line for menu
+    x the language files for german, turkish, hungarian and french languages are not updated so they are moved from "public" TRANSLAT subdirectory to TRANSLAT\VER162 - they can partialy work after copying back into TRANSLAT
+
+
+For the complete review of changes in each version of the program see the file CHANGES.TXT.
+
+Last versions you can download here:
+binary: http://www.laaca.borec.cz/soubory/blocek.rar
+source: http://www.laaca.borec.cz/soubory/wokna32.rar
+
+There is also a mirror available at:
+http://www.laaca.sweb.cz/blocek.rar
+http://www.laaca.sweb.cz/wokna32.rar
+
+Laaca
+
+------------------------------------------------------------------------------------
+
+Here is the first article of the Universal Declaration of Human Rights in some of the
+languages supported by Bloček:
+
+Akuapem Twi:
+Wɔɑwo ɑdesɑmmɑ nyinɑɑ sɛ nnipɑ ɑ wɔwɔ ɑhofɑdi. Wɔn nyinɑɑ wɔ nidi ne kyɛfɑ koro. Wɔwɔ
+ɑdwene ne ɑhonim, nɑ ɛsɛ sɛ wobu wɔn ho wɔn ho sɛ ɑnuɑnom.
+
+Armenian / Հայերեն:
+Բոլոր մարդիկ ծնվում են ազատ ու հավասար իրենց արժանապատվությամբ ու իրավունքներով։ Նրանք
+ունեն բանականություն ու խիղճ – միմյանց պետք է եղբայրաբար վերաբերվեն։
+
+Czech / Česky:
+Všichni lidé se rodí rovnými a svobodnými co to důstojnosti a práv. Jsou nadáni rozumem a svědomím a mají spolu jednat v duchu bratrství.
+
+English:
+All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.
+
+Estonian / Eesti:
+Kõik inimesed sünnivad vabadena ja võrdsetena oma väärikuselt ja õigustelt. Neile on antud mõistus ja südametunnistus ja nende suhtumist üksteisesse peab kandma vendluse vaim.
+
+French / Français:
+Tous les êtres humains naissent libres et égaux en dignité et en droits. Ils sont doués
+de raison et de conscience et doivent agir les uns envers les autres dans un esprit de fraternité.
+
+Georgian / ქართული:
+ყველა ადამიანი იბადება თავისუფალი და თანასწორი დავისი ღირსებითა და უფლებებით. მათ მინიჭებული
+აქვთ გონება და სინდისი და ერთმანეთის მიმართ უნდა იქცეოდნენ ძმობის სულისკვეთებით.
+
+Greek / Ελληνικά:
+Όλοι οι άνθρωποι γεννιούνται ελεύθερποι και ίσοι στην αξιοπρέπεια και τα δικαιώματα. Είναι
+προικισμένοι με λογική και συνείδηση, και οφείλουν να συμπεριφέρονται μεταξύ τους με
+πνεύμα αδελφοσύνης.
+
+Irish Gaelic / Teanga Gaelige:
+Saoláitear na daoine uile saor agus coṁionann ina ndínit agus ina gcearta. Tá bauiḋ an
+réasúin agus an ċoinsiasa acu agus dlíd iad féin d'iompar de ṁeon ḃrṫreaċais i leiṫ a
+ċéile.
+
+Latvian / Latviešu:
+Visi cilvēki piedzimst brīvi um vienlīdzīgi savā pašcieņā un tiesībās. Viņi ir apveltīti ar
+saprātu un sirdsapziņu, un viņiem jāizturas citam pret citu brālības garā.
+
+Lithuanian / Lietuvių:
+Visi žmonės gimsta laisvi ir lygūs savo orumu ir teisėmis. Jiems suteiktas protas ir sąžinė ir jie turi elgtis vienas kito atžvilgiu kaip broliai.
+
+Maltese / Malti:
+Il-bnedmin kollha jitwieldu ħielsa u ugwali fid-dignjità u d-drittjiet. Huma mogħnija bir-raġuni u bil-kuxjenza u għandhom iġibu ruħhom ma’ xulxin bi spirtu ta’ aħwa.
+
+Polish / Polski:
+Wszyscy ludzie rodzą się wolni i równi pod względem swej godności i swych praw. Są oni
+obdarzeni rozumem i sumieniem i powinni postępować wobec innych w duchu braterstwa.
+
+Portuguese / Português:
+Todos os seres humanos nascem livres e iguais em dignidade e em direitos. Dotados de razão e de consciência, devem agir uns para com os outros em espírito de fraternidade.
+
+Romanian / Română:
+Toate ființele umane se nasc libere și egale în demnitate și în drepturi.
+Ele sunt înzestrate cu rațiune și conștiință și trebuie să se comporte unele față de altele în
+spiritul fraternității.
+
+Russian / Русский:
+Все люди рождаются свободными и равными в своем достоинстве и правах. Они наделены
+разумом и совестью и должны поступать в отношении друг друга в духе братства.
+
+Turkish / Türkçe:
+Bütün insanlar hür, haysiyet ve haklar bakımından eşit doğarlar. Akıl ve vicdana sahiptirler ve birbirlerine karşı kardeşlik zihniyeti ile hareket etmelidirler.
+
+Vietnamese / Tiếng Việt:
+Tất cả mọi người sinh ra đều được tự do và bình đẳng về nhân phẩm và quyền. Mọi con
+người đều được tạo hoá ban cho lý trí và lương tâm và cần phải đối xử với nhau trong
+tình bằng hữu.
+
+
+Bloček is also able to display other kinds of glyphs such as mathematical, dingbats, box drawings, musical and much more!
+Have fun with it :-)
+
+

@@ -1,0 +1,239 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C10"> <h3>10. Besonderheiten</h3></a>
+
+<pre>
+
+<a name="C10.1"> <h3>10.1 Umgebungsvariablen</h3></a>
+
+mbedit.sucht bestimmte Files auf bestimmten Directories, die u.a. auch durch
+Umgebungs-Variable spezifiziert werden. Das ist teilweise abh&auml;ngig vom verwen-
+deten Betriebssytem.
+
+- Der History-File 'MBEDIT.HST' wird immer auf der User-Home-Directory gesucht
+  bzw. angelegt. Diese wird anhand einer Umgebungs-Variablen ermittelt:
+
+     - Umgebungs-Variable ":HOME:" oder, wenn diese nicht existiert
+     - Umgebungs-Variable "HOME"   oder, wenn diese nicht existiert
+     - die aktuelle Directory "."
+
+
+- Der Macro-File "MBEDIT.MAC" wird default-m&auml;ssig in folgenden Directories
+  gesucht:
+
+     a) Bei unix + os/9 wird dem Editor als erstes Argument das 1. Wort
+        des Kommando-Strings &uuml;bergeben (i.d.R. also "mbedit", ohne Pfad).
+        Deshalb wird bei diesen Betriebssystemen zus&auml;tzlich noch im
+        "PATH" gesucht.
+
+     b) in der Directory, die als erstes Argument dem Editor &uuml;bergeben
+        wird, also bei MS-DOS dieselbe Directory, von der auch mbedit
+        gestartet wurde (z.B. "C:\BIN\mbedit").
+
+     c) in der User-Home-Directory.
+
+  Alle existierenden Macro-Files werden in dieser Reihenfolge gelesen.
+
+
+- Der Temp.-File "MBEDIT.TMP" wird auf der Temp.-Directory angelegt, die
+  folgenderma&szlig;en definiert ist:
+
+     - Es gab Zugriffsprobleme mit "/tmp" als temp. Directory unter unix,
+       wenn 2 User gleichzeitig auf dem temp. File zugegriffen haben. So
+       beschlo&szlig; ich, den temp. File auch auf der User-Home-Directory
+       anzulegen (wie den History-File).
+
+
+- Der Name der Konsole wird ben&ouml;tigt, wenn bei Verwendung einer Eingabe-
+  umleitung ein EOF (End of File) auftritt. Er ist wie folgt definiert:
+
+     - MS-DOS: CON
+     - os/9  : Umgebungs-Variable "PORT"
+     - unix  : /dev/tty
+
+<a name="C10.2"> <h3>10.2 mbedit. und unix (vt-100-mode)</h3></a>
+
+   Ein leidiges Problem bei der Tastatur-Eingabe sind die sog.
+   Escape-Sequenzen (das sind Folgen von ASCII-Charaktern, die mit
+   &#60;esc&#62; beginnen und eine variable Laenge haben). Die Sequenz f&uuml;r
+   "Cursor Up" ist z.B. "&#60;esc&#62;[A". Die Schwierigkeit besteht im Erkennen 
+   von einzelne &#60;esc&#62;s, wie nach der Eingabe eines 'Find'-Strings.
+
+   Das Programm kann einzelne &#60;esc&#62;s von &#60;esc&#62;-Sequenzen nur mit einer
+   Timeout-&Uuml;berwachung unterscheiden. Unter OS/9 ist das kein Thema,
+   aber unter unix ist die k&uuml;rzeste Zeit, die vom Betriebssytem unterst&uuml;tzt
+   wird, 1 Sek. (seit Version 6.77 auch k&uuml;rzer, siehe Kapitel "Macro File",
+   Eintrag "AE=200", &#60;esc&#62; Wartezeit = 200 msec).
+
+   D.h.: nach dem Dr&uuml;cken der &#60;esc&#62;-Taste vergeht die Wartezeit, bis
+   das Betriebssytem dem Editor mitteilt: "Es kommt kein Character
+   mehr hinterher", worauf der Editor feststellt: "einzelnes &#60;esc&#62;".
+   Man kann diesen Wartevorgang abk&uuml;rzen, indem man das n&auml;chste
+   Kommando sofort eingibt - das funktioniert.
+
+   Wenn das n&auml;chste Kommando noch nicht feststeht, kann man auch 
+   2-mal &#60;esc&#62; eingeben. Dann wird das erste sofort ausgef&uuml;hrt und
+   das zweite bewirkt nichts. Allerdings l&auml;&szlig;t sich dann mit 'A' (Again)
+   das letzte Kommando (wie 'Find') nicht wiederholen. Statt dessen
+   w&uuml;rde das 2. &#60;esc&#62; wiederholt, was wiederum nichts bewirkt. Immerhin
+   geht dabei nichts kaputt.
+
+   &Uuml;brigens kranken alle Editoren an dieser Unterscheidung der &#60;esc&#62;s
+   von den Sequenzen. Manche haben sogar einen Bug: Wenn vor Ablauf der
+   Sekunde Wartezeit eine andere Taste gedr&uuml;ckt wird, geht ein Keyboard-
+   Character verloren, was mitunter zu seltsamen Ergebnissen f&uuml;hrt.
+   Sehr h&auml;ufig erscheint dann die Sequenz "[xx" mitten im editierten
+   Text, d.h. die &#60;esc&#62;-Sequenz ab dem 2. Character.
+
+   Neue Methode
+   ------------
+   Ab Version 6.2 ist mbedit mit einer neuen &#60;esc&#62;-Sequenz-Behandlung ausge-
+   stattet. Das Problem ist: Tastatur-Eingaben in Verbindung mit einer Netz-
+   werk-Verbindung (rlogin or telnet) k&ouml;nnen Probleme verursachen, wenn die
+   Folge der Character durch lange Pausen unterbrochen wird. In diesem Fall ist
+   die Unterscheidung zwischen einzelnen &#60;esc&#62;s und -Sequenzen problematisch.
+   Um diesen &Auml;rger zum umgehen, verwende ich einen ausgekl&uuml;gelten Algorithmus:
+
+   keyboard input sequence | detected character(s) | o.k.   | remarks
+   ------------------------+-----------------------+--------+-----------------
+   &#60;esc&#62; (1 sec pause)     | &#60;esc&#62;                 | yes    | single &#60;esc&#62;
+   &#60;esc&#62; [ A               | (Cursor Up)           | yes    | normal case
+   &#60;esc&#62; (      pause) [ A | &#60;esc&#62; [ A             | no     | old algorithm
+   &#60;esc&#62; (short pause) [ A | &#60;esc&#62; (Cursor Up)     | mostly | new algorithm
+   &#60;esc&#62; (long  pause) [ A | &#60;esc&#62; [ A             | no     | new algorithm
+
+   Der 4. Fall ist der entscheidende. Wenn mbedit ein '[' entdeckt, das einem
+   &#60;esc&#62; nach einer kurzen Pause folgt (max. 5 Sekunden), erzeugt es den
+   korrekten Tastatur-Code, aber mit einem vorangestellten &#60;esc&#62;. Dieses wird
+   im Command Mode v&ouml;llig ignoriert. In den meisten anderen F&auml;llen wird eine
+   Fehlermeldung angezeigt, und danach im Command Mode weitergemacht. Das ist 
+   in jedem Fall besser als der 3. Fall, der sehr viel Verwirrung stiftet.
+
+<a name="C10.3"> <h3>10.3. mbedit und X11</h3></a>
+
+   Die Clipboard-Funktion (also das Kopieren von Texten von einem
+   Fenster in ein anderes) funktioniert, was aber zugegebenerma&szlig;en
+   das Verdienst von X11 ist. Beim Dr&uuml;cken der rechten Maustaste wird
+   der markierte Text einfach nach Standard-Input umgeleitet.
+
+   Damit der empfangene Text auch als solcher verstanden wird, mu&szlig;
+   der mbedit im Ziel-Fenster auf 'Insert' stehen. Die eingehenden
+   Zeichen w&uuml;rden sonst als Kommandos interpretiert, was beliebigen
+   Unsinn ergeben kann.
+
+   Um Daten von einem anderen Fenster in den mbedit-Text zu kopieren,
+   benutzt man die Option 'S'et 'I'ndent 'N'o. Andernfalls w&uuml;rden die
+   Zeilenanf&auml;nge um zus&auml;tzliche Leerzeichen erg&auml;nzt werden.
+
+<a name="C10.4"> <h3>10.4. Fenstergr&ouml;&szlig;e unter X11</h3></a>
+
+   mbedit unterst&uuml;tzt die automatische Umskalierung eines X11-Fensters. Daf&uuml;r
+   werden das Signal "SIGWINCH" und eine der Funktionen "tput" oder "resize"
+   ben&ouml;tigt. Beide Features sind in den meisten unix/X11-Systemen vorhanden.
+
+   Die entsprechende define-Konstante (WITH_WINCH) befindet sich im File
+   "config.h" (siehe dort f&uuml;r Details).
+
+<a name="C10.5"> <h3>10.5. Speicher-Verwaltung</h3></a>
+
+   Der editierte File wird immer komplett im Speicher gehalten.
+   Bei Anwachsen des Speicherbedarfs wird dynamisch zus&auml;tzlicher
+   Speicher vom Betriebssystem geholt, solange der Vorrat reicht.
+
+   Die max. Filegr&ouml;&szlig;e ist also durch das Betriebssytem vorgegeben
+   und liegt bei MS-DOS bei ca. 200 k Byte (grober Sch&auml;tzwert).
+
+   Es werden dynamisch verschiedene Buffer mit variabler Gr&ouml;&szlig;e f&uuml;r 
+   folgende Daten angelegt:
+
+      a. f&uuml;r den Daten-File selbst,
+      b. f&uuml;r den sog. Other-File (auch mehrere)
+      c. f&uuml;r die Kommandos "Buffer"/"Delete"
+      d. f&uuml;r das Kommando "Get" &#60;filename&#62; (nur tempor&auml;r)
+      e. f&uuml;r die Macros
+
+   Das Betriebssytem mu&szlig; daf&uuml;r ausreichend Speicherplatz bereithalten.
+
+   Die Speicherbegrenzung von MS-DOS kann mit sog. DOS-Extendern wie z.B. von
+   Phar Lap umgangen werden. 
+
+<a name="C10.6"> <h3>10.6. Interne Darstellung von Charactern</h3></a>
+
+   mbedit speichert die Character eines Datenfiles als Bytes ab.
+   'special keys' (Funktions- und Cursor-Tasten, ALT-Kombinationen)
+   werden intern als negative Integer behandelt und vor Abspeicherung
+   (z.B. in Macros) in '\'-Sequenzen umgesetzt (identisch mit Aedit).
+
+   Bei der Eingabe von Strings (z.B. f&uuml;r 'Find') sind dieselben
+   Spezial-Operationen wie bei Aedit m&ouml;glich, also ^S, ^N, ^R.
+   Dabei gibt es eine Ausnahme: Der Hex-Wert '\0' ist nicht verwendbar,
+   da er intern als Endekennung des Strings benutzt wird. Nach 0x00
+   kann also nicht mit 'F'ind gesucht werden. Daf&uuml;r kann aber 'H'ex 'F'ind
+   benutzt werden.
+
+   Auf den os/9- und unix-Umgebungen machte es gro&szlig;e Schwierigkeiten, 
+   das ^S als Software-Handshake zu unterdr&uuml;cken, und statt dessen zum
+   Editor durchzureichen.
+
+   Deshalb kann statt ^S auch ^V benutzt werden. 
+
+<a name="C10.7"> <h3>10.7. Maus-Unterst&uuml;tzung f&uuml;r MS-DOS</h3></a>
+
+   Ab Version 6.1 unterst&uuml;tzt mbedit den Maus-Treiber von MS-DOS.
+
+   Beim Start des Programms testet mbedit, ob eine Maus am System verf&uuml;gbar
+   ist. Beim Verlassen von mbedit wird der Maus-Treiber wieder deaktiviert.
+
+   Beide Aktionen ben&ouml;tigen einige Zeit, falls eine Maus angeschlossen ist.
+   Wenn die Benutzung der Maus nicht geplant ist, kann die Initialisierung
+   des Maus-Treibers abgeschaltet werden, um Zeit zu sparen. Dies wird mit
+   dem Kommando "AM=0" in "MBEDIT.MAC" erreicht.
+   (siehe auch Kapitel "Macro-File")
+
+   Wenn die Maus aktiv ist, kann sie f&uuml;r mehrere Funktionen benutzt werden:
+
+     - Der Maus-Zeiger erscheint auf dem Bildschirm, sobald die Maus bewegt
+       oder eine der Maus-Tasten gedr&uuml;ckt wird. Er verschwindet wieder nach
+       Eingabe einer beliebigen Taste auf der Tastatur.
+
+     - Auf dem Standard-Text-Bildschirm - bzw. einem der 2 Fenster - kann der
+       Maus-Zeiger auf jede Position des Text-Bereichs positioniert werden.
+       Durch Dr&uuml;cken der linken Maus-Taste wird der Text-Cursor auf den
+       Maus-Zeiger gesetzt. Es ist auch m&ouml;glich, den Cursor hinter das Ende
+       einer Zeile zu plazieren.
+       
+     - Wenn der Maus-Zeiger auf einer der Kanten des Bildschirms steht und
+       die linke Muas-Taste festgehalten wird, rollt der Text in eine der
+       4 m&ouml;glichen Richtungen.
+
+     - Im der Betriebsart "Eingaben in Status-Zeile 2" kann der Cursor
+       mit der Maus in beide Richtungen bewegt werden. Das Dr&uuml;cken der
+       linken Maus-Taste bedeutet: Diese komplette Zeile &uuml;bernehmen (wie
+       bei &#60;esc&#62;). Die rechte Taste is gleichbedeutend mit ^C: Abbruch
+       der Text-Eingabe.
+
+     - Im History- oder File-Selection-Window wird mit der Maus die 
+       angew&auml;hlte Zeile hoch und runter bewegt (entsprechend Cursor Up/Down).
+       Die linke Taste bedeutet: &#60;cr&#62; - diesen Eintrag &uuml;bernehmen. Dr&uuml;cken
+       der rechten Taste verl&auml;&szlig;t das Fenster (wie ^C).
+
+
+     Beim Wechsel von einer Betriebsart zur vorherigen (z.B. vom History
+     Window zur&uuml;ck zur Status-Zeile 2), wird die alte Cursor-Position 
+     wiederhergestellt.
+
+</pre>
+
+</body>
+</html>
+

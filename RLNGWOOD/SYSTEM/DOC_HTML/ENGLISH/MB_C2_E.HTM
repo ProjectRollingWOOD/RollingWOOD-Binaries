@@ -1,0 +1,127 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C2"> <h3> 2. Installation </h3></a>
+
+<pre>
+
+<a name="C2.1"> <h3> 2.1 Example: Linux </h3></a>
+
+The program is packed in the file "mb_lin71.tgz", which contains:
+
+   - mbedit      (the executable program)
+   - mbedit.mac  (macro file, can be modified individually)
+   - mbedit.syn  (control file for syntax highlighting)
+
+
+The following files will be created or updated during normal operation:
+
+   - mbedit.hst  (History-File)
+   - mbedit.sta  (Status File)
+   - mbedit.tmp  (Temporary File)
+
+
+Copy the provided files "mbedit, mbedit.mac and mbedit.syn" to any
+directory, which is included in the search path of the operating system
+(e.g.: "/usr/local/bin").
+
+Possibly the search path of the shell must be extended
+(e.g.: "PATH=$PATH:/usr/local/bin").
+
+
+If it doesn't yet exist, it is helpful to create the environment variable
+"HOME", which points to the user home directory. e.g.:
+<i>export HOME=/users/braun/home</i>
+
+This command could also be included in .profile, .cshrc, etc..., depending upon
+the used shell.
+
+The user home directory is used for some help files (see chapters
+<a href="mb_c7_e.htm#C7.2">History File</a> and <a href="mb_c10_e.htm#C10.1">Environment Variables</a>).
+
+
+Example Installation (simple recipe):
+
+   - Uncompress the tgz file:
+     <i>gunzip mb_lin71.tgz</i>
+     This generates the archive "mb_lin71.tar".
+
+   - Unpack the archive file
+     <i>tar xvf mb_lin71.tar</i>
+     This extracts the three files "mbedit, mbedit.mac and mbedit.syn".
+
+   - Copy the files to the desired destination directory, e.g.
+     <i>cp mbedit* /usr/local/bin</i>
+
+   - If required, set the read and executable rights for everybody.
+     <i>chmod a+rx /usr/local/bin/mbedit</i>
+
+   - Invoke the editor by typing
+     <i>mbedit [filenames] [options]</i>
+
+<a name="C2.2"> <h3> 2.2 Example: MS-DOS/Windows </h3></a>
+
+The program is packed in the file "mb_msdos.zip", which contains:
+
+   - MBEDIT.EXE  (the executable program)
+   - MBEDIT.MAC  (macro file, can be modified individually)
+   - MBEDIT.SYN  (control file for syntax highlighting)
+
+   - MBEDIT.ICO  (icon for the usage with Microsoft Windows)
+   - MBEDIT.PIF  (PIF-File for the usage with Microsoft Windows)
+
+
+The following files will be created or updated during normal operation:
+
+   - MBEDIT.HST  (History-File)
+   - MBEDIT.STA  (Status File)
+   - MBEDIT.TMP  (Temporary File)
+
+
+Copy the provided files "MBEDIT.EXE, MBEDIT.MAC and MBEDIT.SYN" to any
+directory, which is included in the search path of the operating system
+(e.g.: "C:\DOS").
+
+Possibly the search path in "AUTOEXEC.BAT" must be extended
+(e.g.: "PATH C:\DOS;C:\WINDOWS;C:\MBEDIT").
+
+
+Furthermore, it is helpful to setup an environment variable "HOME",
+which points to the user home directory. This command could also be
+included in "AUTOEXEC.BAT" (e.g.: "SET HOME=C:\USR\BRAUN\HOME").
+
+The user home directory is used for some help files (see chapters
+<a href="mb_c7_e.htm#C7.2">History File</a> and <a href="mb_c10_e.htm#C10.1">Environment Variables</a>).
+
+
+Example Installation (simple recipe):
+
+   - Open the zip-File using a common tool like WinZip and
+     extract the contained files to the desired destination directory,
+     e.g.: C:\MBEDIT
+
+   - Edit file AUTOEXEC.BAT, append 2 lines:
+
+       PATH C:\DOS;C:\WINDOWS;C:\MBEDIT
+       SET HOME=C:\MBEDIT
+
+   - Create a link to "MBEDIT.EXE" and drag it onto the desktop.
+     In the context menu (right mouse button) you can setup the "properties",
+     and select another icon: "MBEDIT.ICO".
+
+   - Edit a file by "drag and drop" with the mouse onto the new mbedit icon.
+
+</pre>
+
+</body>
+</html>
+

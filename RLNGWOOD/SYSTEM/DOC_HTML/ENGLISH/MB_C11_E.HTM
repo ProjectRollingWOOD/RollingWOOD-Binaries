@@ -1,0 +1,87 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C11"> <h3> 11. Port to other Platforms </h3></a>
+
+<pre>
+
+<a name="C11.1"> <h3> 11.1. Compilation of mbedit </h3></a>
+
+   A central role in the configuration of mbedit play the header files 
+   "config.h" and "config2.hh". The specifications of all system specific
+   #define constants are located here. In particular:
+
+   The operating system:              makefile
+
+      ACT_OP_SYSTEM = MS_DOS          ms_dos/makefile
+                      WIN_32          win32bit/makefile.vcw
+                      OS_9            os_9/makefile
+                      OS_9000         os_9000/makefile
+                      UNIX_SVR4       unix/makefile
+                      DEC_ULTRIX         "
+                      SGI_IRIX           "
+                      SUN_OS             "
+                      SCO_UNIX           "
+                      LINUX              "
+                      OSF_1              "
+                      QNX                "
+                      HP_UX           hp_ux/makefile
+
+
+   For generation of the editor, proceed as follows:
+
+   - Uncompress the tgz file:
+     <i>gunzip mbsource.tgz</i>
+     This generates the archive "mbsource.tar".
+
+   - Unpack the archive file
+     <i>tar xvf mbsource.tar</i>
+     This extracts the whole mbedit branch.
+
+   - Change to the source directory.
+     <i>cd source</i>
+
+   - Edit "config2.hh" and select the desired #define constant
+     ACT_OP_SYSTEM (e.g.: LINUX, which is default).
+
+   - Start "make" with the appropriate makefile listed above.
+     <i>cp ../makfiles/unix/makefile .
+     make</i>
+
+   - Copy files to PATH-Directory:
+     <i>cp mbedit     /usr/local/bin
+     cd ../doc_hmtl
+     cp mbedit.mac /usr/local/bin
+     cp mbedit.syn /usr/local/bin</i>
+
+<a name="C11.2"> <h3>11.2. Notes for Programming </h3></a>
+
+   Who is interested in this theme (perhaps somebody wants to improve
+   the program), should read the remarks in the header file "config.h".
+
+   You must always keep in mind, that mbedit is a software for very
+   different development environments. A function, which is available for
+   MS-DOS, can be absent in ultrix. Even some habits of programming are
+   not always comprehensible to every compiler.
+
+   The essential differences between the several operating systems are the
+   keyboard input and the monitor output (see the files "kb_input.c" and 
+   "mon_outp.c").
+   
+   Further details concern the memory management and the file handling
+   (see "memo_hnd.c" and "file_hnd.c").
+
+</pre>
+
+</body>
+</html>
+

@@ -1,0 +1,89 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C11"> <h3> 11. Portierung auf andere Umgebungen </h3></a>
+
+<pre>
+
+<a name="C11.1"> <h3> 11.1. Kompilieren von mbedit </h3></a>
+
+   Eine zentrale Rolle bei der Konfiguration von mbedit spielen die
+   Header-Files "config.h" und "config2.hh". Hier sind alle system-
+   spezifischen #define-Konstanten abgelegt. Im besonderen:
+
+   Das Betriebs-System:               makefile
+
+      ACT_OP_SYSTEM = MS_DOS          ms_dos/makefile
+                      WIN_32          win32bit/makefile.vcw
+                      OS_9            os_9/makefile
+                      OS_9000         os_9000/makefile
+                      UNIX_SVR4       unix/makefile
+                      DEC_ULTRIX         "
+                      SGI_IRIX           "
+                      SUN_OS             "
+                      SCO_UNIX           "
+                      LINUX              "
+                      OSF_1              "
+                      QNX                "
+                      HP_UX           hp_ux/makefile
+
+
+   Um den Editor zu erzeugen, geht man folgenderma&szlig;en vor:
+
+   - Dekomprimieren der tgz-Datei:
+     <i>gunzip mbsource.tgz</i>
+     Dies erzeugt das Archiv "mbsource.tar".
+
+   - Entpacken der Archiv-Datei
+     <i>tar xvf mbsource.tar</i>
+     Dies extrahiert den kompletten Quellverzeichnisbaum.
+
+   - Wechseln zum Quellverzeichnis.
+     <i>cd source</i>
+
+   - Editieren von "config2.hh" und Auswahl der gew&uuml;nschten #define-Konstanten
+     ACT_OP_SYSTEM (z.B.: LINUX, was voreingestellt ist).
+
+   - "make" mit dem passenden makefile aus obiger Liste aufrufen.
+     <i>cp ../makfiles/unix/makefile .
+     make</i>
+
+   - Files in PATH-Directory kopieren:
+     <i>cp mbedit     /usr/local/bin
+     cd ../doc_hmtl
+     cp mbedit.mac /usr/local/bin
+     cp mbedit.syn /usr/local/bin</i>
+
+<a name="C11.2"> <h3>11.2. Hinweise zum Programmieren </h3></a>
+
+   Wer sich f&uuml;r dieses Thema interessiert (vielleicht will jemand
+   Verbesserungen im Programm einbringen), sollte die Bemerkungen
+   im Header-File "config.h" durchlesen.
+
+   Man mu&szlig; immer im Auge behalten, da&szlig; mbedit ein Programm f&uuml;r
+   sehr unterschiedliche Entwicklungsumgebungen ist. Eine Funktion,
+   die bei MS-DOS existiert, mu&szlig; es unter ultrix noch lange nicht
+   geben. Sogar bestimmte Gewohnheiten in der Schreibweise von
+   c-Programmen sind nicht jedem Compiler verst&auml;ndlich.
+
+   Die wesentlichen Unterschiede zwischen den verschiedenen Betriebssytemen
+   liegen in der Tastatur-Eingabe und der Bildschirm-Anzeige (siehe Files
+   "kb_input.c" und "mon_outp.c").
+   
+   Weitere Details betreffen die Speicher-Verwaltung und die File-Behandlung
+   (siehe "memo_hnd.c" und "file_hnd.c").
+
+</pre>
+
+</body>
+</html>
+

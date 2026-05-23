@@ -1,0 +1,129 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C2"> <h3> 2. Installation </h3></a>
+
+<pre>
+
+<a name="C2.1"> <h3> 2.1 Beispiel: Linux </h3></a>
+
+Das Programmpaket ist in der Datei "mb_lin71.tgz" gepackt, die enth&auml;lt:
+
+   - mbedit.exe  (das ausf&uuml;hrbare Programm)
+   - mbedit.mac  (Macro-File, kann individuell ge&auml;ndert werden)
+   - mbedit.syn  (Steuerdatei f&uuml;r Syntax-Highlighting)
+
+
+Folgende Files werden w&auml;hrend des Betriebs selbst angelegt bzw.
+regelm&auml;ssig auf den neuesten Stand gebracht.
+
+   - mbedit.hst  (History-File)
+   - mbedit.sta  (Status-File)
+   - mbedit.tmp  (Tempor&auml;rer File)
+
+
+Kopieren der enthaltenen Dateien "mbedit, mbedit.mac und mbedit.syn" auf ein
+Verzeichnis, das im Suchpfad des Betriebssystem enthalten ist.
+(z.B.: "/usr/local/bin").
+
+Ggf. ist der Suchpfad der Shell zu erweitern
+(z.B.: "PATH=$PATH:/usr/local/bin").
+
+
+Wenn sie noch nicht existiert, ist es hilfreich die Umgebungsvariable "HOME"
+zu erzeugen, die auf das Home-Verzeichnis des Anwenders zeigt, z.B.:
+<i>export HOME=/users/braun/home</i>
+
+Dies Kommando kann auch in .profile, .cshrc, usw... enthalten sein, abh&auml;ngig
+von der verwendeten Shell.
+
+Die User-Home-Directory wird f&uuml;r einige Hilfs-Files verwendet (siehe Kapitel
+<a href="mb_c7_d.htm#C7.2">History File</a> und <a href="mb_c10_d.htm#C10.1">Umgebungsvariablen</a>).
+
+
+Beispiel-Installation (einfaches Kochrezept):
+
+   - Dekomprimieren der tgz-Datei:
+     <i>gunzip mb_lin71.tgz</i>
+     Dies erzeugt das Archiv "mb_lin71.tar".
+
+   - Entpacken der Archiv-Datei
+     <i>tar xvf mb_lin71.tar</i>
+     Dies extrahiert die drei Dateien "mbedit, mbedit.mac und mbedit.syn".
+
+   - Kopieren der Dateinen in das gew&uuml;nschte Zielverzeichnis, z.B.:
+     <i>cp mbedit* /usr/local/bin</i>
+
+   - Wenn notwendig, setzen der Lese- und Ausf&uuml;hrungsrechte f&uuml;r alle.
+     <i>chmod a+rx /usr/local/bin/mbedit</i>
+
+   - Aufruf des Editors durch Eingabe von
+     <i>mbedit [filenames] [options]</i>
+
+<a name="C2.2"> <h3> 2.2 Beispiel: MS-DOS/Windows </h3></a>
+
+Das Programmpaket ist in der Datei "mb_msdos.zip" gepackt, die enth&auml;lt:
+
+   - MBEDIT.EXE  (das ausf&uuml;hrbare Programm)
+   - MBEDIT.MAC  (Macro-File, kann individuell ge&auml;ndert werden)
+   - MBEDIT.SYN  (Steuerdatei f&uuml;r Syntax-Highlighting)
+
+   - MBEDIT.ICO  (Icon f&uuml;r die Benutzung unter Microsoft Windows)
+   - MBEDIT.PIF  (PIF-File f&uuml;r die Benutzung unter Microsoft Windows)
+
+
+Folgende Files werden w&auml;hrend des Betriebs selbst angelegt bzw.
+regelm&auml;ssig auf den neuesten Stand gebracht.
+
+   - MBEDIT.HST  (History-File)
+   - MBEDIT.STA  (Status-File)
+   - MBEDIT.TMP  (Tempor&auml;rer File)
+
+
+Die mitgelieferten Files "MBEDIT.EXE, MBEDIT.MAC und MBEDIT.SYN" sind auf eine
+beliebige Directory zu kopieren, die im Suchpfad des Betriebssystems
+(Umgebungsvariable "PATH") liegen sollte (z.B.: "C:\DOS").
+
+Ggf. ist der Suchpfad in "AUTOEXEC.BAT" zu erweitern
+(z.B.: "PATH C:\DOS;C:\WINDOWS;C:\MBEDIT").
+
+
+Weiterhin ist es hilfreich, eine Umgebungs-Variable "HOME" anzulegen, die 
+auf die sog. User-Home-Directory zeigen soll. Dieses Kommando kann auch in
+"AUTOEXEC.BAT" durchgef&uuml;hrt werden (z.B.: "SET HOME=C:\USR\BRAUN\HOME").
+
+Die User-Home-Directory wird f&uuml;r einige Hilfs-Files verwendet (siehe Kapitel
+<a href="mb_c7_d.htm#C7.2">History File</a> und <a href="mb_c10_d.htm#C10.1">Umgebungsvariablen</a>).
+
+
+Beispiel-Installation (einfaches Kochrezept):
+
+   - Den zip-File mit einem &uuml;blichen Tool wie WinZip &ouml;ffnen und
+     die enthaltenen Dateien ins gew&uuml;nschte Zielverzeichnis auspacken,
+     z.B.: C:\MBEDIT
+
+   - Die Datei AUTOEXEC.BAT editieren, 2 Zeilen anh&auml;ngen:
+
+       PATH C:\DOS;C:\WINDOWS;C:\MBEDIT
+       SET HOME=C:\MBEDIT
+
+   - Eine Verkn&uuml;pfung auf "MBEDIT.EXE" erzeugen und auf den Desktop ziehen.
+     Im Kontext-Menu (rechter Mouse-Button) die "Eigenschaften" einrichten,
+     und ein anderes Icon ausw&auml;hlen: "MBEDIT.ICO".
+
+   - Eine Datei zum Editieren mit der Maus auf das neue mbedit-Icon ziehen.
+
+</pre>
+
+</body>
+</html>
+

@@ -1,0 +1,66 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="AE"> <h3> Appendix </h3></a>
+<h3> E. Configuration of the Syntax Highlighting </h3>
+
+<pre>
+
+This is a new feature to configure the syntax highlighting according to
+the programming language / file type.
+
+The configuration ASCII file "mbedit.syn" (usually located on the same
+directory as the macro file "mbedit.mac") contains control information
+to setup the desired file extensions, the comment character(s) and the
+keywords to be highlighted.
+
+A quick look about the pathname of the config file and the loaded file
+types can be seen with the command ML ('M'acro 'L'ist).
+
+The setup for the actual file is also displayed in the &#60;F1&#62; help menu,
+in the form:
+
+sYntax hl [7,2], where the two parameters have the following meaning:
+           | |
+           | +-- file_type (e.g.: 1="c", 2="cpp" "h", ...)
+           +-- highlight status (bit combination of:
+                                 1=comments, 2=keywords, 4=strings)
+
+If the file extension of the actual file is not found in the list, the
+status is set to 0 by default (highlighting "off"). If it is a known
+file extension, it is set to 7, and the file type is set according to
+the extension.
+
+The actual setting of the two parameters can be modified: With the
+command SY ('S'et s'Y'ntax) and 1 or 2 following numbers, separated by
+a comma, e.g.: SY 7,1
+
+An example of the configuration file can be found here:
+<a href="../mbedit.syn">mbedit.syn</a> !
+
+It can easily be changed and extended to new requirements (other languages
+or file types).
+</pre>
+
+<hr>
+
+<h4> Supported Languages / File Types (so far...) </h4>
+
+see extra file <a href="../syntax.htm">syntax.htm</a> !
+
+<p>
+
+Will be continued further on ...
+
+</body>
+</html>
+

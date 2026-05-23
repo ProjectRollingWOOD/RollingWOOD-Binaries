@@ -1,0 +1,101 @@
+Incompatibilities and possible technical problems:
+===========================================================================
+
+1) DPMI server HDPMI32
+---------------------
+For its work, Bloček needs a memory manager called DPMI server. It can be
+provided by the Windows kernel or an external program in case when running from
+DOS. The default DPMI server is CWSDPMI which is included in the distribution 
+archive. However, you can start an alternative DPMI server and Bloček will use
+it instead.
+One of such popular DPMI servers is HDPMI32 which is included in the HX-DOS
+package by Japheth. 
+Bloček can certainly work with this server, but there's one pitfall. You can set
+various parameters of this server using the HDPMI environment variable.
+There's an incompatibility between set fifth bit of the HDPMI variable (like
+HDPMI=32).
+This setting separates parent's and child's memory regions when the parent calls
+the child process.
+In Bloček, this technique is used by the QR code generator. With this setting, 
+it won't work.
+
+
+2) Mouse driver
+---------------
+During initialization, Bloček follows the DOS programming recommendation and
+before using any mouse function, it checks whether the mouse is properly
+installed. If not, Bloček will refuse to run.
+Unfortunately, this test can be sometimes misleading and the mouse driver
+reports an error even if the mouse is usable. It can happen e.g. after a
+previous program which uses the mouse crashes.
+If that's the case, open the configuration file BLOCEK.CFG and edit the
+parameter "ruzne_sys_priznaky = ..." to use an uppercase B
+
+
+3) Keyboard driver
+------------------
+Bloček as a DOS program uses the DOS (and BIOS) services to handle the 
+keyboard events. But it can use its own keyboard layout simultaneously, so it
+can behave differently.
+It is important that Bloček cooperates with the BIOS/DOS driver even in their
+own layout mode.
+In some situations, some conflicts can occur. Main problem are the so called 
+"dead keys" used by some drivers for certain non english languages. They're used
+as a prefix for next keys.
+They're processed by the BIOS/DOS driver in a non-transparent way and it is 
+difficult to solve the situations when DOS thinks that the "dead key" was
+pressed, but our scheme uses the key as a normal key.
+Example: We have a DOS Czech driver which has mapped the dead key
+(prefix key for carron) to key +/=
+But in Bloček we use the built in Russian layout. Accordingly the Russian 
+layout the +/= key is just a normal key for +/=
+Bloček tries to solve such conflicts but it can be always 100% reliable.
+It's better to use Bloček without any DOS keyboard layouts containing dead keys.
+   Since version 1.74, two keyboard processing routines are available.
+   The new one (and default one) is based on the BIOS interrupt 15h/AH=4Fh and
+   the older one is based on the BIOS interrupt 9h. The new one should cooperate
+   better with the DOS kernel and the DOS drivers, but in several situations 
+   (mainly when running under debuggers) the older routine can be better.
+   To select the desired routine, open the BLOCEK.CFG file and edit the line
+   beginning with "ruzne_sys_priznaky=abcde"
+   To select the old handler change the letter "e" to "E"
+   (ruzne_sys_priznaky=abcdE)
+
+
+4) Link between Bloček Clipboard #7 and MS Windows Clipboard
+--------------------------------------------------------------------------
+If you see the indicator "7W" instead of "7", it means that the API is 
+available allowing access to Windows clipboard from DOS programs. 
+This API is called WinOldApp and it is accessible from Windows 3.1, 95, 98 
+and ME. There are also some DOS TSRs compatible with this standard and some 
+versions of DOSBox (e.g. DOSBox-X) can use this interface.
+In such case, when pressing CTRL-7, the text block is copied also to the 
+Windows clipboard where it's available to other programs.
+Analogically, Bloček watches the state of the Windows clipboard and text is 
+detected, it signalizes that.
+There is a limitation, though. Although the native MS Windows programs can
+use Unicode transfers to and from the buffer, it is not available to DOS.
+So all Unicode text from Windows inside the WinOldApp API is converted to 
+DOS OEM page so the Unicode characters not in that code page will not be 
+transferred correctly.
+
+
+5) VGA fonts from video card and from disk files
+--------------------------------------------------------------------------
+By default Bloček during videomode initialization scans the video card and
+downloads the VGA fonts from RAM memory. This is very flexible however on
+some configurations it can take more time than expected and your monitor can
+switch off for few seconds. The reason is the multiple video mode switching
+during this process. Most of video cards and monitors don't have any problem
+with that, however on other cards can be the mode switch a little bit time
+consuming.
+For these situations you can use the different way how to get VGA fonts - not
+from hardware but from font files in .FV or .WFV format.
+Look into BLOCEK.CFG and look for parameter "vga_fonts".
+If this parameter is set to "vga", "hw" or "hardware" it uses the hardware fonts.
+But if you specify three font files for sizes 8, 14, and 16px, Bloček will
+use them and will not use the downloading from hardware and the videomode
+switches.
+However, if your bottle neck is not the speed of videomode setting but the disk
+access speed, it can slow down the program initialization.
+

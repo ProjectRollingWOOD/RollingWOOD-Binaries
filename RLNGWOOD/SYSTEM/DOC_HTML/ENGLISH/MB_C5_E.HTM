@@ -1,0 +1,181 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C5"> <h3> 5. Display Organisation </h3></a>
+
+<pre>
+
+
+Example: Standard PC display with 80 columns * 25 rows. Other screen sizes
+         can be set up (see chapter "Macro File").
+
+     +----------------------------------------------------------+
+     | Text Line  1                                             |
+     |        "   2                                             |
+     |        "   3                                             |
+     |                                                          |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |                                                          |
+     |                                                          |
+     | Text Line 23                                             |
+     |----------------------------------------------------------|
+     | Status Line 1                                            |
+     |----------------------------------------------------------|
+     | Status Line 2                                            |
+     +----------------------------------------------------------+
+
+
+<a name="C5.1"> <h3> 5.1. Displays in Status Line 1 </h3></a>
+
+  ?file A=&#60;filename&#62;,row:11,col:40,line: 256( 412), char&#60;1b&#62; 1200(11209)
+  |     ||           |      |      |                     |   |
+  |     ||           |------+      |                     |   +-- byte no
+  |     ||           |             |                     |       (total length)
+  |     ||           |             |                     |
+  |     ||           |             |                     +-- char (hex)
+  |     ||           |             |
+  |     ||           |             +-- line in file (total lines)
+  |     ||           |
+  |     ||           +-- row and column on the screen
+  |     ||
+  |     |+-- '*' file has been modified, else '='
+  |     |
+  |     +-- file identifier (A,B,C,...) : upper case letter = Read/Write
+  |                      or (a,b,c,...) : lower case letter = View Only
+  |
+  +-- action flag: '?' = waiting for keyboard input
+                   '!' = mbedit is active
+
+
+<a name="C5.2"> <h3> 5.2. Displays in Status Line 2 </h3></a>
+
+   mode: "insert" leave with &#60;esc&#62;          - mbedit V4.0 - 08.08.93 - M. Braun
+   |                                          |             |
+   |                                          |             +-- version date
+   |                                          |      
+   |                                          +-- version identifier
+   |
+   +-- Notes for the actual mode, changes according to the operating mode
+       and command in use (e.g. input field for "Find" strings)
+
+
+<a name="C5.3"> <h3> 5.3. Inputs in Status Line 2 </h3></a>
+
+   Some Commands expect inputs in status line 2:
+
+      - The input of a decimal number means the number of repetitions 
+        for the following command.
+
+      - Input of strings: e.g. Command "Find", "Replace", "Quit Init", ...
+
+        Some input strings can be terminated with &#60;esc&#62; or &#60;cr&#62;, other will 
+        interprete the &#60;cr&#62; and are terminated just with &#60;esc&#62;.
+
+        The input of a string works as follows:
+
+           - Display "", the cursor is below the 2nd quote.
+
+           - Input of characters (will be appended at the end of the string)
+
+           - If the string exceeds the reserved space in the input field, it
+             will be shifted in such a way, that the actual cursor position
+             is always visible.
+
+           - Cursor Left / Right moves the cursor along the input string.
+
+           - Cursor Up / Down   changes to history mode,
+             see chapter "History" !
+
+           - ^D, ^H, ^F         as well as
+             ^A, ^X, ^Z and ^U  work in the same way as in command mode,
+                                see also chapter "Function Keys" !
+
+           - With ^N you can insert a numerical "Calc" variable (n0 - n9) in
+             the string, in fact not with the actual radix (Ascii, Binary, 
+             Octal, Decimal, Hex), but always decimal.
+
+           - With ^S or ^V, one of the string variables (s0 - s9) will be
+             inserted into the string.
+
+           - ^C     Abort input
+           - &#60;cr&#62;   take the string up to the cursor position
+           - &#60;esc&#62;  take the entire string
+
+
+<a name="C5.4"> <h3> 5.4. Input of Filenames with Wildcards </h3></a>
+
+   When entering a filename in status line 2 (e.g. during command
+   'Q'uit 'I'nit), it is possible to type a definite pathname or an
+   ambiguous name with one ore more wildcard characters ('?' or '*').
+
+   Example: Q I "*.c"                  Quit Init: all files with extension .c
+
+   In this case a window is opened on the screen, displaying an overview of
+   the current directory:
+
+   Example:               +-------------------+
+                          |/.                 |
+                          |/..                |
+                          |/BACKUP            |
+                          |/DEMO              |
+                          |/DOC               |
+                          |/WINDOWS           |
+                          | BLOCKS.C          |
+                          | CALC.C            |
+                          | COMMANDS.C        |
+                          | DISP_HND.C        |
+                          | FILE_HND.C        |
+                          | HISTORY.C         |
+                          | KB_INPUT.C        |
+                          | MEMO_HND.C        |
+                          | MON_OUTP.C        |
+                          | VBIOS.C           |
+                          +-------------------+
+
+   It shows the directory content in alphabetic order, seperated into all
+   subdirectories (marked with an invers '/') and the files, selected by
+   the wildcard filter. The actual selected line is displayed invers.
+
+   Status Line 2 shows the actual directory path with the wildcard filename
+   plus the number of subdirectories and files. Example:
+      Path: ".\*.c" (6+27)
+
+   The following actions are possible:
+
+   - Cursor Up / Down
+      The selected line is moved up / down 1 row.
+   - Page Up / Down
+      The selected line is moved up / down 1 page.
+   - Home / End
+      Move to begin / end of this directory.
+   - 'A' - 'Z' / 'a' - 'z'
+      Jump to the next entry with the given initial letter.
+   - &#60;esc&#62; / ^C
+      Aborts the file selection. The actual pathname with the wildcard
+      filename is copied to status line 2.
+   - &#60;cr&#62;
+      Depending upon the selected entry:
+         - Entry is a subdirectory: Change to it !
+         - Entry is a file: Take over the actual pathname into status line 2,
+           where it may be altered afterwards.
+
+</pre>
+
+</body>
+</html>
+

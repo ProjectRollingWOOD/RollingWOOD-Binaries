@@ -1,0 +1,130 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C7"> <h3>7. History</h3></a>
+
+<pre>
+
+<a name="C7.1"> <h3>7.1. History Funktion</h3></a>
+
+Die Eingabe-Funktion in Status-Zeile 2 kennt verschiedene Typen von
+Input-Strings (siehe Kapitel "History File"), von denen jeder einen 
+eigenen History-Buffer hat. Dieser Buffer wird (im Verlauf einer String-
+Eingabe in Status-Zeile 2) mit Cursor Up / Down zum Vorschein gebracht.
+
+In der Mitte des Bildschirms erscheint ein Fenster mit den letzten 16
+Eintr&auml;gen f&uuml;r diesen String-Typ. Die Eintr&auml;ge sind in der Reihenfolge
+ihrer Benutzung sortiert - der letzte in der untersten Zeile. Dies ist
+anfangs auch die selektierte Zeile (durch inverse Darstellung hervorgehoben).
+
+Bedienung wie folgt:
+
+   - Cursor Up / Down
+      Die selektierte Zeile wird nach oben / unten verschoben. 
+
+   - &#60;esc&#62; / ^C
+      Abbruch der History-Funktion, die alte Status-Zeile 2 bleibt erhalten.
+
+   - &#60;cr&#62;
+      Die aktuell selektierte History-Zeile wird in die Status-Zeile 2
+      &uuml;bernommen und kann dort weiter editiert werden.
+
+   - &#60;Del&#62; / &#60;Entf&#62;
+      Die selektierte Zeile wird aus dem History Buffer gel&ouml;scht.
+
+   - &#60;Ins&#62; / &#60;Einfg&#62;
+      Die selektierte Zeile wird gegen L&ouml;schen verriegelt / freigegeben
+      (durch eine Markierung vor der Zeile erkennbar).
+
+<a name="C7.2"> <h3>7.2. History File</h3></a>
+
+Der History Buffer wird nach dem Starten des Editors vom File MBEDIT.HST
+gelesen und vor dem Beenden wieder zur&uuml;ckgeschrieben. Auf diese Weise bleiben
+History-Eintr&auml;ge auch &uuml;ber l&auml;ngere Unterbrechungen hinweg erhalten.
+
+Der File befindet sich auf der User-Home-Directory, bestimmt durch die Umge-
+bungsvariable ":HOME:" bzw. "HOME" (siehe auch Kapitel "Umgebungsvariablen").
+
+MBEDIT.HST ist ein ASCII-File, der selbst wieder editiert werden kann, wobei
+der End-of-String-Character '\0' am Ende jeder Zeile stehen mu&szlig;.
+
+   - Format der Eintr&auml;ge im History-File :
+   
+      3 1:the quick brown fox ...'\0'&#60;cr&#62;&#60;lf&#62;
+      | |||                      |   |
+      | |||                      |   +-- zum leichteren Editieren
+      | |||                      |       mit einem Text-Editor
+      | |||                      |
+      | |||                      +-- Ende des Strings
+      | |||
+      | ||+-- Text mit allen ASCII-Charactern au&szlig;er '\0'
+      | ||
+      | |+-- Markierung f&uuml;r Start des Text-Strings
+      | |
+      | +-- 1 = l&ouml;schen verriegelt, 0 = l&ouml;schen erlaubt
+      |
+      +-- History-Kennung  (z.B.: 3 = "Find" History)
+
+
+   - Liste der History-Kennungen
+
+      Id  |  Eingabe-String-Typ
+     -----+---------------------
+       0  |   Filename (Quit Init / Write, Get / Put File, Get Macro-File)
+       1  |   Set Margin
+       2  |   Numerical Inputs (Hex Input, File Number, Left Column, Tabs,
+          |                     View Row, Jump Line, Jump Position)
+       3  |   Find
+       4  |   Replace
+       5  |   System ("!")
+       6  |   Calc
+       7  |   Macro (Create / Delete / Save / Execute)
+
+<a name="C7.3"> <h3>7.3. Status File</h3></a>
+
+Beim Verlassen von mbedit wird die aktuelle File-Zusammenstellung auf einem
+speziellen File "MBEDIT.STA" auf der aktuellen Directory abgespeichert. Wenn
+mbedit mit dem Kommando "mbedit -" oder "mbedit last_again" aufgerufen wird,
+wird dieser File benutzt, um die gleiche File-Zusammenstellung wieder herzu-
+stellen, inklusive Schreibschutz und der letzten Cursor-Position.
+
+   - Format der Eintr&auml;ge (max. 10) im Status-File :
+   
+      0 MBEDIT.C         5078
+      0 SWITCHES.C      75622
+      1 HISTORY.H        1260
+      0 ..\INCL\DATA.H    335
+      | |                 |
+      | |                 +-- Cursor-Position im File
+      | +-- Pfadname / Filename
+      +-- 1 = View Only
+
+
+Bis Zur Version 7.05 wurde der Status File "mbedit.sta" in jeder aktuellen
+Directory angelegt. Daher gab es eine wahre Inflation dieser Files. Viele
+Anwender haben sich dar&uuml;ber beklagt, deshalb beschlo&szlig; ich, das Verhalten
+dieses Status Files zu modifizieren.
+
+Seit Version 7.06, existiert nur noch ein Status File "mbedit.sta" auf der
+User-Home-Directory. Der Nachteil dieser Tatsache ist, da&szlig; man jetzt von der
+Option "mbedit - " or "mbedit last_again" nur noch Gebrauch machen kann, 
+solange man auf derselben Directory arbeitet. Ich denke, mit dieser Ein-
+schr&auml;nkung kann man leben.
+
+Das alte oder neue Verhalten kann mit der #define-Konstanten "WITH_LAST_AGAIN"
+im Header-File "config.h" angew&auml;hlt werden (siehe dort !).
+
+</pre>
+
+</body>
+</html>
+

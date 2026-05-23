@@ -1,0 +1,222 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C8"> <h3> 8. Online Calculator </h3></a>
+
+<pre>
+
+<a name="C8.1"> <h3> 8.1. Usage </h3></a>
+
+   mbedit is equipped with a built-in calculator, which is invoked with the
+   command "C"alc. The expression to calculate is entered in status line 2,
+   and the result (decimal, hex and ASCII) is displayed there also.
+   
+   Example: 
+      Input  :    C  (((7 + 3) * 2) >> 2) + '0'
+      Display:    Calc:        53 = 0x00000035 = '5'
+   
+   In addition, Calc is able to handle numerical and string variables.
+   
+   Among the string variables, there are some with a predefined meaning.
+   With their help, it is possible to query some internal parameters of
+   mbedit, e.g. the character at the cursor position.
+
+    
+<a name="C8.2"> <h3> 8.2. Operators / Priorities </h3></a>
+
+The operators correspond to the c- or PLM-syntax respectively, and are not
+explained in detail. Here is an enumeration:
+
+ priority | operators
+----------+--------------------------------------------------------------
+  0 (high)|    (   
+  1       |    !    ~    
+  2       |    **  
+  3       |    *    /    %    \\
+  4       |    +    -   
+  5       |    <<   >>   SAL  SAR  SHL  SHR  ROL  ROR
+  6       |    <    <=   >    >= 
+  7       |    ==   !=   <>  
+  8       |    &   
+  9       |    ^   
+ 10       |    |   
+ 11       |    &&  
+ 12       |    ||  
+ 13       |    =    *=   /=   %=    |    +=  -=   <<=  >>=  &=   ^=   |=   
+ 14       |    )   
+ 15 (low) |    ;   
+
+
+<a name="C8.3"> <h3> 8.3. Calc Variables, numerical </h3></a>
+
+   Calc knows numerical variables, which are identified by a name.
+
+   Example: 
+      Input  :    C  alfa=3
+      Display:    Calc:        3 = 0x00000003
+
+      Input  :    C  beta=4
+      Display:    Calc:        4 = 0x00000004
+
+      Input  :    C  alfa + beta
+      Display:    Calc:        7 = 0x00000007
+
+   The variables named "n0" to "n9" have a special meaning. It is possible 
+   to access those variables with the control character ^N.
+
+   In status line 2, the values will always be inserted decimal. In the text
+   mode (Insert / Exchange Mode), this behaviour depends on the setting of the
+   numerical base (Set Radix). See also chapters "Inputs in Status Line 2" and
+   "Set Options" !
+
+   Example: 
+      Input  :    C  n1=1023
+      Display:    Calc:     1023 = 0x000003ff      
+
+      Input  :    SRH                    (Set Radix Hex)
+                  I ^N1
+      Display:    3ff                    (text)
+
+      Input  :    F ^N1
+      Display:    Find:"1023"            (status line 2)
+
+<a name="C8.4"> <h3> 8.4. Calc Variables, Strings </h3></a>
+
+   Furthermore, Calc knows string variables, also identified by a name.
+
+   The string variables named "s0" to "s9" can be read out with the control
+   character ^S or ^V.
+
+   Example: 
+      Input  :    C  Paul="Harry"
+      Display:    Calc: "Harry"
+
+      Input  :    C  s3="Peter"
+      Display:    Calc: "Peter"
+
+      Input  :    I ^V3
+      Display:    Peter                  (text)
+
+      Input  :    F ^V3
+      Display:    Find:"Peter"           (status line 2)
+
+
+<a name="C8.5"> <h3> 8.5. Predefined Variables </h3></a>
+
+   Some variable names in mbedit have a special meaning. They can be 
+   accessed via the Calc function:
+
+   type  | name   | description
+   ------+--------+------------------------------------
+   int   | BOF    | begin of file
+         |        |                      
+   long  | CNTEXE | macro execution
+   int   | CNTFND | no of "(-)Find"
+   long  | CNTMAC | macro completed
+   int   | CNTREP | no of "(?)Replace"
+         |        |                              
+   int   | COL    | current column (in file)
+   byte  | CURCH  | current character
+   long  | CURPOS | current position in file
+   word  | CURWD  | current word
+         |        |                  
+   long  | DATE   | (mm*10000 + dd)*100 + yy) = mmddyy
+   int   | EOF    | end of file
+   int   | INOTHR | no of file: (0...n)
+   int   | ISDEL  | current character is delimiter
+   int   | ISWHTE | current character is white space
+         |        | = &#60;space&#62;, &#60;tab&#62;, &#60;cr&#62;, &#60;lf&#62;
+   long  | LINACT | actual line no
+   long  | LINTOT | total lines in file
+   byte  | LOWCH  | = tolower (CURCH)
+         |        |                  
+   int   | LSTFND | last Find command successful
+   int   | NSTLVL | macro nesting level
+   byte  | NXTCH  | next char
+   int   | NXTTAB | next tab position
+   word  | NXTWD  | next word
+   int   | ROW    | current row (in file)
+         |        |                  
+   char* | SB     | string Block buffer
+   char* | SE     | string Edit  file
+   char* | SG     | string Get   file
+   char* | SI     | string Input file
+   char* | SM     | string Macro File
+   char* | SO     | string Other file
+   char* | SP     | string Put   file
+   char* | SR     | string "Replace" 
+   char* | ST     | string "Find" ('T'arget)
+   char* | SW     | string Write file
+         |        |                  
+   long  | SLx    | string length x (0...9 or 2nd character)
+         |        |                  
+   long  | TAGA   | offset of tag A
+   long  | TAGB   | offset of tag B
+   long  | TAGC   | offset of tag C
+   long  | TAGD   | offset of tag D
+         |        |                  
+   long  | TIME   | (hh*10000 + mm)*100 + ss) = hhmmss
+   byte  | UPCH   | = toupper (CURCH)
+
+   Example: 
+      Input  :    C  date
+      Display:    Calc:    81293 = 0x00013d8d    (12. Aug 1993)
+
+
+<a name="C8.6"> <h3> 8.6. Predefined String Variables </h3></a>
+
+   The string variables SB, SE, etc ... may also be used in the Insert /
+   Exchange Mode as well as during inputs in status line 2. They are accessed
+   by entering ^S / ^V, followed by a 2nd character.
+
+   2nd character | special string
+   --------------+----------------------
+         B       |   Block Buffer 
+         E       |   Edit  &#60;filename&#62; 
+         G       |   Get   &#60;filename&#62; 
+         I       |   Input &#60;filename&#62; 
+         M       |   Macro &#60;filename&#62; 
+         O       |   Other &#60;filename&#62; 
+         P       |   Put   &#60;filename&#62; 
+         R       |   Replace String 
+         T       |   Find String (T=Target)
+         W       |   Write &#60;filename&#62; 
+         Y       |   sYntax &#60;filename&#62; 
+
+   Example: 
+      Input  :    I  ^VM
+      Display:    Text:  ... C:\BIN\mbedit.mac ...
+
+      Input  :    QI ^VM
+      Display:    Read Filename:"C:\BIN\mbedit.mac"
+
+
+<a name="C8.7"> <h3> 8.7. Error Messages </h3></a>
+
+Wrong inputs in the Calc command may cause the following error messages:
+
+   - Invalid symbol in expression
+   - Invalid expression
+   - Unbalanced parentheses
+   - Not a constant
+   - Not a number
+   - Numeric constant too large
+   - Identifier too long
+   - Too many variables
+   - Assignment to constant
+   - Divide by zero
+
+</pre>
+
+</body>
+</html>
+

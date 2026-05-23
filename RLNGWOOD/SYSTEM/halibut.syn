@@ -1,0 +1,26 @@
+# Description:  Syntax-highlighting definition for Shawn Hargreaves' FED.
+# Language:     Halibut version 1.2.
+# Filenames:    *.but
+# Version:      2020-01-15
+# Author:       Robert Riebisch <rr@bttr-software.de>
+# Maintainer:   Robert Riebisch <rr@bttr-software.de>
+# URLs:         <https://www.bttr-software.de/products/fed/>
+                <https://www.shawnhargreaves.com/fed/>
+                <https://www.chiark.greenend.org.uk/~sgtatham/halibut/>
+# Notes:        Tested on FED version 2.23/2.24.
+#               Maybe you want to play with FED's `symbols' color setting.
+#               Whole-paragraph comments not supported, because of FED's
+#               limitations in the highlighting engine.
+# Usage:        Paste anything below to your existing `fed.syn' file.
+
+# --------------- Halibut ---------------
+Files=but
+EOLComment1=\#
+Case=1
+Numbers=0
+Symbols={}
+Keywords=\A,\B,\b,\BR,\C,\c,\cfg,\#,\-,\.,\_,\copyright,\cq,\cw,\date,\dd
+Keywords=\define,\dt,\e,\H,\i\c,\I,\i,\i\cw,\i\e,\ii,\IM,\i\s,\K,\k,\lcont,\n
+Keywords=\nocite,\q,\quote,\rule,\S,\s,\S2,\S3,\S4,\S5,\S6,\S7,\S8,\S9,\title
+Keywords=\U,\u,\versionid,\W
+End

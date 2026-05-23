@@ -1,0 +1,1 @@
+@blocek info.txt

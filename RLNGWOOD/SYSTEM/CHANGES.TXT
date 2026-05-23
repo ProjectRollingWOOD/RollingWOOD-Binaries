@@ -1,0 +1,36 @@
+
+ * Change log of the ANSiMat project *
+
+
+ANSiMat v0.93 [29 Jul 2010]
+ - Fixed the ANSiMat palette ("normal" yellow is displayed as brown now, just like on ANSI.SYS),
+ - Added support for "ESC[=7h" and "ESC[=7l" commands (set line wrapping ON/OFF),
+ - Implemented the "blink" attribute by setting a bright background,
+ - Fixed the format of generated TGA files (the TGA trailer was too short),
+ - Added support for generating TIFF files (compressed using Apple's PackBits algorithm),
+ - Added support for loading a custom palette (instead of using the built-in one),
+ - On Windows, the black console (auxiliary) window is hidden.
+
+ANSiMat v0.92 [26 Jul 2010]
+ - Added support for generating FLC (FLiC) animations,
+ - Generated TGA output files are compressed now (RLE),
+ - On Windows, uses the GDI graphic subsystem now for compatibility reasons (instead of DirectX),
+ - Fixed the look of the underscore (_) character,
+ - Fixed the interpretation of ESC[m, when no parameter is provided (was ignored),
+ - Fixed ESC[J (clear screen) behavior (wasn't clearing last column and row),
+ - Fixed the interpretation of ESC[H and ESC[f commands when no row is provided,
+ - Allow to quit the program even if the ANSI file has not been completely loaded,
+ - Added a skipping frames mechanism when the onscreen display animations is late (useful on slower machines).
+
+ANSiMat v0.91 [22 Jul 2010]
+ - Fixed the interpretation of ESC[H and ESC[f commands with only one parameter,
+ - When converting an ANSI file, graphic mode is not initiated anymore,
+ - Added support for 8bit (palettized) video modes,
+ - Generated BMP files are written with 8bit color depth (was: 24bit), therefore output BMP files are 3x smaller now,
+ - Heavy memory optimizations: ANSiMat should work fine with 4 MiB of RAM now (required over 32 MiB before),
+ - Added support for generating PPM (Portable Pixel Map), PCX and TGA (Targa) files,
+ - Interpreting EOF characters (ASCII 0x1A) as End of File,
+ - Added mouse support.
+
+ANSiMat v0.90 [19 Jul 2010]
+ - First public release.

@@ -1,0 +1,66 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="AE"> <h3> Anhang </h3></a>
+<h3> E. Konfiguration des Syntax Highlighting </h3>
+
+<pre>
+
+Dies ist eine neue M&ouml;glichkeit, das Syntax Highlighting entsprechend
+der Programmiersprache / Filetypen zu konfigurieren.
+
+Der Konfigurations-ASCII-File "mbedit.sys" (normalerweise auf dem gleichen
+Verzeichnis angesiedelt wie der Macro-File "mbedit.mac") enth&auml;lt
+Steuer-Informationen &uuml;ber die gew&uuml;nschten File-Extensions,
+den/die Kommentar-Character und die reservierten W&ouml;rter.
+
+Eine Kurz&uuml;bersicht &uuml;ber den Pfadnamen des Konfig-Files und die
+geladenen File-Typen erh&auml;lt man mit dem Kommando ML ('M'acro 'L'ist).
+
+Die Einstellung des aktuellen Files wird ebenfalls angezeigt im &#60;F1&#62;
+Hilfemen&uuml;, in der Form:
+
+sYntax hl [7,2], wobei die zwei Parameter folgende Bedeutung haben:
+           | |
+           | +-- file_type (z.B.: 1="c", 2="cpp" "h", ...)
+           +-- highlight status (Bit-Kombination von:
+                                 1=comments, 2=keywords, 4=strings)
+
+Wenn die Extension des aktuellen Files nicht in der Liste gefunden wird,
+wird der Status auf 0 voreingestellt (Highlighting "Aus"). Wenn die
+Extension bekannt ist, wird er auf 7 gesetzt, und der Filetyp entsprechend
+der Extension eingestellt.
+
+Die aktuelle Einstellung der zwei Parameter kann ge&auml;ndert werden:
+Mit dem Kommando SY ('S'et s'Y'ntax) und 1 oder 2 folgenden Zahlen,
+durch ein Komma getrennt, z.B.: SY 7,1
+
+Ein Beispiel des Konfigurations-Files befindet sich hier:
+<a href="../mbedit.syn">mbedit.syn</a> !
+
+Es kann einfach an neue Anforderungen angepasst und erweitert werden
+(andere Programmiersprachen oder Filetypen).
+</pre>
+
+<hr>
+
+<h4> Unterst&uuml;tzte Sprachen / Datei-Typen (bisher...) </h4>
+
+siehe Extra-File <a href="../syntax.htm">syntax.htm</a> !
+
+<p>
+
+Wird weiterhin fortgesetzt ...
+
+</body>
+</html>
+

@@ -1,0 +1,559 @@
+Written by W. Spiegl with help
+by Google Translate
+         1         2         3
+|--------+---------+---------+----|
+[ALLGEMEIN]
+XFDisk Help
+===========
+
+Keyboard
+--------
+
+Use the cursor keys to select a
+partition or a free area.
+
+Use the Enter or Return key to
+open the menu corresponding to the
+selected area.
+
+Press the F3 key to exit the FDISK
+program.
+
+Use the Tab key to switch between
+multiple hard drives.
+
+
+Display
+-------
+
+The meaning of the individual ele-
+ments of the display is:
+
+Name   Position and name of the
+       partition in the boot menu.
+       The default partition is
+       marked with '0'.
+
+Dr     Drive Drive letter under DOS
+       and OS/2.
+
+Status  Status of the partition:
+        ACTIVE  primary partition
+                from which the sys-
+                tem boots by de-
+                fault.
+        INACTIVE primary partition
+        N/A     logical drive
+        FREE    free area
+
+Type    Type of partition (primary
+        partition or logical drive
+        in an extended partition).
+
+Size    Partition size in MB (1 MB =
+        1024 KB, 1 KB = 1024 B).
+
+System  File system used on the
+        partition (e.g., FAT)
+
+Label   Label of the partition that
+        is entered during format-
+        ting.
+
+
+Boot Manager
+------------
+
+The boot manager allows you to in-
+stall multiple operating systems on
+one hard drive and start them from
+a menu that is displayed every time
+you start the computer.
+
+The boot manager is installed on
+the first cylinder of the hard
+disk, which is usually unused for
+technical reasons.
+
+The boot manager is therefore not
+compatible with programs that also
+use this area, such as Disk Manager
+for managing hard drives larger
+than 512 MB.
+
+WARNING: If you install the boot
+manager and use a disk manager that
+also uses this area, you may lose
+data irretrievably.
+
+
+Warranty Notice
+---------------
+
+Use XFDisk at your own risk! We
+assume no liability for data loss,
+damage to hardware, software, or
+anything else, nor for any resul-
+ting consequential damages or
+failures.
+
+Be sure to back up your valuable
+data before using this program.
+
+
+Freeware Notice
+---------------
+
+This program is freeware and may
+therefore be freely copied.
+Please read XFDISK.TXT for more in-
+formation.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[CREATEPART]
+New Partition
+=============
+
+With this function, you can create
+a partition in a free space.
+
+You can see which partition type
+you can use in the Type field of
+the selected free space.
+
+The following is generally stated
+regarding the selected type:
+
+PRIMARY  Many operating systems can
+         only be installed on a
+         primary partition (e.g.,
+         MS-DOS). Only one primary
+         partition per hard drive
+         can be "visible," meaning
+         it can be accessed via a
+         drive letter.
+
+LOGICALLY only one so-called exten-
+          ded partition can be
+          created per hard disk.
+          This partition can then
+          be divided into logical
+          drives, which are always
+          "visible" if the file
+          system is supported by
+          the respective operating
+          system. (For example, DOS
+          cannot access a drive
+          formatted with OS/2
+          HPFS.)
+          Therefore, make sure to
+          only create logical
+          drives in a contiguous
+          area.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[DELETEPART]
+
+Delete Partition
+================
+
+With this function, you can delete
+existing partitions. Please note
+that the partition may not be
+recoverable.
+
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[ACTIVATEPART]
+Activate Partition
+==================
+
+This function allows you to acti-
+vate a primary partition. The ac-
+tive partition will boot automati-
+cally when the computer starts. If
+the boot manager is installed, the
+default partition will boot auto-
+matically, not the active one, if
+the user does not select another
+partition from the boot menu.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[SELECTDRIVE]
+Make Partition Visible
+======================
+
+Since DOS and OS/2 can only cor-
+rectly manage one partition per
+connected hard drive, all other
+partitions recognized by the re-
+spective operating system must be
+hidden. Using the "Make Partition
+Visible" menu item, you can make a
+hidden partition visible to the
+operating system again. The re-
+maining partitions will be auto-
+matically hidden if necessary.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[CHANGEPARTTYPE]
+Changing the Partition Type
+===========================
+
+Typically, each partition and logi-
+cal drive on the hard drive is for-
+matted to prepare a structure for
+managing files and directories on
+the hard drive. This structure is
+also called a file system.
+However, different operating sys-
+tems also have different require-
+ments for this structure, so many
+different file systems exist. DOS
+alone has introduced three file
+systems to date (FAT12, FAT16,
+FAT32). A file system is now asso-
+ciated with a partition type, which
+is stored in the partition table.
+Ideally, a file system corresponds
+to a partition type, and vice
+versa. Unfortunately, this is often
+not the case. For example, the
+widely used FAT16 system uses two
+partition types: one for partitions
+and logical drives smaller than 32
+MB, and one for those larger than
+32 MB. The partition type used for
+the OS/2 file system (HPFS), on the
+other hand, is multi-occupied. It
+is also used for NTFS (Windows NT)
+and QNX.
+When you create a partition or
+logical drive with XFDisk, FAT16
+is automatically assumed as the
+file system and the appropriate
+partition type is assigned. This
+is often appropriate, but if the
+partition is not to be formatted
+with FAT16, the partition type
+must be changed.
+Use this menu item carefully and
+only if you know what you are do-
+ing.
+Changing the partition type will
+result in the loss of any data that
+may be present on the partition or
+logical drive!
+
+Important partition types
+-------------------------
+
+01 FAT12 <16MB
+04 FAT16 <32MB
+06 FAT16 >32MB
+07 HPFS/NTFS
+0B FAT32
+0C FAT32 INT13X
+0E FAT16 INT13X
+82 Linux Swap
+83 Linux Native
+A5 BSD/386
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[INSERTENTR]
+New Boot Menu Entry
+===================
+
+With this function, you can add a
+partition to the boot menu and thus
+create your own individual boot
+configuration.
+Using this function, you can also
+assign a name that will appear in
+the boot menu and can be up to 16
+characters long. Choose a name that
+is as descriptive as possible; the
+choice is entirely up to you.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[DELETEENTR]
+Delete Boot Menu Entry
+======================
+
+With this function, you can remove
+a partition listed in the boot
+menu.
+The partition itself is, of course,
+not deleted and can be added back
+to the boot menu if necessary.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[CHANGENAME]
+Change Boot Menu Entry
+======================
+
+With this function, you can change
+the name you assigned to a par-
+tition in the boot menu.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[CHANGEPASSWORD]
+Set a Password
+==============
+
+If you have entered a partition in
+the boot menu, you can use this
+function to assign a password that
+will be automatically requested
+when booting via the boot manager.
+This makes it possible to restrict
+access to your computer.
+Write down your password and store
+it in a secure location that is in-
+accessible to third parties.
+Please note that a German keyboard
+driver is normally not yet loaded
+when the computer starts.
+Please read Chapter 2.2 in
+XFDISK.TXT for more information.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[UNINSTALL]
+Uninstalling the boot manager
+=============================
+
+The boot manager can also be unin-
+stalled. This will result in the
+loss of all settings you have made
+in the boot menu.
+If you reinstall the boot manager,
+you will need to reconfigure it.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[Bootmanager]
+Set Boot Values
+===============
+
+With the functions in this submenu,
+you can further customize the boot
+manager to your needs. You can set
+the time the boot manager should
+wait for your input before booting
+the standard partition, as well as
+the passwords for the boot manager
+itself and the floppy boot func-
+tion.
+The standard partition itself can
+also be specified via this submenu.
+
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[INSTALL]
+Installing the Boot Manager
+===========================
+
+The boot manager allows you to in-
+stall and manage multiple operating
+systems on different logical drives
+or partitions on one hard drive.
+However, the boot manager should
+normally only be installed and con-
+figured once all systems have been
+fully installed.
+Using the "New Boot Menu Entry"
+menu item, you can add partitions
+and logical drives to the boot
+menu.
+Please note that only certain ope-
+rating systems are suitable for
+installation on logical drives.
+Be sure to also read the infor-
+mation in README.TXT.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[LOADSAVE]
+Load/Save Configuration
+=======================
+
+With this function, the partitio-
+ning of the connected hard drives
+and the boot manager configuration
+can be saved to a file or loaded
+from a file.
+All information is saved, inclu-
+ding, for example, whether a par-
+tition has been newly created and
+therefore needs to be initialized.
+You can only load a configuration
+file if the information in the file
+matches the currently connected
+drives. The saved information is
+therefore not suitable for instal-
+ling a configuration on multiple,
+different computers.
+Please also read the documentation
+for more information.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTAKTPART]
+Default Partition
+=================
+
+With this function, you can set the
+currently selected partition as the
+so-called default partition and
+thus determine which system the
+boot manager should automatically
+boot if no input is received. You
+can set the time the boot manager
+should wait for your input using
+the "Boot Menu Timeout" function.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTLASTPART]
+Remember selection
+==================
+
+If you enable this option, the boot
+manager will remember the selected
+partition and use it as the default
+partition the next time it boots.
+This will not affect the order of
+the partitions in the boot menu.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTTHISPART]
+Select this partition
+=====================
+
+Using the "Remember selection" op-
+tion, you can specify the partition
+to boot by default the next time
+the system boots, without changing
+the order of the entries in the
+boot menu.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTTIMEOUT]
+Boot Menu Timeout
+=================
+
+With this function, you can set the
+time the boot manager should wait
+for your input before automatically
+booting the partition defined as
+the default. Valid values are from
+10 to 300 seconds, or 0 if the boot
+manager should not automatically
+boot the default partition.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTHANDLING]
+Timeout Behavior
+================
+
+This option allows you to determine
+how the boot manager handles the
+timeout when the Up, Down, and F5
+keys are pressed.
+If "Disable on Keypress"
+is selected, the boot manager auto-
+matically disables the timeout when
+any of the three keys are pressed.
+If "Reset on Keypress"
+is selected, the timeout is reset
+to its original value and starts
+again from the beginning.
+If "Ignore Keypress"
+is selected, the timeout continues
+unaffected.
+The timeout is always temporarily
+suspended while the BIOS screen is
+displayed with the F5 key.
+The Up and Down keys only affect
+the timeout behavior when the key-
+strokes are effective, meaning the
+selection bar is actually moved up
+ or down.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTCLRSCR]
+Clear Screen
+============
+
+This option determines whether the
+BIOS screen remains displayed while
+the boot manager is displayed, or
+whether it should be cleared first.
+In either case, the BIOS screen can
+be fully displayed using the F5 key
+and will be displayed again before
+the boot process.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTSIMPLE]
+Simple Menus
+============
+
+This option displays only the par-
+tition name in the boot manager.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTMASTER]
+Set a master password
+=====================
+
+The master password is requested
+every time the system starts, even
+before the boot menu is displayed.
+This gives you an additional option
+to restrict access to your computer
+in conjunction with the BIOS's lock
+options.
+Please note that a German keyboard
+driver is not normally loaded when
+the computer starts.
+For more information, please read
+Chapter 2.2 in XFDISK.TXT.
+[ENDKEY]
+         1         2         3
+|--------+---------+---------+----|
+[STARTFLOPPY]
+Set Floppy Password
+========================
+
+The boot manager offers the option
+of booting from a floppy disk des-
+pite a changed boot order.
+With this function, you can assign
+a password to booting from a floppy
+disk so that this function does not
+become a security risk.
+Please note that a German keyboard
+driver is normally not loaded when
+the computer starts.
+
+For more information, please read
+Chapter 2.2 in XFDISK.TXT.
+[ENDKEY]

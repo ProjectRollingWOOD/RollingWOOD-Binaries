@@ -1,0 +1,62 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+
+<a name="C3"> <h3> 3. Express Operating Instructions </h3></a>
+
+<pre> 
+
+You can work with mbedit immediately, without studying the whole user's manual.
+For basic operations, some few commands are absolutely sufficient.
+
+Only if you want to use a special feature (e.g. macros), you should read the
+notes in the relevant chapters.
+
+Here are the most important commands in a brief description on one page:
+
+Invocation: mbedit &#60;filename&#62;
+
+Editing:    mbedit distinguishes between 3 Modi: Command, Insert and Exchange.
+
+            To edit a text, change from the command- to the
+            insert- or exchange-mode (Input 'I' or 'X').
+
+            Insert: The entered characters will be inserted inside the text
+            at the actual cursor position.
+
+            Exchange: The entered characters will overwrite the old text
+            at the actual cursor position.
+
+            Return to command mode with &#60;esc&#62;.
+
+Cursor Keys: To set the Cursor inside the text
+            (in all 3 Modi).
+
+Exit:       Enter 'Q' and 'E' (for Quit Exit) in command mode. 
+            The edited file will be written back and mbedit is left.
+
+Abort:      Enter 'Q' and 'A' (for Quit Abort) in command mode. If the used
+            file has been modified, mbedit will perform a warning:
+            "modified: abort anyway ? [Y/N/W]", which must be answered.
+
+            'Y' = Yes   : Abort without update, all modifications are lost.
+            'N' = No    : Don't Abort, stay in mbedit.
+            'W' = Write : Write file and leave mbedit (as Quit Exit).
+
+</pre>
+
+<h4>State Diagram</h4>
+<img src="../modes_3.gif" alt="States">
+
+</body>
+</html>
+

@@ -1,0 +1,77 @@
+Freemacs is a programmable editor.  The .EXE file is only 21K because
+it only contains a language interpreter and text editor primitives.  The
+bulk of the programming is done in MINT, which is a string-oriented
+language.  Freemacs is yet another Emacs clone.  Emacs was first written
+at MIT by Richard M. Stallman.
+
+There are a number of Emacs clones for the PC available.  Unlike all
+the others, Freemacs is the only IBM-PC editor that tries to be like
+GNU Emacs.  Freemacs's only major failings are that it cannot edit files
+larger than 64K, and it has no undo facility.
+
+You may freely copy this software.  I only ask that you send
+improvements back to me for incorporation into the package for the
+rest of us.  Information on how to get the distribution is available
+in the file HOWTOGET.IT
+
+Addresses, electronic and otherwise:
+
+Author:		Russell Nelson
+Internet:	nelson@crynwr.com
+Snail:		11 Grant St., Potsdam, NY 13676
+
+There is a mailing list on the Internet. To subscribe, send a
+message of the form "subscribe freemacs-help" to
+listserv@sun.soe.clarkson.edu.  To get off the list, send
+"unsubscribe freemacs-help" to the same address.  To submit something
+to the list, send it to freemacs-help@sun.soe.clarkson.edu.
+
+There are two other mailing lists, freemacs-announce, and
+freemacs-bugs. Freemacs-announce is for announcements of freemacs
+news, and has very low traffic.  Freemacs-bugs is for people who are
+working on Freemacs.
+
+
+Getting started:
+
+Obviously you have extracted this file already, so you don't need to be
+told how to unpack an archive.  You should put all the Freemacs files into
+a subdirectory (I will assume \EMACS).
+
+DOS 2.x users (is anyone still using DOS 2.x??)
+
+You need to add a line to your autoexec.bat file that reads "set
+emacs=x:\EMACS".  Replace "x:" with the drive that you have placed
+Freemacs in.
+
+DOS 3+ users:
+
+You should ensure that emacs is executed out of the subdirectory in which
+the Freemacs files are stored.  You can do this two ways -- you can include
+\EMACS in your path, or you can put a small batch file on your path.  For
+an example of a batch file, look at the included E.BAT.
+
+Freemacs is shipped uncompiled.  The editor source files are all the
+files with .MIN extensions.  Freemacs will compile itself using these
+files.  After the compiling is finished, you can delete all .MIN
+files.
+
+To compile Freemacs, just run it.  It will ask if you want to compile
+the files.  You do.  After it finishes, which can take a little or a
+lot of time depending on how fast your processor is, you should run
+it again.  The second time through it compiles the help files.
+
+If you are unfamiliar with Emacs, you should run emacs, get help, and read
+the tutorial.  The opening screen has instructions for doing this.
+
+
+Modifying Freemacs:
+
+There are lots of simple changes that you can make without really needing
+to understand MINT.  For example, the mode line uses inverse video.  If
+you would like to change the colors, use M-x edit-options.
+
+If you would like to do simple customizations like key rebinding, see
+the file CUSTOMIZ.DOC.
+
+If you would like to learn how to program in MINT, see the file MINTTUT.DOC.

@@ -1,0 +1,24 @@
+# Description:  Syntax-highlighting definition for Shawn Hargreaves' FED.
+# Language:     Markdown.
+# Filenames:    *.md, *.markdown
+# Version:      2020-01-16
+# Author:       Robert Riebisch <rr@bttr-software.de>
+# Maintainer:   Robert Riebisch <rr@bttr-software.de>
+# URLs:         <https://www.bttr-software.de/products/fed/>
+                <https://www.shawnhargreaves.com/fed/>
+                <https://daringfireball.net/projects/markdown/>
+# Notes:        Tested on FED version 2.23/2.24.
+#               Maybe you want to play with FED's color settings.
+#               This is only minimal implementation, because of FED's
+#               limitations in the highlighting engine.
+# Usage:        Paste anything below to your existing `fed.syn' file.
+
+# ---------------- Markdown ----------------
+Files=md,markdown
+OpenComment1=<
+CloseComment1=>
+EOLComment1=#
+EOLComment2=---
+Numbers=0
+String=`
+End

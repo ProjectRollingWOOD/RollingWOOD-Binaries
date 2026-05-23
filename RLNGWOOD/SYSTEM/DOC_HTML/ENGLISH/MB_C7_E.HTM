@@ -1,0 +1,132 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C7"> <h3> 7. History </h3></a>
+
+<pre>
+
+
+<a name="C7.1"> <h3> 7.1. History Function </h3></a>
+
+The input function in status line 2 knows some different types of input strings
+(see chapter "History File"), each of them possessing an own history buffer.
+This buffer will be activated (during a string input in status line 2)
+with Cursor Up / Down.
+
+In the center of the screen, a window with the last 16 entries for this string
+type occurs. The entries are sorted in the sequence of their usage - the last
+one on the bottom line. This line is selected at the beginning (marked with
+invers display).
+
+Usage as follows:
+
+   - Cursor Up / Down
+      The selected line is moved up / down.
+
+   - &#60;esc&#62; / ^C
+      Aborts the history function, the old status line 2 is preserved.
+
+   - &#60;cr&#62;
+      The selected history line is copied to the status line 2, where it
+      may be altered afterwards.
+
+   - &#60;Del&#62; / &#60;Entf&#62;
+      The selected line is removed from the history buffer.
+
+   - &#60;Ins&#62; / &#60;Einfg&#62;
+      The selected line will be delete protected / enabled
+      (shown with a mark at the start of the line).
+
+
+<a name="C7.2"> <h3> 7.2. History File </h3></a>
+
+After starting mbedit, the history buffer will be read from the file 
+MBEDIT.HST. Before leaving the editor, it is written back. Thus, the history
+entries are stored between single edit sessions.
+
+The file is located on the user home directory, which is determined by the
+environment variable ":HOME:" or "HOME" respectively (see also chapter
+"Environment Variables").
+
+MBEDIT.HST is an ASCII file, which can be edited itself. Please note the
+end-of-string-character '\0' at the end of each line.
+
+   - Format of entries in the history file :
+   
+      3 1:the quick brown fox ...'\0'&#60;cr&#62;&#60;lf&#62;
+      | |||                      |   |
+      | |||                      |   +-- for easier handling
+      | |||                      |       with a text editor
+      | |||                      |
+      | |||                      +-- end of string
+      | |||
+      | ||+-- text with all ASCII characters except '\0'
+      | ||
+      | |+-- flag for start of text string
+      | |
+      | +-- 1 = delete protected, 0 = delete enabled
+      |
+      +-- history identifier  (e.g.: 3 = "Find" history)
+
+
+   - List of history identifiers
+
+      Id  |  type of input string
+     -----+-----------------------
+       0  |   Filename (Quit Init / Write, Get / Put File, Get Macro-File)
+       1  |   Set Margin
+       2  |   Numerical Inputs (Hex Input, File Number, Left Column, Tabs,
+          |                     View Row, Jump Line, Jump Position)
+       3  |   Find
+       4  |   Replace
+       5  |   System ("!")
+       6  |   Calc
+       7  |   Macro (Create / Delete / Save / Execute)
+
+
+<a name="C7.3"> <h3> 7.3. Status File </h3></a>
+
+With the quit of mbedit, the actual file constellation will be stored on
+a special file "MBEDIT.STA" on the current directory. When mbedit is invoked
+with the command "mbedit -" or "mbedit last_again", this file is used to 
+restore the same file constellation, including view_only attribute and
+last cursor position.
+
+   - Format of entries (max. 10) in the status file :
+   
+      0 MBEDIT.C         5078
+      0 SWITCHES.C      75622
+      1 HISTORY.H        1260
+      0 ..\INCL\DATA.H    335
+      | |                 |
+      | |                 +-- cursor position in file
+      | +-- pathname / filename
+      +-- 1 = view only
+
+
+Until Version 7.05 the status file "mbedit.sta" was created in every current
+directory. Thus, we got a real inflation of those files. Many users complained
+about that fact, so i decided to modify the behaviour of the status file:
+
+Since Version 7.06, there exists only one status file "mbedit.sta" on the user
+home directory. The disadvantage of this fact is, that now you can make use
+of the option "mbedit - " or "mbedit last_again", only if you work on the same
+directory. I think, we can live with that restriction.
+
+The old or new behavior can be selected with the #define constant 
+"WITH_LAST_AGAIN" in the header file "config.h" (see there !).
+
+</pre>
+
+</body>
+</html>
+

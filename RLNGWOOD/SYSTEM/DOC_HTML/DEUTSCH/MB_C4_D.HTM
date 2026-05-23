@@ -1,0 +1,70 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C4"> <h3> 4. Aufruf-Syntax </h3></a>
+
+<pre>
+
+- Der Aufruf von mbedit hat folgende Syntax:
+       
+   mbedit [filenames] [options]
+
+    - Die Reihenfolge von [filenames] und [options] ist so vorgeschrieben.
+
+    - [filenames]: [&#60;filename 1&#62;] [&#60;filename 2&#62;] ... [&#60;filename n&#62;]
+
+      Mit mbedit ist man in der Lage, mehrere Files gleichzeitig zu editieren.
+      Die obere Grenze ist z.Z. willk&uuml;rlich auf 26 festgelegt.
+
+      Die Anzahl der editierbaren Files ist normalerweise 2, kann aber per
+      Kommando ver&auml;ndert werden (1 bis 26). Bei Angabe von n Filenamen in der
+      Kommandozeile wird automatisch auch die Zahl der Files auf n gesetzt.
+
+      Der Editor kann auch ohne Angabe eines Filenamens aufgerufen werden,
+      z.B. zur Benutzung des Taschenrechners.
+
+    - [options]  : [- | last_again] [vo | viewonly] [batch]
+                   [nomacro] [macro(&#60;macrofile&#62;)]
+
+       - - | last_again: Die gleiche File-Zusammenstellung wie bei der letzten
+                         Editier-Sitzung wird aufgerufen. Sogar der Cursor
+                         ist an der gleichen Position.
+
+       - vo | viewonly:  Der File darf nur gelesen, aber nicht modifiziert 
+                         werden. Hiermit kann man sich gegen versehentliche
+                         &Auml;nderungen sch&uuml;tzen.
+
+       - batch:          Die Kommandos f&uuml;r mbedit k&ouml;nnen statt von der Tastatur
+                         auch - per Eingabeumleitung - aus einem Datenfile 
+                         kommen. In diesem Fall kann es sinnvoll sein, die
+                         Anzeige mit option "batch" zu unterdr&uuml;cken. Die
+                         Kommandos laufen dann schneller ab.
+
+       - nomacro:        mbedit sucht standardm&auml;&szlig;ig nach dem Macro-File
+                         "MBEDIT.MAC". Mit dieser option kann das Einlesen
+                         des Macro-Files unterdr&uuml;ckt werden (siehe auch die
+                         Kapitel "Macros" und "Macro-File").
+
+       - macro(&#60;macrofile&#62;):  Hiermit kann mbedit angewiesen werden, einen
+                         anderen Macro-File anstelle des Default-Macro-File
+                         "MBEDIT.MAC" einzulesen. In dieser Option d&uuml;rfen vor
+                         und zwischen den Klammern keine Leerzeichen stehen.
+
+
+- Wird mbedit mit einer der Options "-?", "-h" oder "-help" aufgerufen,
+  erscheint eine kurze Hilfsanzeige zur Aufruf-Syntax.
+
+</pre>
+
+</body>
+</html>
+

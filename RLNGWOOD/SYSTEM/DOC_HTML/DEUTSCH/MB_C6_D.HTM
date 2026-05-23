@@ -1,0 +1,754 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C6"> <h3>6. Kommandos</h3></a>
+
+<pre>
+
+<a name="C6.1"> <h3>6.1. Allgemeines</h3></a>
+
+Vom Command Mode des Editors lassen sich eine Reihe von Kommandos ausf&uuml;hren,
+die in diesem Kapitel erl&auml;utert werden.
+
+Die Kommandos werden durch Eingabe eines Buchstabens (in der Regel des
+Anfangsbuchstabens) oder eines Sonderzeichens angew&auml;hlt.
+
+Die Angabe eines (optionalen) Wiederholfaktors l&auml;&szlig;t ein Kommando mehrfach
+ausf&uuml;hren. Beispiel: "10R" f&uuml;hrt das Kommando "Replace" 10-mal aus.
+
+Sonderfall: Das Zeichen "/" steht f&uuml;r unendlich oft, d.h. Wiederholung des
+Kommandos so oft wie m&ouml;glich (z.B. bis zum Ende des Files), oder bis zum
+Abbruch durch &#60;esc&#62; oder ^C (Control C).
+
+Alle Kommandos lassen sich jederzeit mit &#60;esc&#62; oder ^C abbrechen.
+
+Hier nun die alphabetische Aufz&auml;hlung aller Kommandos, zun&auml;chst in der
+&Uuml;bersicht als Baumstruktur, dann einzeln erl&auml;utert:
+
+<a name="C6.2"> <h3>6.2. &Uuml;bersicht</h3></a>
+
+Command Mode
+|
+|-- ALT F9                              Umschaltung der Zeilenzahl: 25, 28, 50
+|
+|-- Again                               Wiederholung des letzten Kommandos
+|
+|-- Block                               L&ouml;schen und Kopieren von Text-Bl&ouml;cken
+|   |
+|   |-- Buffer
+|   |-- Delete
+|   |-- Find
+|   |-- -find
+|   |-- Jump
+|   &#43;-- Put
+|
+|-- Calc                                Online Taschenrechner
+|   |
+|   &#43;-- Calc: &#60;arithmetic expression&#62;
+|
+|-- Delete                              L&ouml;schen und Kopieren von Text-Bl&ouml;cken
+|   |
+|   |-- Buffer
+|   |-- Delete
+|   |-- Find
+|   |-- -find
+|   |-- Jump
+|   &#43;-- Put
+|
+|-- Execute                             Ausf&uuml;hren von Macros
+|   |
+|   &#43;-- Macro name:
+|
+|-- Find                                Suchen von Text-Strings vorw&auml;rts
+|   |
+|   &#43;-- Find {} ""
+|
+|-- -find                               Suchen von Text-Strings r&uuml;ckw&auml;rts
+|   |
+|   &#43;--  -Find {} ""
+|
+|-- Get                                 Einlesen eines Files an der aktuellen
+|   |                                   Cursor-Position
+|   &#43;-- Input file:
+|
+|-- Hex                                 Hex-Bearbeitung der Daten.
+|   |
+|   |-- Input                           Eingabe 1 Hex-Wert an Cursor-Position.
+|   |-- Output                          Anzeige 1 Hex-Wert an Cursor-Position.
+|   |-- Stdout                          Hex-String nach standard output.
+|   |-- Find                            Suche nach Hex-Werten.
+|   |-- View                            Vollbild Hex-Anzeige.
+|   &#43;-- Edit                            Vollbild Hex-Editor.
+|
+|-- Insert                              Wechseln vom Command- zum Insert-Mode,
+|   |                                   eingebene Zeichen werden an der Cursor-
+|   &#43;-- [insert]                        Position in den Text eingef&uuml;gt.
+|
+|-- Jump                                Setzen der Cursor-Position auf vorher
+|   |                                   definierte Stellen oder auf bestimmte
+|   |-- A_tag                           Zeilen/Spalten.
+|   |-- B_tag
+|   |-- C_tag
+|   |-- D_tag
+|   |-- Start
+|   |-- End
+|   |-- Line
+|   &#43;-- Position
+|
+|-- Kill_wnd                            Ende geteilter Bildschirm
+|
+|-- Macro                               Macro-Behandlung
+|   |
+|   |-- Create
+|   |-- Delete
+|   |-- Get
+|   |-- Insert
+|   |-- List
+|   &#43;-- Save
+|
+|-- Other                               Umschaltung zum n&auml;chsten File
+|
+|-- ALT Other                           Umschaltung zum vorigen File
+|
+|-- Paragraph                           Ausrichten des aktuellen Absatzes
+|   |
+|   |-- Fill                            ohne und
+|   &#43;-- Justify                         mit rechtsb&uuml;ndiger Ausrichtung
+|
+|-- Quit                                Editor abbrechen oder beenden,
+|   |                                   File neu lesen, updaten oder schreiben
+|   |-- Abort
+|   |-- Exit
+|   |-- Init
+|   |-- Update
+|   &#43;-- Write
+|
+|-- Replace                             Ersetzen von Text-Strings
+|   |
+|   &#43;-- Replace {} "" with ""
+|
+|-- ?replace                            Ersetzen von Text-Strings mit Abfrage
+|   |
+|   &#43;-- ?Replace {} "" with ""
+|
+|-- Set                                 Einstellen von diversen Betriebsarten
+|   |                 Default-Werte:
+|   |-- Autonl        No                                  G = Global
+|   |-- Bak_file      Yes                                 G
+|   |-- Case          No                                  G
+|   |-- Display       Yes                                 G
+|   |-- E_delimit     !\"#%&\'()*&#43;,-./:;&#60;=&#62;?@[\\]^`{|}~   G
+|   |-- File_num      2                                   G
+|   |-- Highbit       No                                  F
+|   |-- Indent        Yes                                 G
+|   |-- K_token       No                                  G
+|   |-- Leftcol       0                                   F = File specific
+|   |-- Margin        4 0 76                              G
+|   |-- Notab         Yes                                 G
+|   |-- viewOnly      No                                  F
+|   |-- Radix         Decimal                             G
+|   |-- Showfind      No                                  G
+|   |-- Tabs          8                                   G
+|   |-- Viewrow       5                                   G
+|   |-- Warning       2                                   G
+|   |-- sYntax        0 0                                 F
+|   |-- *Wildcards    No                                  G
+|   &#43;-- ~Tilde_home   No                                  G
+|
+|-- Tag                                 Setzen von Text-Markern f&uuml;r das
+|   |                                   Kommando "Jump"
+|   |-- A_tag
+|   |-- B_tag
+|   |-- C_tag
+|   &#43;-- D_tag
+|
+|-- View                                Neuausgabe des Bildschirm
+|
+|-- Window                              geteilter Bildschirm
+|
+|-- Xchange                             Wechseln vom Command- zum Exchange-
+|   |                                   Mode, bei Eingabe neuer Zeichen wird
+|   &#43;-- [exchange]                      der alte Text &uuml;berschrieben.
+|
+|-- YFileCompare                        File-Vergleich: this / other file
+|                                       oder upper / lower window
+|
+|-- Zulu                                Das ist ja wohl das letzte ...
+|   |
+|   |-- Beep                            1-mal Hupen
+|   &#43;-- Pause                           1 Sek. Pause
+|
+|-- !system                             Ausf&uuml;hren eines Betriebsystem-
+|   |                                   Kommandos, z.B. "DIR"
+|   &#43;-- System command:
+|
+&#43;-- &system                             Wie '!', aber ohne "hit any key ...",
+    |                                   sinnvoll f&uuml;r Hintergrund-Prozesse
+    &#43;-- System command:
+
+
+<a name="C6.3"> <h3>6.3. Erl&auml;uterungen</h3></a>
+
+- ALT F9 
+
+   Umschaltung der Zeilenzahl, zyklisch: 25 --> 28 --> 50 
+
+
+- 'A'gain
+
+   Wiederholung des letzten Kommandos.
+   Beispiel: F hallo &#60;esc&#62;              Sucht den Text-String "hallo".
+             A                          Sucht erneut denselben String.
+
+
+- 'B'lock
+
+   Dient zum Markieren eines Text-Blocks zum Zweck des L&ouml;schens oder Kopierens.
+   Beim 1. "B" wird der Start des Textes mit einem "@" markiert. Der Cursor
+   l&auml;&szlig;t sich nun mit den Cursor-Tasten bzw. mit dem "Find", "-find" oder
+   "Jump"-Kommando verschieben. Dabei wird ein zweites "@" mitgef&uuml;hrt, das
+   das Ende des Text-Blocks markiert. Der Text zwischen den beiden "@" kann
+   jetzt auf verschiedene Weise bearbeitet werden:
+      - "B"uffer legt den Text in einem Hilfsbuffer ab.
+      - "D"elete l&ouml;scht den Text im Speicher, und legt ihn im Hilfsbuffer ab.
+      - "P"ut schreibt den Text auf einen anzugebenden File.
+   
+   Zum Wiedereinlesen des Hilfsbuffers dient das "Get"-Kommando - siehe dort !
+
+
+- 'C'alc
+
+   Online Taschenrechner zur Berechnung mathematischer/logischer Ausdr&uuml;cke.
+   Behandlung von reservierten Text-Strings.
+
+   Siehe Kapitel "Online Calculator" !
+
+
+- 'D'elete
+
+   Leitet wie das "Block"-Kommando das L&ouml;schen oder Speichern eines Text-Blocks
+   ein. Entscheidend f&uuml;r die Unterscheidung zwischen L&ouml;schen und Speichern ist
+   das 2. Kommando. Also:
+      B ... B   entspricht   D ... B  -->  Speichern
+      B ... D   entspricht   D ... D  -->  L&ouml;schen
+
+
+- 'E'xecute
+
+   Ausf&uuml;hren eines vorher definierten Macros (manuell erzeugt oder per
+   Macro-File eingelesen).
+   Syntax: "E"xecute &#60;macro name&#62; &#60;cr&#62; 
+
+   Hinweis: Macros, deren Name nur aus einem einzelnen Zeichen besteht, k&ouml;nnen
+      durch Eintippen dieses Zeichens ausgef&uuml;hrt werden. Es kann sich dabei
+      um ein Sonderzeichen handeln, eine Funktionstaste, oder um einen Buch-
+      staben, der f&uuml;r kein anderes Kommando reserviert ist. Auch kombinierte 
+      Tastendr&uuml;cke (d.h.: Control- oder Alt-Kombinationen) sind zul&auml;ssig.
+   
+   siehe auch Kapitel "Macros" !
+
+- 'F'ind
+
+   Sucht (vorw&auml;rts) nach dem eingebenen Text-String.
+   Der Suchstring wird mit &#60;esc&#62; abgeschlossen.
+   Abbruch des "Find"-Kommandos mit ^C.
+
+
+- '-'find
+
+   Sucht (r&uuml;ckw&auml;rts) nach dem eingebenen Text-String.
+
+
+- 'G'et
+
+   Der angebene File wird an der aktuellen Cursor-Position in den Text
+   eingef&uuml;gt. Wird statt eines Filenamen nur &#60;cr&#62; eingegeben, so wird der
+   vorher mit 'B'lock bzw. 'D'elete erzeugte Text-Buffer eingef&uuml;gt. Damit
+   lassen sich also Text-Bl&ouml;cke einfach verschieben oder kopieren.
+
+
+- 'H'ex
+
+   - 'I'nput
+      F&uuml;gt den eingegeben Hex-Wert an der Cursor-Position in den Text ein.
+      Beispiel: H I 0c &#60;cr&#62; erzeugt ein &#60;ff&#62; (Form Feed = Seitenvorschub).
+   
+   - 'O'utput
+      Zeigt den Charakter unter der Cursor-Position als Hex-Wert in der
+      Status-Zeile 2 an.
+
+   - 'S'tdout
+      Gibt die eingegebenen Hex-Werte als Character-String nach stdout aus.
+      Beispiel: H S 1b 5b 35 6d   oder
+                H S 1b5b356d      erzeugt die Ausgabe von: &#60;esc&#62;[5m.
+
+      Dieses Kommando kann benutzt werden, um die Terminal-Emulation zu 
+      beeinflussen (z.B. die Text Aufl&ouml;sung).
+
+   - 'F'ind
+      Sucht nach dem eingegebenen Hex-Wert bzw. Werte-Bereich (von ... bis).
+<a name="C6.3.H"></a>
+   - 'V'iew
+      Zeigt den Speicherinhalt als gemischtes hex/ASCII-Display an. In dieser
+      Betriebsart sind nur einige Tasten verwendbar:
+         Cursor Up/Down/Left/Right, Page Up/Down, Home/End
+         &#60;esc&#62; / ^C
+         'E'dit : Umschalten zu Betriebsart "Hex Edit"
+         'O'ther: Umschalten zwischen den Files
+         'Y'    : Vergleichen der Files
+
+   - 'E'dit
+      Wie 'V'iew, aber mit zus&auml;tzlichen Kommandos:
+         - &#60;tab&#62; wechselt zwischen Hex- und ASCII-Bereich hin und her.
+         - eingegebene Hex- bzw. ASCII-Werte werden im Speicher &uuml;berschrieben.
+
+   <img src="../hex_edit.gif" alt="Hex Edit">
+
+   F&uuml;r die "Hardcore-Programmierer": Jeder Bin&auml;r-File kann sehr komfortabel
+   sowohl im ASCII- als auch Hex-Mode betrachtet oder editiert werden.
+
+
+- 'I'nsert
+   
+   Wechselt von Command Mode in den Insert Mode. Die eingebenen Zeichen
+   werden an der Cursor-Position in den Text eingef&uuml;gt.
+   
+   Zur&uuml;ck zum Command Mode mit &#60;esc&#62; !
+
+
+- 'J'ump
+   
+   Setzt den Cursor ...
+   
+   - A_Tag, B_Tag, C_Tag, D_Tag
+      ... auf eine Text-Stelle, die vorher mit dem "Tag"-Kommando 
+          markiert wurde.
+   
+   - Start / End
+      ... auf den Anfang bzw. das Ende des aktuellen Files.
+   
+   - Line
+      ... auf die angegebene Zeile.
+   
+   - Position
+      ... auf die angegebene Spalte.
+
+
+- 'K'ill_wnd
+
+   Beende Mode "geteilter Bildschirm", siehe auch 'W'indow !
+
+
+- 'M'acro
+
+   Erzeugen, L&ouml;schen, Einlesen, Einf&uuml;gen, Anzeigen und Abspeichern von Macros.
+   
+   Siehe Kapitel "Macros" und "Macro-File" !
+
+
+- 'O'ther
+
+   Wenn mit mbedit mehrere Files parallel editiert werden, kann mit "O"
+   zwischen den Files umgeschaltet werden. Dies ist besonders n&uuml;tzlich
+   beim Kopieren von Daten zwischen 2 Files.
+   
+   Der jeweils aktuell bearbeitete File ist an der Anzeige in der 
+   Status-Zeile 1 zu identifizieren.
+
+
+- ALT 'O'ther
+
+   Wie Other, aber die Files werden r&uuml;ckw&auml;rts weitergeschaltet. Ein Unterschied
+   zwischen "O" und "Alt O" ist nur bei mehr als 2 Files gegeben.
+
+
+- 'P'aragraph
+
+   Formatiert den aktuellen Absatz mit der Einstellung von 'S'et 'M'argin
+   (Einr&uuml;ckung, linke + rechte Grenze).
+
+   - 'F'ill
+       formatiert ohne rechtsb&uuml;ndige Ausrichtung.
+
+   - 'J'ustify
+       formatiert mit rechtsb&uuml;ndiger Ausrichtung.
+
+- 'Q'uit
+
+   - Abort
+      Abbrechen des Editors ohne Zur&uuml;ckschreiben des Files. Wenn einer der
+      bearbeiteten Files modifiziert wurde, gibt mbedit eine Warnung
+      aus: "modified: abort anyway ? [Y/N/W]", die quittiert werden mu&szlig;.
+         'Y' = Yes   : Abbruch ohne Update, die &Auml;nderungen gehen verloren.
+         'N' = No    : kein Abbruch, Verbleiben in mbedit.
+         'W' = Write : File schreiben und mbedit beenden (wie Quit Exit).
+
+   - Exit
+      Der editierte File wird zur&uuml;ckgeschrieben und mbedit verlassen, sofern
+      keiner der anderen Files modifiziert wurde.
+
+   - Init
+      Hiermit wird ein neuer (oder derselbe) File eingelesen. Wenn der
+      vorher bearbeitete File modifiziert wurde, gibt mbedit eine Warnung
+      aus. Behandlung wie bei "Q"uit "A"bort. Sonderfall: Der Filename
+      " " oder "" l&ouml;scht den Editier-Buffer ohne Einlesen eines neuen Files.
+
+   - Update
+      Der aktuelle File wird zur&uuml;ckgeschrieben, der Editor aber nicht 
+      verlassen.
+
+   - Write
+      Der aktuelle File wird auf einen beliebigen anderen File geschrieben.
+      Wenn ein File des angegebenen Namens bereits existiert, gibt mbedit eine
+      Warnung aus: "file exists, overwrite [Y/N]", die quittiert werden mu&szlig;.
+         'Y' = Yes   : &Uuml;berschreiben des Files.
+         'N' = No    : kein &Uuml;berschreiben des Files.
+   
+   Nach Ausf&uuml;hren eines der "Quit"-Kommandos, bleibt mbedit im "Quit"-Mode,
+   z.B. um nach einem "Update" direkt ein "Init" durchf&uuml;hren zu k&ouml;nnen. Der
+   "Quit"-Mode kann ohne weitere Aktionen mit &#60;esc&#62; oder ^C verlassen werden.
+
+
+- 'R'eplace
+
+   Ersetzen eines Text-Strings durch einen anderen.
+   Syntax: R &#60;string1&#62; &#60;esc&#62; with &#60;string2&#62; &#60;esc&#62;.
+   Abbruch des "Replace"-Kommandos mit ^C.
+
+   Das letzte "Replace"-Kommando kann mit "A"gain beliebig oft wiederholt 
+   werden. Durch Angabe eines Wiederholfaktors kann das Kommando von vorn-
+   herein n-mal ausgef&uuml;hrt werden.
+
+
+- '?'replace
+   
+   Wie "Replace", aber mit vorheriger Abfrage: "Replace ? [Y/N/A]"
+      'Y' = Yes   : Ersetzen diesen Strings.
+      'N' = No    : kein Ersetzen diesen Strings.
+      'A' = All   : Ersetzen ohne weitere Nachfrage, Wiederholung des Kommandos
+                    so oft, bis der Wiederholfaktor abgearbeitet ist.
+
+- 'S'et
+
+   Einstellen diverser Betriebsarten / Options.
+   Siehe Kapitel "Set Options" !
+
+
+- 'T'ag
+
+   An der aktuellen Cursor-Position wird ein Merker (A bis D) gesetzt, der
+   sp&auml;ter mit "Jump" angesprungen werden kann.
+
+
+- 'V'iew
+
+   Neuausgabe des Bildschirms, der Cursor wird dabei auf die sog. "View Row"
+   gesetzt (siehe Kapitel "Set Options").
+
+
+- 'W'indow
+
+   Der Bildschirm wird waagerecht in 2 Teile unterteilt. Jeder Teil mu&szlig;
+   mindestens 5 Zeilen hoch sein (3 Text- + 2 Status-Zeilen), sonst wird 
+   eine Fehlermeldung "window too small" erzeugt.
+
+   Durch nochmaliges Eingeben von 'W', springt die aktuelle Cursor-Position
+   von einem Fenster zum anderen.
+
+   Es ist m&ouml;glich, entweder 2 verschiedene, oder denselben File in den i
+   beiden Teilen des Bildschirms zu editieren.
+
+   'K'ill beendet den Window-Mode.
+
+
+- 'X'change
+
+   Wechselt von Command Mode in den Exchange Mode. Bei Eingabe neuer 
+   Zeichen wird der alte Text an der Cursor-Position &uuml;berschrieben.
+
+   Im Exchange Mode &uuml;berschriebene Zeichen werden in einem Hilfsbuffer
+   gesichert. Mit &#60;rubout&#62; bzw. &#60;backspace&#62; k&ouml;nnen sie wiederhergestellt
+   werden, solange der Exchange Mode nicht verlassen wurde, und zwischen-
+   durch keine der Cursor-Tasten bet&auml;tigt wurde.
+
+   Zur&uuml;ck zum Command Mode mit &#60;esc&#62; !
+
+<a name="C6.3.Y"></a>
+
+- 'Y' File Compare
+
+   Vergleicht entweder den "this" und "other" file, oder (mit geteiltem
+   Bildschirm) die files in der oberen und unteren H&auml;lfte.
+
+   Anzeigen: 
+      "file compare: running ..."      : der Prozess ist aktiv.
+      "file compare: end of file"      : in mind. einem von beiden Files.
+      "file compare: no difference"    : von hier bis zum Ende des Files.
+      "file compare: difference found" : Cursor an 1. Differenz in beiden Files.
+
+
+- 'Z'ulu  (n&uuml;tzlich f&uuml;r Macro-Ausf&uuml;hrungen)
+
+   - 'B'eep      Einmaliges Hupen
+   - 'P'ause     1 Sek. Pause
+
+
+- '!'system
+
+   Mit '!' kann ein Kommando an das Betriebssystem abgesetzt werden, ohne 
+   den Editor zu verlassen.
+   Beispiel: ! dir *.c &#62; direc.txt &#60;cr&#62;
+
+
+- '&'system
+
+   Wie '!', aber ohne "hit any key to continue",
+   sinnvoll f&uuml;r Kommandos, die als Hintergrund-Prozess gestartet wurden.
+
+
+<a name="C6.4"> <h3>6.4. Funktionstasten</h3></a>
+
+Folgende Funktionstasten sind vorbelegt:
+
+- Die Cursor-Tasten
+   - Cursor Up
+   - Cursor Down
+   - Cursor Left
+   - Cursor Right
+   bewegen den Cursor zeilen- und spaltenweise im File.
+
+- Home / Pos1
+   je nach Vorgeschichte:
+      - Cursor Up      --> Seite hoch
+      - Cursor Down    --> Seite runter
+      - Cursor Left    --> Anfang der Zeile
+      - Cursor Right   --> Ende der Zeile
+
+- Page Up   / Bild ^   --> Seite hoch
+- Page Down / Bild v   --> Seite runter
+
+- Control Character
+   - ^A   L&ouml;scht ab Cursor-Position bis zum Ende der Zeile 
+
+   - ^C   Abbruch eines begonnen Kommandos, zur&uuml;ck zum Command Mode
+
+   - ^D   Umwandeln des Zeichens links vom Cursor in ein deutsches Sonder-
+          zeichen (und wieder zur&uuml;ck): AOUaous &#60;==&#62; &Auml;&Uuml;&Ouml;&auml;&uuml;&ouml;&szlig;. Damit k&ouml;nnen
+          deutsche Sonderzeichen auch auf einer US-Tastatur erzeugt werden.
+
+   - ^E   Macro mit einem one-character-name wird ausgef&uuml;hrt, der aktuelle
+          Mode (Command, Insert, Exchange) bleibt dabei erhalten.
+
+   - ^F   &#60;Del&#62; / &#60;Entf&#62;        L&ouml;schen des Characters rechts neben dem Cursor
+   - ^H   &#60;rubout&#62; &#60;backspace&#62;  L&ouml;schen des Characters links  neben dem Cursor
+
+   - ^K   Cursor auf korrespondierende Klammer positionieren () [] {} &#60;&#62;,
+          bzw. auf die Compiler-Switches "#if, #elif, #else, #endif"
+
+   - ^N   &#60;FETN&#62;  siehe Kapitel "Online Calculator"   
+   - ^R   &#60;HEX&#62;   Eingabe eines Zeichens als Hex-Wert (Insert / Exchange Mode
+                  oder Eingabe in Status Zeile 2)
+
+   - ^S   &#60;FETS&#62;  siehe Kapitel "Online Calculator"
+   - ^V   &#60;FETS&#62;  wie ^S
+
+   - ^U   Undo: macht die Kommandos ^A, ^X und ^Z wieder r&uuml;ckg&auml;ngig.
+          Wenn die Cursor-Position zwischendurch ver&auml;ndert wird, kann man
+          mit diesem Kommando auch Text-Teile verschieben.
+
+   - ^X   L&ouml;scht ab Cursor-Position bis zum Anfang der Zeile 
+
+   - ^Z   L&ouml;scht die komplette Zeile
+
+   - ^[   &#60;esc&#62;  Abbruch eines Kommandos, Beenden einer String-Eingabe
+
+   - Insert / Einfg   --> Wechselt zwischen Insert- und Exchange-Mode.
+
+
+- Die &#60;Fx&#62;-Tasten
+
+   - &#60;F1&#62; Online Hilfe:
+          Zeigt eine Hilfsseite mit diversen Angaben an:
+          Betriebssystem, Video Server, Anzahl Zeilen und Spalten,
+          Gr&ouml;&szlig;e des aktuellen Buffers,
+          Aufz&auml;hlung aller Kommandos,
+          Anzeige der aktuellen Settings,
+          Aufz&auml;hlung der wichtigsten Control Character,
+          Liste der "built-in macros"
+
+   - &#60;ALT F1&#62;  Betriebssystem Online Hilfe:
+          Macro, der den Begriff unter der momentanen Cursor-Position
+          extrahiert, und die Hilfsfunktion des jeweiligen Betriebssystems
+          aufruft, z.B:
+             - MS-DOS: qh   &#60;Begriff&#62;
+             - os/9  : help &#60;Begriff&#62;
+             - unix  : man  &#60;Begriff&#62;
+
+          Hinweis: Der Name der gew&uuml;nschten Hilfsfunktion kann im File
+          "MBEDIT.MAC" folgenderma&szlig;en ge&auml;ndert werden:
+             a) mbedit mbedit.mac
+             b) F&#60;cr&#62;m&#60;ALT F1&#62;&#60;esc&#62;
+             c) f!&#60;esc&#62;  Der Cursor steht jetzt auf dem aktuellen Kommando.
+             d) Kommando &auml;ndern (Leerzeichen am Ende beachten !).
+             e) "Quit Exit"
+
+   - &#60;F3&#62; Wandelt den Character unter dem Cursor nach lower case
+
+   - &#60;F4&#62; Wandelt den Character unter dem Cursor nach upper case
+   
+   - &#60;F5&#62; Wandelt das Wort unter dem Cursor nach lower case
+
+   - &#60;F6&#62; Wandelt das Wort unter dem Cursor nach upper case
+   
+
+- Keyboard-Anpassung
+
+   Auf einem VT-100-Terminal bzw. einer Workstation sind die Tasten
+   z.T. etwas anders belegt als auf dem PC.
+
+   &#60;F1&#62; - &#60;F5&#62; werden terminal-intern verarbeitet, das Anwenderprogramm
+   wei&szlig; nichts von diesen Tasten. Daf&uuml;r gibt es zus&auml;tzlich die Tasten:
+   &#60;F13&#62; - &#60;F14&#62;, &#60;HELP&#62;, &#60;DO&#62;, &#60;F17&#62; - &#60;F20&#62;, &#60;PF1&#62; - &#60;PF4&#62;
+
+   Um die wichtigsten Kommandos von mbedit auch auf einem VT-100-Terminal
+   ausf&uuml;hren zu k&ouml;nnen, wurden die Tasten wie folgt umgeleitet:
+
+      - &#60;F13&#62; / &#60;F14&#62;  ==>  Ctrl Cursor Left / Rigth          (Macros)
+
+      - &#60;HELP&#62;         ==>  &#60;F1&#62;
+
+      - &#60;DO&#62;           ==>  &#60;ALT F1&#62;                          (Macro)  
+
+      - &#60;F17&#62; - &#60;F20&#62;  ==>  --- (bislang noch nicht belegt !)
+
+      - &#60;PF1&#62; - &#60;PF4&#62;  ==>  &#60;F3&#62; - &#60;F6&#62;
+
+<a name="C6.5"> <h3>6.5. Set Options</h3></a>
+
+Die Angaben in eckigen Klammern zeigen die Standard-Einstellung an.
+
+- Autonl     [No]
+   Automatisches Einf&uuml;gen von &#60;nl&#62;, bei &Uuml;berschreitung des rechten Randes.
+
+- Bak_file   [Yes]
+   Bei "Quit Exit" bzw "Quit Update" wird ein Backup-File angelegt
+   (Extension *.BAK).
+
+- Case       [No]
+   Bei "Find" und "Replace" wird nicht zwischen Gro&szlig;- und Klein-Schreibung
+   unterschieden.
+
+- Display    [Yes]
+   Die Ausf&uuml;hrung von Macros wird angezeigt, der History Buffer wird mit
+   den ausgef&uuml;hrten Macros beschrieben. 
+
+- E_delimit  [!"#%&'()*&#43;,-./:;&#60;=&#62;?@[\]^`{|}~]
+   Delimiter Set f&uuml;r Find Token Strings (siehe auch Set Option "K_token").
+
+- File_num   [2]
+   Anzahl der parallel editierten Files (1 bis 10).
+
+- Highbit    [No]
+   'N'o  : Zeichen mit gesetztem 8. Bit werden als '?' dargestellt
+   'Y'es : Anzeige entsprechend dem PC-8 Zeichensatz.
+   'A'uto: Anzeige h&auml;ngt vom "file_type" ab (bekannt = Yes)
+
+- Indent     [Yes]
+   Bei Eingabe eines &#60;cr&#62; in den aktuellen Text springt der Cursor in die
+   neue Zeile, aber nicht auf Spalte 0, sondern unter das 1. Zeichen der
+   vorherigen Zeile, das kein &#60;space&#62; oder &#60;tab&#62; ist.
+
+- K_token    [No]
+   "Find" und "Replace" suchen nicht nur nach sog. Token-Strings, d.h.: 
+   Strings, die durch einen Delimiter begrenzt werden.
+
+   Delimiter sind alle Zeichen au&szlig;er Buchstaben (auch deutsche Umlaute),
+   Ziffern und Underscore '_'.
+   Damit l&auml;&szlig;t sich der Variablenname "i" eindeutig von den vielen "i"s 
+   unterscheiden, die mitten in einem Wort stehen.
+
+- Leftcol    [0]
+   Die Spalte, die links auf dem Bildschirm angezeigt wird. Damit l&auml;&szlig;t sich
+   der dargestellte Bereich nach links und rechts schieben, um &uuml;berlange
+   Zeilen anzeigen zu k&ouml;nnen.
+
+- Margin     [4, 0, 76]
+   Die Grenzen (Einr&uuml;ckung, links + rechts) f&uuml;r das Paragraph-Kommando.
+
+- Notab      [Yes]
+   Eingebene &#60;tab&#62;s werden zu n Blanks expandiert.
+
+- Only view  [No]
+   An- und Abschalten der Betriebsart "viewOnly".
+
+- Radix      [Decimal]
+   Zahlenbasis, mit der die numerischen Calc-Variablen (n0 - n9) in den Text
+   eingesetzt werden (Insert / Exchange Mode)
+      - 'A': Ascii
+      - 'B': Binary
+      - 'O': Octal
+      - 'D': Decimal
+      - 'H': Hex
+
+- Showfind   [No]
+   Bei Aufruf des "Find"- oder "Replace"-Kommandos mit Wiederholfaktor werden
+   die Zeilen, in denen der Suchstring gefunden wurde, nicht zusammen angezeigt.
+   Yes: Ergebnisse einer Mehrfach-Suche werden zusammen auf einer Bildschirm-
+   seite angezeigt.
+
+- Tabs       [8]
+   Die Anzahl der Blanks, zu denen ein eingegebenes &#60;tab&#62; expandiert wird
+   (wenn "Set Notab Yes").
+
+- Viewrow    [5]
+   Nach Eingabe des View-Kommandos wird der Bildschirm neu ausgegeben und der
+   Cursor steht anschlie&szlig;end in dieser Zeile.
+
+- Warning    [2]
+   Warning Beep Level, Steuerung der Hupe:
+      - 0: nie hupen
+      - 1: nur bei Bedienfehler hupen
+      - 2: bei Fehlermeldungen und Bedienfehler hupen
+
+- sYntax higlighting [7,index]
+   Anzeige mit speziellen Farben f&uuml;r Kommentare und/oder Keywords (Sprache c):
+
+   - parameter 1: Bit-Kombinationen von
+      - 1: Kommentare
+      - 2: Keywords
+      - 4: Zeichenketten
+
+   Der Default-Wert f&uuml;r diesen Status h&auml;ngt von der Filename-Extension ab:
+   Alle bekannten Extensions werden behandelt mit sYntax-flag = 7. Eine
+   weitere Voraussetzung for die Aktivierung dieser M&ouml;glichkeit ist die Existenz
+   der entsprechenden Farb-Eintr&auml;ge im Macro-File (AFCV, AFKV, AFSV, SYn).
+
+   - parameter 2:
+      - index des file type (c, cpp, asm, ada, htm, ...)
+
+   Die aktuell g&uuml;ltigen Indizes k&ouml;nnen mit 'M'acro 'L'ist angesehen werden.
+
+- *Wildcards [No]
+   Wildcards (d.h. "Joker"-Zeichen) im Suchstring gibt es nicht, 
+   '?' und '*' werden behandelt wie alle anderen Zeichen auch.
+   Yes: Ein Fragezeichen '?' im Such-String ersetzt jedes Zeichen,
+        ein Stern        '*' im Such-String ersetzt jeden String
+                             (auch einen leeren).
+
+- ~HomeDir [No]
+   Ersetze '~' mit User-Home-Directory (bei Eingabe in Status-Zeile 2)
+
+</pre>
+
+</body>
+</html>
+

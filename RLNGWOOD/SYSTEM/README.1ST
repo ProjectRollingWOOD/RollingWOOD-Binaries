@@ -1,0 +1,37 @@
+Welcome to the 1.6g release of Freemacs.  Russell has given
+permission for others to modify Freemacs, and to remove the
+redistribution restriction.  I have done so.  I have not made any
+other changes.
+
+-Jim Hall <jhall1@isd.net>
+
+==================================================================
+
+It should be obvious to everyone concerned that I just don't have the
+time to hack at Freemacs anymore.  Is anyone interested in taking the
+program over?
+
+Here's the 1.6d release.  It's got source files!  It's faster!
+#(ex) swaps to extended memory (if you've got some and it's enough).
+It (mostly) preserves the 8th bit!  It's also NOT a public release,
+so please don't give copies to anyone else.  For example, there's no
+documentation.
+
+The 1.6b release had a few problems, like it didn't strip ;;
+comments, which caused it to generate too-small .edd files.  Also,
+M-~ didn't work.
+
+I don't remember what I changed from 1.6c.  Files still have to be
+smaller than 64K.
+
+Note that there are no .ED or .EDD files.  Freemacs will use _boot.min to
+create them if they cannot be found.
+
+Some people have expressed interest in adding comments to the various
+modules.  Please do so, but check with me first -- I want to avoid duplicated
+effort.
+
+Please report bugs to the freemacs-workers@sun.soe.clarkson.edu mailing
+list.  That's the only place I'm announcing this release.
+
+-russ

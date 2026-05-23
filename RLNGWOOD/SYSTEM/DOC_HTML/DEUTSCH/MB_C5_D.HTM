@@ -1,0 +1,177 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C5"> <h3> 5. Display-Aufteilung</h3></a>
+
+<pre>
+
+Beispiel: Standard PC-Display mit 80 Spalten * 25 Zeilen, es sind andere
+          Bildschirm-Gr&ouml;&szlig;en einstellbar (siehe Kapitel "Macro-File").
+
+     +----------------------------------------------------------+
+     | Text-Zeile  1                                            |
+     |        "    2                                            |
+     |        "    3                                            |
+     |                                                          |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |        :                                                 |
+     |                                                          |
+     |                                                          |
+     | Text-Zeile  23                                           |
+     |----------------------------------------------------------|
+     | Status-Zeile 1                                           |
+     |----------------------------------------------------------|
+     | Status-Zeile 2                                           |
+     +----------------------------------------------------------+
+
+<a name="C5.1"> <h3>5.1. Anzeigen in Status-Zeile 1</h3></a>
+
+  ?file A=&#60;filename&#62;,row:11,col:40,line: 256( 412), char&#60;1b&#62; 1200(11209)
+  |     ||           |      |      |                     |   |
+  |     ||           |------+      |                     |   +-- Byte No
+  |     ||           |             |                     |       (Ges.-Anzahl)
+  |     ||           |             |                     |
+  |     ||           |             |                     +-- char (hex)
+  |     ||           |             |
+  |     ||           |             +-- Zeile im File (Ges.-Laenge)
+  |     ||           |
+  |     ||           +-- Zeile und Spalte auf dem Bildschirm
+  |     ||
+  |     |+-- '*' File wurde modifiziert, sonst '='
+  |     |
+  |     +-- File Kennung (A,B,C,...) : Gro&szlig;buchstabe  = Read/Write
+  |                 bzw. (a,b,c,...) : Kleinbuchstabe = View Only
+  |
+  +-- Aktions-Kennung: '?' = Warten auf Tastatur-Eingabe
+                       '!' = mbedit ist aktiv
+
+<a name="C5.2"> <h3>5.2. Anzeigen in Status-Zeile 2</h3></a>
+
+   mode: "insert" leave with &#60;esc&#62;          - mbedit V4.0 - 08.08.93 - M. Braun
+   |                                          |             |
+   |                                          |             +-- Versions-Datum
+   |                                          |      
+   |                                          +-- Versions-Kennung
+   |
+   +-- Hinweise zum aktuellen Mode, Anzeige wechselt je nach
+       Betriebsart und Kommando (z.B. Eingabefeld f&uuml;r Suchstrings)
+
+<a name="C5.3"> <h3>5.3. Eingaben in Status-Zeile 2</h3></a>
+
+   Einige Kommandos erwarten Eingaben in der Status-Zeile 2:
+
+      - Die Eingabe einer Zahl im Command Mode bedeutet die Anzahl der
+        Wiederholungen, mit der das folgende Kommando ausgef&uuml;hrt werden soll.
+
+      - Eingabe von Strings: z.B. Kommando "Find", "Replace", "Quit Init", ...
+
+        Bestimmte String-Eingaben k&ouml;nnen mit &#60;esc&#62; oder &#60;cr&#62; beendet werden,
+        andere interpretieren das &#60;cr&#62; und werden nur mit &#60;esc&#62; beendet.
+
+        Die Eingabe eines Strings funktioniert folgenderma&szlig;en:
+
+           - Anzeige "", der Cursor steht unter dem 2. Hochkomma
+
+           - Eingabe von Zeichen (werden hinten an den String angeh&auml;ngt)
+
+           - Wenn der String l&auml;nger wird, als der daf&uuml;r vorgesehene Platz
+             im Eingabefeld, wird er so verschoben, da&szlig; die aktuelle Cursor-
+             Position immer zu sehen ist.
+
+           - Mit Cursor Left / Right wird der Cursor im Eingabe-String 
+             verschoben.
+
+           - Cursor Up / Down wechselt in den History Mode,
+             siehe Kapitel "History" !
+
+           - ^D, ^H, ^F         sowie
+             ^A, ^X, ^Z und ^U  wirken wie im Command Mode,
+                                siehe auch Kapitel "Funktionstasten" !
+
+           - Mit ^N wird eine numerische "Calc"-Variable (n0 - n9) in den 
+             String eingef&uuml;gt, und zwar nicht mit der aktuellen Zahlenbasis 
+             (Ascii, Binary, Octal, Decimal, Hex), sondern immer dezimal.
+
+           - Mit ^S bzw. ^V wird eine der String-Variablen (s0 - s9) in den
+             String eingef&uuml;gt.
+
+           - ^C     Abbruch der Eingabe
+           - &#60;cr&#62;   &Uuml;bernahme des Strings bis zur Cursor-Position
+           - &#60;esc&#62;  &Uuml;bernahme des kompletten Strings
+
+<a name="C5.4"> <h3>5.4. Eingabe von Filenamen mit Wildcards</h3></a>
+
+   Bei der Eingabe eines Filenamen in Status-Zeile 2 (z.B. w&auml;hrend 'Q'uit
+   'I'nit), ist es m&ouml;glich, entweder einen definierten Pfadnamen zu schreiben,
+   oder einen mehrdeutigen Namen mit Wildcard-Charactern ('?' or '*').
+
+   Beispiel: Q I "*.c"                 Quit Init: alle Files mit Extension .c
+
+   In diesem Fall erscheint ein Fenster auf dem Bildschirm, das einen 
+   &Uuml;berblick &uuml;ber das momentane Directory anzeigt:
+
+   Beispiel:              +-------------------+
+                          |/.                 |
+                          |/..                |
+                          |/BACKUP            |
+                          |/DEMO              |
+                          |/DOC               |
+                          |/WINDOWS           |
+                          | BLOCKS.C          |
+                          | CALC.C            |
+                          | COMMANDS.C        |
+                          | DISP_HND.C        |
+                          | FILE_HND.C        |
+                          | HISTORY.C         |
+                          | KB_INPUT.C        |
+                          | MEMO_HND.C        |
+                          | MON_OUTP.C        |
+                          | VBIOS.C           |
+                          +-------------------+
+
+   Es zeigt den Inhalt des Directorys in alphabetischer Reihenfolge, getrennt
+   nach Subdirectories (markiert mit '/') und den Files, die durch das ange-
+   w&auml;hlte Filter ausgew&auml;hlt wurden. Die aktuelle Zeile ist invers dargestellt.
+
+   In der Status-Zeile 2 erscheint der aktuelle Directory-Pfad mit dem Wildcard-
+   Filenamen plus der Anzahl von Subdirectories und Files. Beispiel:
+      Path: ".\*.c" (6+27)
+
+   Folgende Aktionen sind m&ouml;glich:
+
+   - Cursor Up / Down
+      Die selektierte Zeile wird nach oben / unten verschoben. 
+   - Page Up / Down
+      Die selektierte Zeile wird seitenweise verschoben. 
+   - Home / End
+      Zum Beginn / Ende dieses Directorys.
+   - 'A' - 'Z' / 'a' - 'z'
+      Zeile springt auf den n&auml;chsten Eintrag mit diesem Anfangsbuchstaben.
+   - &#60;esc&#62; / ^C
+      Abbruch der File-Auswahl. Der aktuelle Pfadname mit dem Wildcard-
+      Filename wird nach Status-Zeile 2 kopiert.
+   - &#60;cr&#62;
+      Abh&auml;ngig vom angew&auml;hlten Eintrag:
+         - Eintrag ist ein Subdirectory: Wechselt dorthin !
+         - Eintrag ist ein File: &Uuml;bernimmt den aktuellen Pfadnamen in
+           Status-Zeile 2, wo er weiter editiert werden kann.
+
+</pre>
+
+</body>
+</html>
+

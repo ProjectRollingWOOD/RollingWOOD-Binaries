@@ -1,0 +1,2 @@
+:: CD
+MSCDEX.EXE /D:MSCD001

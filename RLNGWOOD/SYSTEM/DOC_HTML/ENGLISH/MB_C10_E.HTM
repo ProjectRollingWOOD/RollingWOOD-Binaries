@@ -1,0 +1,239 @@
+
+<html>
+
+<!-- Copyright (C) 2004 / Michael Braun -->
+
+<head>
+<title>Michael Braun: Documentation mbedit</title>
+<base target="_self">
+</head>
+
+<body bgcolor=white>
+
+<a name="C10"> <h3> 10. Special Features </h3></a>
+
+<pre>
+
+<a name="C10.1"> <h3>10.1. Environment Variables </h3></a>
+
+mbedit searches some special files on particular directories, which are
+specified by environment variables. This behaviour depends on the used
+operating system.
+
+- The history file 'MBEDIT.HST' is searched and created always on the
+  user home directory. This is determined by an environment variable:
+
+     - environment variable ":HOME:" or, if this doesn't exists
+     - environment variable "HOME"   or, if this doesn't exists
+     - the current directory "."
+
+
+- The macro file "MBEDIT.MAC" is searched in the following directories by
+  default:
+
+     a) unix + os/9 get the 1st word of the command string as argument,
+        (so normally "mbedit", without the path). Therefore, the file is
+        searched additionally in the "PATH".
+
+     b) in the directory, which is passed to the editor as 1st argument,
+        i.e. (MS-DOS only) the same directory, from where mbedit was started
+        (e.g. "C:\BIN\mbedit").
+
+     c) in the user home directory.
+
+  All existing macro files are read in this sequence.
+
+
+- The temp. file "MBEDIT.TMP" is stored on the temp. directory, which is
+  defined as follows:
+
+     - We had troubles with a sharing violation, using "/tmp" as the
+       temp. directory under unix, when two users accessed the temp file
+       simultaneously. So i decided, to locate the temp file on the 
+       user home directory as well (like the history file).
+
+
+- The name of the console is needed, if an EOF (end of file) occurs during
+  an input redirection. It is defined as follows:
+
+     - MS-DOS: CON
+     - os/9  : environment variable "PORT"
+     - unix  : /dev/tty
+
+
+<a name="C10.2"> <h3>10.2. mbedit and unix (vt 100 mode) </h3></a>
+
+   There is a tiresome problem concerning the keyboard inputs, actually 
+   the so-called &#60;esc&#62; sequences (that is a sequence of ASCII characters 
+   with a variable length, starting with &#60;esc&#62;).
+   E.g., the sequence for "Cursor Up" is "&#60;esc&#62;[A". The difficulty is the
+   recognition of single &#60;esc&#62;s, as it is used as a terminator for string
+   inputs.
+
+   The program can distinguish between single &#60;esc&#62;s and &#60;esc&#62; sequences
+   only with a timeout monitoring. That's no problem for OS/9, but in unix
+   the shortest time intervall, which is supported by the operating system,
+   is 1 second (since version 6.77 even shorter, see chapter "Macro File",
+   entry "AE=200", &#60;esc&#62; wait time = 200 msec).
+
+   That means: After pressing the &#60;esc&#62; key, wait time must elapse, until
+   the operating system tells the editor: "there is no more character in the
+   moment". As a result of this, the editor detects "single &#60;esc&#62;".
+   You can shorten the waiting period, by entering the next command 
+   immediately, that works fine.
+
+   If the next command isn't yet known, you may enter &#60;esc&#62; twice. Then the
+   1st &#60;esc&#62; is processed right away, and the 2nd does nothing.
+   But now, the last command (like "Find") can't be repeated by entering
+   'A'gain. Instead of this, the 2nd &#60;esc&#62; will be repeated, what does
+   nothing again. At least no damage is caused by this procedure.
+
+   By the way, all editors have those problems with the &#60;esc&#62;s. Some of them
+   even have a bug: If you press &#60;esc&#62; and then a cursor key before the delay
+   time is elapsed, one keyboard character is lost, which leads to strange
+   results. Very often the sequence "[xx" appears in the current text, i.e.
+   the &#60;esc&#62; sequence from the 2nd character on.
+
+   New Method
+   ----------
+   Since version 6.2, mbedit is provided with an extended handling of &#60;esc&#62;
+   sequences. The problem is: The usage of keyboard inputs in conjunction with
+   a network link (rlogin or telnet), may cause problems, if the sequence of
+   characters is delayed by long pause periods. In this case, the distinction
+   of single &#60;esc&#62;s and &#60;esc&#62; sequences is problematic.
+   To avoid most of this trouble, i use a sophisticated algorithm:
+
+   keyboard input sequence | detected character(s) | o.k.   | remarks
+   ------------------------+-----------------------+--------+-----------------
+   &#60;esc&#62; (1 sec pause)     | &#60;esc&#62;                 | yes    | single &#60;esc&#62;
+   &#60;esc&#62; [ A               | (Cursor Up)           | yes    | normal case
+   &#60;esc&#62; (      pause) [ A | &#60;esc&#62; [ A             | no     | old algorithm
+   &#60;esc&#62; (short pause) [ A | &#60;esc&#62; (Cursor Up)     | mostly | new algorithm
+   &#60;esc&#62; (long  pause) [ A | &#60;esc&#62; [ A             | no     | new algorithm
+
+   The 4th case is the crucial one. If mbedit detects a '[' character, which
+   follows an &#60;esc&#62; after a short pause (max. 5 seconds), it generates the
+   correct key code, but with an additional preceeding &#60;esc&#62;. That is totally
+   ignored in command mode. In most other cases, an error message is displayed,
+   and then the operation continues in command mode. This is always better than
+   the 3rd case, which produces much more confusion.
+
+
+<a name="C10.3"> <h3>10.3. mbedit and X11 </h3></a>
+
+   The clipboard function (i.e. the "Cut and Paste" of text from one window
+   to the next) works, but this is a feature of X11, not of mbedit. By
+   pressing the right mouse button, the marked text is redirected to
+   standard input.
+
+   To interprete the received text as text, the mbedit in the destination
+   window must be in 'Insert Mode'. Otherwise the incoming characters would
+   be interpreted as commands. This would yield total rubbish.
+
+   For copying data from another window into the mbedit text, use option
+   'S'et 'I'ndent 'N'o. If not, the begin of each line will be filled
+   with additional spaces.
+
+
+<a name="C10.4"> <h3>10.4. Window Size in X11 </h3></a>
+
+   mbedit supports the automatic resize of an X11 window. Therefore, the signal
+   "SIGWINCH" and one of the functions "tput" or "resize" is needed. Both 
+   features are available in most unix/X11 systems.
+
+   The according define constant (WITH_WINCH) resides in the file "config.h"
+   (see there for details).
+
+
+<a name="C10.5"> <h3>10.5. Memory Management </h3></a>
+
+   The edited file is always hold completely in the memory.
+   If the requirement of capacity increases, there is additional memory
+   allocated from the operating system, while stocks last.
+
+   Therefore, the max. filesize is limited by the operating system -
+   for MS-DOS approx. 200 k Byte (rough estimate).
+
+   There are buffers with variable sizes, dynamically allocated, for
+   the following data:
+
+      a. for the data file itself,
+      b. for the so-called Other-File (even more than one)
+      c. for the Commands "Buffer"/"Delete"
+      d. for the Command "Get" &#60;filename&#62; (only temporary)
+      e. for the macros
+
+   The operating system must provide sufficient memory for all this stuff.
+
+   The memory limitation of MS-DOS can be surrounded with DOS-Extenders, 
+   e.g. from Phar Lap.
+
+
+<a name="C10.6"> <h3>10.6. Internal Representation of Characters </h3></a>
+
+   mbedit represents the characters of a datafile as bytes.
+   'special keys' (function- and cursor-keys, ALT-combinations)
+   are internally handled as negative integers and are translated into
+   '\'-sequences before storing them (e.g. in macros, identical to Aedit).
+
+   During string inputs (e.g. for 'Find') the same special operations as in
+   Aedit are available, so ^S, ^N, ^R.
+   There is one exception: The hex value '\0' is not allowed, because it is
+   used internally as string terminator. So it is not possible to search for
+   0x00 with the 'F'ind command. But we can use 'H'ex 'F'ind instead.
+
+   On the os/9- and unix-environments it was very difficult / impossible,
+   to supress the ^S as software handshake, and to pass it through to the
+   editor.
+
+   Therefore, you can use ^V instead of ^S as well. 
+
+
+<a name="C10.7"> <h3>10.7. Mouse Support for MS-DOS </h3></a>
+
+   Since version 6.1, mbedit supports a mouse driver for MS-DOS.
+
+   When entering the program, mbedit looks if a mouse is available to the
+   system. The mouse driver is disabled at the exit point of mbedit.
+
+   Both actions take some time, if a mouse is connected to the system.
+   If the use of the mouse is not planned, it is possible to disable
+   the initialization of the mouse driver, in order to save time. This can
+   be done by the command "AM=0" in "MBEDIT.MAC".
+   (see also chapter "Macro File")
+
+   When the mouse is active, it may be used for several functions:
+
+     - The mouse cursor appears on the screen by moving the mouse or
+       clicking one of the mouse buttons. It disappears after entering
+       any key via the keyboard.
+
+     - On the standard text screen or one of the 2 windows, respectively,
+       you can move the mouse cursor to any location on the text area and 
+       set the text cursor to that point by clicking the left mouse button.
+       It is even possible, to place the cursor behind the end of a line.
+
+     - If you set then pointer to one edge of the screen and hold the left
+       mouse button pressed, the text is moved continuously in one of the
+       4 possible directions.
+
+     - In the status "Inputs in Status Line 2", the mouse can be used
+       to shift the text cursor to either side. Clicking the left mouse
+       button means: Take this whole text line (same as &#60;ESC&#62;). The right
+       button is equivalent to ^C, that is: Cancel this text input.
+
+     - In the history or file selection window, the selected line can be
+       scrolled up and down with the mouse (corresponding to Cursor Up/Down).
+       The left button means: &#60;CR&#62; - take this entry. Clicking the right
+       button leaves the window (as ^C does).
+
+
+     When you change from one mode to the previous one (e.g. from the 
+     history window back to status line 2), the old position of the cursor 
+     is restored.
+
+</pre>
+
+</body>
+</html>
+

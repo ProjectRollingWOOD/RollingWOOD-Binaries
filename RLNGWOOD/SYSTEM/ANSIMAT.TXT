@@ -1,0 +1,16 @@
+ANSiMat v0.93 Copyright (C) Mateusz Viste 2010
+
+ANSiMat is a graphical viewer of ANSI files. It can also be used to
+convert ANSI files into regular (BMP/PCX/PPM/TGA/TIF) graphic files
+or FLC (FLiC) animations.
+ANSiMat is available on Linux, Windows and DOS.
+
+Usage: ansimat ansifile.ans [outputfile]
+If no output file is provided, then ANSiMat will simply display the
+ANSI file on the screen.
+
+Check out the ansimat.cfg file for configuration tweaks (if you are
+wondering where you should place your configuration file, run
+"ansimat -h").
+
+Homepage: gopher://gopher.viste-family.net/1/projects/ansimat/
